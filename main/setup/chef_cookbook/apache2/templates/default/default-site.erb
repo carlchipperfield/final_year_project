@@ -1,0 +1,33 @@
+<VirtualHost *:80>
+        ServerAdmin test
+
+        DocumentRoot /app/share/web/
+
+        WSGIScriptAlias /api /app/share/api/api.py
+
+        #WSGIScriptAlias / /app/share/web/python/webui.py
+        
+        Alias /static/css    /app/share/web/css
+        Alias /static/js     /app/share/web/js
+        Alias /static/images /app/share/web/images
+
+        <Directory /share/web/>
+            Order deny,allow
+            Allow from all
+        </Directory>
+
+        <Directory /share/api/>
+            Order deny,allow
+            Allow from all
+        </Directory>
+
+        <Directory /share/web/python>
+            Order deny,allow
+            Allow from all
+        </Directory>
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel error
+
+</VirtualHost>
