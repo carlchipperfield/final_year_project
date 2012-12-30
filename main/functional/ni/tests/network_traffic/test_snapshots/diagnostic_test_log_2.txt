@@ -1,0 +1,629 @@
+2012-12-11T03:06:32+00:00 cisco tvcs: UTCTime="2012-12-11 03:06:32,284" Module="network.sip" Level="DEBUG":  Dst-ip="127.0.0.1"  Dst-port="22416" 
+ SIPMSG:
+ |INFO sip:phonebook@fyp.com SIP/2.0
+ Via: SIP/2.0/UDP 127.0.0.1:5060;egress-zone=DefaultZone;branch=z9hG4bKdcfe940dbafcbd49f4bad4ceded5f516107.c0b246444145d6aaca0d2a6cf1c6a143;proxy-call-id=c3e0acde-433f-11e2-af62-005056ab3dbd;rport
+ Via: SIP/2.0/TLS 192.168.0.3:65147;branch=z9hG4bK45dc29313e8a6a24de69faf3a86bdcdf.1;received=90.214.3.75;rport=65147;ingress-zone=DefaultSubZone
+ Call-ID: d6d376081eada841@192.168.0.3
+ CSeq: 104 INFO
+ Contact: <sip:cchipper.movi@fyp.com;gr=urn:uuid:e48b3348-6c03-501f-aef7-251ab1ff9c72>
+ From: <sip:cchipper.movi@fyp.com>;tag=a8169a23bf1fa346
+ To: <sip:phonebook@fyp.com>
+ Max-Forwards: 69
+ User-Agent: TANDBERG/772 (MCX 4.3.12.13351) - Mac OS X
+ Expires: 10
+ P-Asserted-Identity: <sip:cchipper.movi@fyp.com>
+ X-TAATag: c3e0aef0-433f-11e2-b618-005056ab3dbd
+ Content-Type: application/tandberg-phonebook+xml
+ Content-Length: 261
+ 
+ <?xml version="1.0" encoding="UTF-8"?>
+ <SearchParameters>
+   <searchString>car</searchString>
+   <returnFields>DisplayName,ContactMethodGroups</returnFields>
+   <groupId></groupId>
+   <maxResultSize>10</maxResultSize>
+   <offset>0</offset>
+ </SearchParameters>|
+
+2012-12-11T03:06:32+00:00 cisco tvcs: UTCTime="2012-12-11 03:06:32,286" Module="network.sip" Level="DEBUG":  Src-ip="127.0.0.1"  Src-port="22416" 
+ SIPMSG:
+ |SIP/2.0 200 OK
+ Via: SIP/2.0/UDP 127.0.0.1:5060;branch=z9hG4bKdcfe940dbafcbd49f4bad4ceded5f516107.c0b246444145d6aaca0d2a6cf1c6a143;received=127.0.0.1;rport=5060;egress-zone=DefaultZone;proxy-call-id=c3e0acde-433f-11e2-af62-005056ab3dbd
+ Via: SIP/2.0/TLS 192.168.0.3:65147;branch=z9hG4bK45dc29313e8a6a24de69faf3a86bdcdf.1;received=90.214.3.75;rport=65147;ingress-zone=DefaultSubZone
+ Call-ID: d6d376081eada841@192.168.0.3
+ CSeq: 104 INFO
+ Contact: "VCS Phonebook Service" <sip:127.0.0.1:22416>
+ From: <sip:cchipper.movi@fyp.com>;tag=a8169a23bf1fa346
+ To: <sip:phonebook@fyp.com>;tag=1fc280f8
+ Content-Type: application/tandberg-phonebook+xml
+ Content-Length: 709
+ 
+ <?xml version='1.0' encoding='UTF-8'?> <SearchResponse offset="0" pageSize="10" totalContactSet="0"><ContactSet><Contacts><Contact id="2a65acce-433c-11e2-9501-005056ab3dbd" type="user"><DisplayName>Carl</DisplayName><ContactMethodGroups><ContactMethodGroup><ContactMethod type=""><Uri>carl.chip@fyp.com</Uri><Protocol /></ContactMethod></ContactMethodGroup></ContactMethodGroups></Contact><Contact id="773d99ea-433b-11e2-94e4-005056ab3dbd" type="user"><DisplayName>Carl Chipperfield</DisplayName><ContactMethodGroups><ContactMethodGroup><ContactMethod type=""><Uri>cchipper@fyp.com</Uri><Protocol /></ContactMethod></ContactMethodGroup></ContactMethodGroups></Contact></Contacts></ContactSet></SearchResponse>|
+
+2012-12-11T03:07:01+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:01,750" Module="network.sip" Level="DEBUG":  Src-ip="90.214.3.75"  Src-port="65140" 
+ SIPMSG:
+ |PUBLISH sip:test.movi@fyp.com SIP/2.0
+ Via: SIP/2.0/TLS 192.168.0.3:65140;branch=z9hG4bK80517a23fd3b07ee38c195c7987374c8.1;received=90.214.3.75;rport=65140
+ Call-ID: 93bb7466ff20a18e@192.168.0.3
+ CSeq: 202 PUBLISH
+ Contact: <sip:test.movi@fyp.com;gr=urn:uuid:c4c734c0-cf59-517c-924e-4bf3313278d5>
+ From: <sip:test.movi@fyp.com>;tag=6ab260bcc8ece53a
+ To: <sip:test.movi@fyp.com>;tag=510ea9f25a140510
+ Max-Forwards: 70
+ Route: <sip:192.133.244.16:5061;lr>
+ User-Agent: TANDBERG/772 (MCX 4.3.12.13351) - Mac OS X
+ Expires: 1800
+ Proxy-Authorization: Digest nonce="f851d39cee7e0a42c580424422726154d86380dc70299f249bccb7e18a2a", realm="cchipperfyp.fyp.com", qop=auth, opaque="AQAAAPg+o8sLn+lv40sM7jo2S3G3Gztv", username="test", uri="sip:fyp.com", response="e74ce070ca3626ec11b32ae6024be50b", algorithm=MD5, nc=0000000c, cnonce="0b52c6ba8318a5b6a82819842eb5f17b"
+ Event: presence
+ SIP-If-Match: 7c739ef6-433f-11e2-857c-005056ab3dbd
+ Content-Type: application/pidf+xml
+ Content-Length: 640
+ 
+ <?xml version="1.0" encoding="UTF-8"?>
+ <presence xmlns="urn:ietf:params:xml:ns:pidf"
+     xmlns:dm="urn:ietf:params:xml:ns:pidf:data-model"
+     xmlns:rpid="urn:ietf:params:xml:ns:pidf:rpid"
+     entity="sip:test.movi@fyp.com">
+   <tuple id="movi">
+     <status><basic>open</basic></status>
+     <rpid:relationship><rpid:self/></rpid:relationship>
+     <rpid:service-class><rpid:electronic/></rpid:service-class>
+     <contact priority="0.8">sip:test.movi@fyp.com</contact>
+   </tuple>
+   <dm:person id="p1">
+     <rpid:note></rpid:note>
+     <rpid:activities><rpid:on-the-phone/><rpid:busy/></rpid:activities>
+   </dm:person>
+ </presence>|
+
+2012-12-11T03:07:01+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:01,759" Module="network.sip" Level="DEBUG":  Dst-ip="127.0.0.1"  Dst-port="2664" 
+ SIPMSG:
+ |PUBLISH sip:test.movi@fyp.com SIP/2.0
+ Via: SIP/2.0/TCP 127.0.0.1:5060;egress-zone=DefaultZone;branch=z9hG4bK70e87e9e47d3cb0f56bf4c02db0a299b151.e8a8d83eb44dbea7fa4ca2a39c56f1a3;proxy-call-id=d571ef9e-433f-11e2-b8e1-005056ab3dbd;rport
+ Via: SIP/2.0/TLS 192.168.0.3:65140;branch=z9hG4bK80517a23fd3b07ee38c195c7987374c8.1;received=90.214.3.75;rport=65140;ingress-zone=DefaultSubZone
+ Call-ID: 93bb7466ff20a18e@192.168.0.3
+ CSeq: 202 PUBLISH
+ Contact: <sip:test.movi@fyp.com;gr=urn:uuid:c4c734c0-cf59-517c-924e-4bf3313278d5>
+ From: <sip:test.movi@fyp.com>;tag=6ab260bcc8ece53a
+ To: <sip:test.movi@fyp.com>;tag=510ea9f25a140510
+ Max-Forwards: 69
+ User-Agent: TANDBERG/772 (MCX 4.3.12.13351) - Mac OS X
+ Expires: 1800
+ Event: presence
+ P-Asserted-Identity: <sip:test.movi@fyp.com>
+ SIP-If-Match: 7c739ef6-433f-11e2-857c-005056ab3dbd
+ X-TAATag: d571f25a-433f-11e2-b2c3-005056ab3dbd
+ Content-Type: application/pidf+xml
+ Content-Length: 640
+ 
+ <?xml version="1.0" encoding="UTF-8"?>
+ <presence xmlns="urn:ietf:params:xml:ns:pidf"
+     xmlns:dm="urn:ietf:params:xml:ns:pidf:data-model"
+     xmlns:rpid="urn:ietf:params:xml:ns:pidf:rpid"
+     entity="sip:test.movi@fyp.com">
+   <tuple id="movi">
+     <status><basic>open</basic></status>
+     <rpid:relationship><rpid:self/></rpid:relationship>
+     <rpid:service-class><rpid:electronic/></rpid:service-class>
+     <contact priority="0.8">sip:test.movi@fyp.com</contact>
+   </tuple>
+   <dm:person id="p1">
+     <rpid:note></rpid:note>
+     <rpid:activities><rpid:on-the-phone/><rpid:busy/></rpid:activities>
+   </dm:person>
+ </presence>|
+
+2012-12-11T03:07:01+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:01,759" Module="network.sip" Level="DEBUG":  Src-ip="127.0.0.1"  Src-port="25000" 
+ SIPMSG:
+ |PUBLISH sip:test.movi@fyp.com SIP/2.0
+ Via: SIP/2.0/TCP 127.0.0.1:5060;egress-zone=DefaultZone;branch=z9hG4bK70e87e9e47d3cb0f56bf4c02db0a299b151.e8a8d83eb44dbea7fa4ca2a39c56f1a3;proxy-call-id=d571ef9e-433f-11e2-b8e1-005056ab3dbd;received=127.0.0.1;rport=25000
+ Via: SIP/2.0/TLS 192.168.0.3:65140;branch=z9hG4bK80517a23fd3b07ee38c195c7987374c8.1;received=90.214.3.75;rport=65140;ingress-zone=DefaultSubZone
+ Call-ID: 93bb7466ff20a18e@192.168.0.3
+ CSeq: 202 PUBLISH
+ Contact: <sip:test.movi@fyp.com;gr=urn:uuid:c4c734c0-cf59-517c-924e-4bf3313278d5>
+ From: <sip:test.movi@fyp.com>;tag=6ab260bcc8ece53a
+ To: <sip:test.movi@fyp.com>;tag=510ea9f25a140510
+ Max-Forwards: 69
+ User-Agent: TANDBERG/772 (MCX 4.3.12.13351) - Mac OS X
+ Expires: 1800
+ Event: presence
+ P-Asserted-Identity: <sip:test.movi@fyp.com>
+ SIP-If-Match: 7c739ef6-433f-11e2-857c-005056ab3dbd
+ X-TAATag: d571f25a-433f-11e2-b2c3-005056ab3dbd
+ Content-Type: application/pidf+xml
+ Content-Length: 640
+ 
+ <?xml version="1.0" encoding="UTF-8"?>
+ <presence xmlns="urn:ietf:params:xml:ns:pidf"
+     xmlns:dm="urn:ietf:params:xml:ns:pidf:data-model"
+     xmlns:rpid="urn:ietf:params:xml:ns:pidf:rpid"
+     entity="sip:test.movi@fyp.com">
+   <tuple id="movi">
+     <status><basic>open</basic></status>
+     <rpid:relationship><rpid:self/></rpid:relationship>
+     <rpid:service-class><rpid:electronic/></rpid:service-class>
+     <contact priority="0.8">sip:test.movi@fyp.com</contact>
+   </tuple>
+   <dm:person id="p1">
+     <rpid:note></rpid:note>
+     <rpid:activities><rpid:on-the-phone/><rpid:busy/></rpid:activities>
+   </dm:person>
+ </presence>|
+
+2012-12-11T03:07:01+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:01,759" Module="network.sip" Level="DEBUG":  Dst-ip="127.0.0.1"  Dst-port="25000" 
+ SIPMSG:
+ |SIP/2.0 200 OK
+ Via: SIP/2.0/TCP 127.0.0.1:5060;egress-zone=DefaultZone;branch=z9hG4bK70e87e9e47d3cb0f56bf4c02db0a299b151.e8a8d83eb44dbea7fa4ca2a39c56f1a3;proxy-call-id=d571ef9e-433f-11e2-b8e1-005056ab3dbd;received=127.0.0.1;rport=25000
+ Via: SIP/2.0/TLS 192.168.0.3:65140;branch=z9hG4bK80517a23fd3b07ee38c195c7987374c8.1;received=90.214.3.75;rport=65140;ingress-zone=DefaultSubZone
+ Call-ID: 93bb7466ff20a18e@192.168.0.3
+ CSeq: 202 PUBLISH
+ From: <sip:test.movi@fyp.com>;tag=6ab260bcc8ece53a
+ To: <sip:test.movi@fyp.com>;tag=510ea9f25a140510
+ Server: TANDBERG/4120 (X7.2.1)
+ Expires: 1116
+ SIP-ETag: 7c739ef6-433f-11e2-857c-005056ab3dbd
+ Content-Length: 0
+ 
+ |
+
+2012-12-11T03:07:01+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:01,760" Module="network.sip" Level="DEBUG":  Src-ip="127.0.0.1"  Src-port="2664" 
+ SIPMSG:
+ |SIP/2.0 200 OK
+ Via: SIP/2.0/TCP 127.0.0.1:5060;egress-zone=DefaultZone;branch=z9hG4bK70e87e9e47d3cb0f56bf4c02db0a299b151.e8a8d83eb44dbea7fa4ca2a39c56f1a3;proxy-call-id=d571ef9e-433f-11e2-b8e1-005056ab3dbd;received=127.0.0.1;rport=25000
+ Via: SIP/2.0/TLS 192.168.0.3:65140;branch=z9hG4bK80517a23fd3b07ee38c195c7987374c8.1;received=90.214.3.75;rport=65140;ingress-zone=DefaultSubZone
+ Call-ID: 93bb7466ff20a18e@192.168.0.3
+ CSeq: 202 PUBLISH
+ From: <sip:test.movi@fyp.com>;tag=6ab260bcc8ece53a
+ To: <sip:test.movi@fyp.com>;tag=510ea9f25a140510
+ Server: TANDBERG/4120 (X7.2.1)
+ Expires: 1116
+ SIP-ETag: 7c739ef6-433f-11e2-857c-005056ab3dbd
+ Content-Length: 0
+ 
+ |
+
+2012-12-11T03:07:01+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:01,760" Module="network.sip" Level="DEBUG":  Dst-ip="90.214.3.75"  Dst-port="65140" 
+ SIPMSG:
+ |SIP/2.0 200 OK
+ Via: SIP/2.0/TLS 192.168.0.3:65140;branch=z9hG4bK80517a23fd3b07ee38c195c7987374c8.1;received=90.214.3.75;rport=65140;ingress-zone=DefaultSubZone
+ Call-ID: 93bb7466ff20a18e@192.168.0.3
+ CSeq: 202 PUBLISH
+ From: <sip:test.movi@fyp.com>;tag=6ab260bcc8ece53a
+ To: <sip:test.movi@fyp.com>;tag=510ea9f25a140510
+ Server: TANDBERG/4120 (X7.2.1)
+ Expires: 1116
+ SIP-ETag: 7c739ef6-433f-11e2-857c-005056ab3dbd
+ Content-Length: 0
+ 
+ |
+
+2012-12-11T03:07:02+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:02,106" Module="network.sip" Level="DEBUG":  Src-ip="90.214.3.75"  Src-port="64981" 
+ SIPMSG:
+ |ACK sip:test.movi@fyp.com;gr=urn:uuid:c4c734c0-cf59-517c-924e-4bf3313278d5 SIP/2.0
+ Via: SIP/2.0/TLS 192.168.0.3:64981;branch=z9hG4bK80e6d64966b7bc6b8dcf8ef79232e1d7.1;received=90.214.3.75;rport=64981
+ Call-ID: 97cb9610a05c8897@192.168.0.3
+ CSeq: 100 ACK
+ From: "Laura Michael" <sip:laura.michael.movi@fyp.com>;tag=6280138f1a64e337
+ To: <sip:test@fyp.com>;tag=412455c7566f8b5a
+ Max-Forwards: 70
+ Route: <sip:proxy-call-id=d2b34b90-433f-11e2-b994-005056ab3dbd@192.133.244.16:5061;transport=tls;lr>
+ Route: <sip:proxy-call-id=d2b34b90-433f-11e2-b994-005056ab3dbd@192.133.244.16:5061;transport=tls;lr>
+ Allow: INVITE,ACK,CANCEL,BYE,INFO,OPTIONS,REFER,NOTIFY
+ User-Agent: TANDBERG/772 (MCX 4.3.12.13351) - Mac OS X
+ Supported: replaces,100rel,timer,gruu
+ Content-Length: 0
+ 
+ |
+
+2012-12-11T03:07:02+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:02,107" Module="network.sip" Level="DEBUG":  Dst-ip="90.214.3.75"  Dst-port="65140" 
+ SIPMSG:
+ |ACK sip:test.movi@192.168.0.3:65140;transport=tls SIP/2.0
+ Via: SIP/2.0/TLS 192.133.244.16:5061;egress-zone=DefaultSubZone;branch=z9hG4bK31f04fededbf34268bc65b8a88389619152.50be604b3c16a733cfda7d1f633cd59d;proxy-call-id=d2b34b90-433f-11e2-b994-005056ab3dbd;rport
+ Via: SIP/2.0/TLS 192.168.0.3:64981;branch=z9hG4bK80e6d64966b7bc6b8dcf8ef79232e1d7.1;received=90.214.3.75;rport=64981;ingress-zone=DefaultSubZone
+ Call-ID: 97cb9610a05c8897@192.168.0.3
+ CSeq: 100 ACK
+ From: "Laura Michael" <sip:laura.michael.movi@fyp.com>;tag=6280138f1a64e337
+ To: <sip:test@fyp.com>;tag=412455c7566f8b5a
+ Max-Forwards: 69
+ Allow: INVITE,ACK,CANCEL,BYE,INFO,OPTIONS,REFER,NOTIFY
+ User-Agent: TANDBERG/772 (MCX 4.3.12.13351) - Mac OS X
+ Supported: replaces,100rel,timer,gruu
+ X-TAATag: d2b34dac-433f-11e2-8d72-005056ab3dbd
+ Content-Length: 0
+ 
+ |
+
+2012-12-11T03:07:02+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:02,230" Module="network.sip" Level="DEBUG":  Src-ip="90.214.3.75"  Src-port="64981" 
+ SIPMSG:
+ |PUBLISH sip:laura.michael.movi@fyp.com SIP/2.0
+ Via: SIP/2.0/TLS 192.168.0.3:64981;branch=z9hG4bK1362adc2b49b82b052c4931786fefc95.1;received=90.214.3.75;rport=64981
+ Call-ID: 5a8615fc0ccb32eb@192.168.0.3
+ CSeq: 206 PUBLISH
+ Contact: <sip:laura.michael.movi@fyp.com;gr=urn:uuid:fa086037-f36b-57f1-b190-e1ebcddbb2c8>
+ From: <sip:laura.michael.movi@fyp.com>;tag=2ec3d9a8c06e5acc
+ To: <sip:laura.michael.movi@fyp.com>;tag=f899b911a87c1104
+ Max-Forwards: 70
+ Route: <sip:192.133.244.16:5061;lr>
+ User-Agent: TANDBERG/772 (MCX 4.3.12.13351) - Mac OS X
+ Expires: 1800
+ Proxy-Authorization: Digest nonce="ae17894c5a628ec830bf2eb3f69daebe865afc7a1c78bc6873a3d7a7628f", realm="cchipperfyp.fyp.com", qop=auth, opaque="AQAAAPg+o8sLn+lv40sM7jo2S3G3Gztv", username="laura.michael", uri="sip:fyp.com", response="4c2ab9e45de173c2476abac10d9f7a89", algorithm=MD5, nc=00000010, cnonce="3636c150be87a90e06642a0d8fb104cb"
+ Event: presence
+ SIP-If-Match: e8b432b8-433c-11e2-83c1-005056ab3dbd
+ Content-Type: application/pidf+xml
+ Content-Length: 658
+ 
+ <?xml version="1.0" encoding="UTF-8"?>
+ <presence xmlns="urn:ietf:params:xml:ns:pidf"
+     xmlns:dm="urn:ietf:params:xml:ns:pidf:data-model"
+     xmlns:rpid="urn:ietf:params:xml:ns:pidf:rpid"
+     entity="sip:laura.michael.movi@fyp.com">
+   <tuple id="movi">
+     <status><basic>open</basic></status>
+     <rpid:relationship><rpid:self/></rpid:relationship>
+     <rpid:service-class><rpid:electronic/></rpid:service-class>
+     <contact priority="0.8">sip:laura.michael.movi@fyp.com</contact>
+   </tuple>
+   <dm:person id="p1">
+     <rpid:note></rpid:note>
+     <rpid:activities><rpid:on-the-phone/><rpid:busy/></rpid:activities>
+   </dm:person>
+ </presence>|
+
+2012-12-11T03:07:02+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:02,237" Module="network.sip" Level="DEBUG":  Dst-ip="127.0.0.1"  Dst-port="2664" 
+ SIPMSG:
+ |PUBLISH sip:laura.michael.movi@fyp.com SIP/2.0
+ Via: SIP/2.0/TCP 127.0.0.1:5060;egress-zone=DefaultZone;branch=z9hG4bKeddc39fddb653eb2e21e8dff57384faa153.8de24b12c2931257c0e410e17bd936b9;proxy-call-id=d5bb0634-433f-11e2-aa82-005056ab3dbd;rport
+ Via: SIP/2.0/TLS 192.168.0.3:64981;branch=z9hG4bK1362adc2b49b82b052c4931786fefc95.1;received=90.214.3.75;rport=64981;ingress-zone=DefaultSubZone
+ Call-ID: 5a8615fc0ccb32eb@192.168.0.3
+ CSeq: 206 PUBLISH
+ Contact: <sip:laura.michael.movi@fyp.com;gr=urn:uuid:fa086037-f36b-57f1-b190-e1ebcddbb2c8>
+ From: <sip:laura.michael.movi@fyp.com>;tag=2ec3d9a8c06e5acc
+ To: <sip:laura.michael.movi@fyp.com>;tag=f899b911a87c1104
+ Max-Forwards: 69
+ User-Agent: TANDBERG/772 (MCX 4.3.12.13351) - Mac OS X
+ Expires: 1800
+ Event: presence
+ P-Asserted-Identity: <sip:laura.michael.movi@fyp.com>
+ SIP-If-Match: e8b432b8-433c-11e2-83c1-005056ab3dbd
+ X-TAATag: d5bb086e-433f-11e2-b0bb-005056ab3dbd
+ Content-Type: application/pidf+xml
+ Content-Length: 658
+ 
+ <?xml version="1.0" encoding="UTF-8"?>
+ <presence xmlns="urn:ietf:params:xml:ns:pidf"
+     xmlns:dm="urn:ietf:params:xml:ns:pidf:data-model"
+     xmlns:rpid="urn:ietf:params:xml:ns:pidf:rpid"
+     entity="sip:laura.michael.movi@fyp.com">
+   <tuple id="movi">
+     <status><basic>open</basic></status>
+     <rpid:relationship><rpid:self/></rpid:relationship>
+     <rpid:service-class><rpid:electronic/></rpid:service-class>
+     <contact priority="0.8">sip:laura.michael.movi@fyp.com</contact>
+   </tuple>
+   <dm:person id="p1">
+     <rpid:note></rpid:note>
+     <rpid:activities><rpid:on-the-phone/><rpid:busy/></rpid:activities>
+   </dm:person>
+ </presence>|
+
+2012-12-11T03:07:02+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:02,237" Module="network.sip" Level="INFO":  Src-ip="127.0.0.1"  Src-port="25000"   Detail="Receive Request Method=PUBLISH, Request-URI=sip:laura.michael.movi@fyp.com, Call-ID=5a8615fc0ccb32eb@192.168.0.3"
+2012-12-11T03:07:02+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:02,237" Module="network.sip" Level="DEBUG":  Src-ip="127.0.0.1"  Src-port="25000" 
+ SIPMSG:
+ |PUBLISH sip:laura.michael.movi@fyp.com SIP/2.0
+ Via: SIP/2.0/TCP 127.0.0.1:5060;egress-zone=DefaultZone;branch=z9hG4bKeddc39fddb653eb2e21e8dff57384faa153.8de24b12c2931257c0e410e17bd936b9;proxy-call-id=d5bb0634-433f-11e2-aa82-005056ab3dbd;received=127.0.0.1;rport=25000
+ Via: SIP/2.0/TLS 192.168.0.3:64981;branch=z9hG4bK1362adc2b49b82b052c4931786fefc95.1;received=90.214.3.75;rport=64981;ingress-zone=DefaultSubZone
+ Call-ID: 5a8615fc0ccb32eb@192.168.0.3
+ CSeq: 206 PUBLISH
+ Contact: <sip:laura.michael.movi@fyp.com;gr=urn:uuid:fa086037-f36b-57f1-b190-e1ebcddbb2c8>
+ From: <sip:laura.michael.movi@fyp.com>;tag=2ec3d9a8c06e5acc
+ To: <sip:laura.michael.movi@fyp.com>;tag=f899b911a87c1104
+ Max-Forwards: 69
+ User-Agent: TANDBERG/772 (MCX 4.3.12.13351) - Mac OS X
+ Expires: 1800
+ Event: presence
+ P-Asserted-Identity: <sip:laura.michael.movi@fyp.com>
+ SIP-If-Match: e8b432b8-433c-11e2-83c1-005056ab3dbd
+ X-TAATag: d5bb086e-433f-11e2-b0bb-005056ab3dbd
+ Content-Type: application/pidf+xml
+ Content-Length: 658
+ 
+ <?xml version="1.0" encoding="UTF-8"?>
+ <presence xmlns="urn:ietf:params:xml:ns:pidf"
+     xmlns:dm="urn:ietf:params:xml:ns:pidf:data-model"
+     xmlns:rpid="urn:ietf:params:xml:ns:pidf:rpid"
+     entity="sip:laura.michael.movi@fyp.com">
+   <tuple id="movi">
+     <status><basic>open</basic></status>
+     <rpid:relationship><rpid:self/></rpid:relationship>
+     <rpid:service-class><rpid:electronic/></rpid:service-class>
+     <contact priority="0.8">sip:laura.michael.movi@fyp.com</contact>
+   </tuple>
+   <dm:person id="p1">
+     <rpid:note></rpid:note>
+     <rpid:activities><rpid:on-the-phone/><rpid:busy/></rpid:activities>
+   </dm:person>
+ </presence>|
+
+2012-12-11T03:07:02+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:02,238" Module="network.sip" Level="DEBUG":  Dst-ip="127.0.0.1"  Dst-port="25000" 
+ SIPMSG:
+ |SIP/2.0 200 OK
+ Via: SIP/2.0/TCP 127.0.0.1:5060;egress-zone=DefaultZone;branch=z9hG4bKeddc39fddb653eb2e21e8dff57384faa153.8de24b12c2931257c0e410e17bd936b9;proxy-call-id=d5bb0634-433f-11e2-aa82-005056ab3dbd;received=127.0.0.1;rport=25000
+ Via: SIP/2.0/TLS 192.168.0.3:64981;branch=z9hG4bK1362adc2b49b82b052c4931786fefc95.1;received=90.214.3.75;rport=64981;ingress-zone=DefaultSubZone
+ Call-ID: 5a8615fc0ccb32eb@192.168.0.3
+ CSeq: 206 PUBLISH
+ From: <sip:laura.michael.movi@fyp.com>;tag=2ec3d9a8c06e5acc
+ To: <sip:laura.michael.movi@fyp.com>;tag=f899b911a87c1104
+ Server: TANDBERG/4120 (X7.2.1)
+ Expires: 1314
+ SIP-ETag: e8b432b8-433c-11e2-83c1-005056ab3dbd
+ Content-Length: 0
+ 
+ |
+
+2012-12-11T03:07:02+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:02,238" Module="network.sip" Level="DEBUG":  Src-ip="127.0.0.1"  Src-port="2664" 
+ SIPMSG:
+ |SIP/2.0 200 OK
+ Via: SIP/2.0/TCP 127.0.0.1:5060;egress-zone=DefaultZone;branch=z9hG4bKeddc39fddb653eb2e21e8dff57384faa153.8de24b12c2931257c0e410e17bd936b9;proxy-call-id=d5bb0634-433f-11e2-aa82-005056ab3dbd;received=127.0.0.1;rport=25000
+ Via: SIP/2.0/TLS 192.168.0.3:64981;branch=z9hG4bK1362adc2b49b82b052c4931786fefc95.1;received=90.214.3.75;rport=64981;ingress-zone=DefaultSubZone
+ Call-ID: 5a8615fc0ccb32eb@192.168.0.3
+ CSeq: 206 PUBLISH
+ From: <sip:laura.michael.movi@fyp.com>;tag=2ec3d9a8c06e5acc
+ To: <sip:laura.michael.movi@fyp.com>;tag=f899b911a87c1104
+ Server: TANDBERG/4120 (X7.2.1)
+ Expires: 1314
+ SIP-ETag: e8b432b8-433c-11e2-83c1-005056ab3dbd
+ Content-Length: 0
+ 
+ |
+
+2012-12-11T03:07:02+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:02,238" Module="network.sip" Level="DEBUG":  Dst-ip="90.214.3.75"  Dst-port="64981" 
+ SIPMSG:
+ |SIP/2.0 200 OK
+ Via: SIP/2.0/TLS 192.168.0.3:64981;branch=z9hG4bK1362adc2b49b82b052c4931786fefc95.1;received=90.214.3.75;rport=64981;ingress-zone=DefaultSubZone
+ Call-ID: 5a8615fc0ccb32eb@192.168.0.3
+ CSeq: 206 PUBLISH
+ From: <sip:laura.michael.movi@fyp.com>;tag=2ec3d9a8c06e5acc
+ To: <sip:laura.michael.movi@fyp.com>;tag=f899b911a87c1104
+ Server: TANDBERG/4120 (X7.2.1)
+ Expires: 1314
+ SIP-ETag: e8b432b8-433c-11e2-83c1-005056ab3dbd
+ Content-Length: 0
+ 
+ |
+
+2012-12-11T03:07:10+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:10,538" Module="network.sip" Level="DEBUG":  Src-ip="90.214.3.75"  Src-port="64979" 
+ SIPMSG:
+ |REGISTER sip:fyp.com SIP/2.0
+ Via: SIP/2.0/TLS 192.168.0.3:64979;branch=z9hG4bK36f8a59fc2e662b7df9784b86f0fb29a.1;received=90.214.3.75;rport=64979
+ Call-ID: 7a41bc810236197f@192.168.0.3
+ CSeq: 52944 REGISTER
+ Contact: <sip:carl.chip.movi@192.168.0.3:64979;transport=tls>;+sip.instance="<urn:uuid:69cf0869-0b28-582b-88ba-25f0c20665c6>"
+ From: <sip:carl.chip.movi@fyp.com>;tag=3e6d223fd6cb79b0
+ To: <sip:carl.chip.movi@fyp.com>
+ Max-Forwards: 70
+ Route: <sip:192.133.244.16:5061;lr>
+ Allow: INVITE,ACK,CANCEL,BYE,INFO,OPTIONS,REFER,NOTIFY
+ User-Agent: TANDBERG/772 (MCX 4.3.12.13351) - Mac OS X
+ Expires: 3600
+ Authorization: Digest nonce="25ca7eb279dfb37289e1ae72eb418e79b0556fafff11e580f8e50e6d5609", realm="cchipperfyp.fyp.com", qop=auth, opaque="AQAAAPg+o8sLn+lv40sM7jo2S3G3Gztv", username="carl.chip", uri="sip:fyp.com", response="c6514cfb4596708b02a51cbd7c627c8b", algorithm=MD5, nc=00000009, cnonce="7ab46cc155985e965be6bb9b75baeccd"
+ Proxy-Authorization: Digest nonce="2e712d5206f7e46533ed6462cf61ca297973dfe573d8c2c7f705d1b5f515", realm="cchipperfyp.fyp.com", qop=auth, opaque="AQAAAPg+o8sLn+lv40sM7jo2S3G3Gztv", username="carl.chip", uri="sip:fyp.com", response="2538698d5ec551a9f8c1629ac088f59c", algorithm=MD5, nc=00000007, cnonce="3529ef0e8893f9b1242686311b0eda3e"
+ Supported: replaces,100rel,timer,gruu
+ Content-Length: 0
+ 
+ |
+
+2012-12-11T03:07:10+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:10,541" Module="network.sip" Level="DEBUG":  Dst-ip="90.214.3.75"  Dst-port="64979" 
+ SIPMSG:
+ |SIP/2.0 401 Unauthorised
+ Via: SIP/2.0/TLS 192.168.0.3:64979;branch=z9hG4bK36f8a59fc2e662b7df9784b86f0fb29a.1;received=90.214.3.75;rport=64979
+ Call-ID: 7a41bc810236197f@192.168.0.3
+ CSeq: 52944 REGISTER
+ From: <sip:carl.chip.movi@fyp.com>;tag=3e6d223fd6cb79b0
+ To: <sip:carl.chip.movi@fyp.com>;tag=9ccb1ea51ffb91ee
+ Server: TANDBERG/4120 (X7.2.1)
+ WWW-Authenticate: Digest realm="cchipperfyp.fyp.com", nonce="48406bc70c33ab8689246ab0d056fb6daede1202b3a7c8df8b5d0c77f38b", opaque="AQAAAPg+o8sLn+lv40sM7jo2S3G3Gztv", stale=TRUE, algorithm=MD5, qop="auth"
+ Content-Length: 0
+ 
+ |
+
+2012-12-11T03:07:10+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:10,593" Module="network.sip" Level="DEBUG":  Src-ip="90.214.3.75"  Src-port="64979" 
+ SIPMSG:
+ |REGISTER sip:fyp.com SIP/2.0
+ Via: SIP/2.0/TLS 192.168.0.3:64979;branch=z9hG4bK8152e369adf58e9270302a53c566d33f.1;received=90.214.3.75;rport=64979
+ Call-ID: 7a41bc810236197f@192.168.0.3
+ CSeq: 52945 REGISTER
+ Contact: <sip:carl.chip.movi@192.168.0.3:64979;transport=tls>;+sip.instance="<urn:uuid:69cf0869-0b28-582b-88ba-25f0c20665c6>"
+ From: <sip:carl.chip.movi@fyp.com>;tag=3e6d223fd6cb79b0
+ To: <sip:carl.chip.movi@fyp.com>
+ Max-Forwards: 70
+ Route: <sip:192.133.244.16:5061;lr>
+ Allow: INVITE,ACK,CANCEL,BYE,INFO,OPTIONS,REFER,NOTIFY
+ User-Agent: TANDBERG/772 (MCX 4.3.12.13351) - Mac OS X
+ Expires: 3600
+ Authorization: Digest nonce="48406bc70c33ab8689246ab0d056fb6daede1202b3a7c8df8b5d0c77f38b", realm="cchipperfyp.fyp.com", qop=auth, opaque="AQAAAPg+o8sLn+lv40sM7jo2S3G3Gztv", username="carl.chip", uri="sip:fyp.com", response="31a8bc929181ca5d736e3c586f0f0bd2", algorithm=MD5, nc=00000001, cnonce="7569572e85c2a605afdc17e1f154f0f1"
+ Proxy-Authorization: Digest nonce="2e712d5206f7e46533ed6462cf61ca297973dfe573d8c2c7f705d1b5f515", realm="cchipperfyp.fyp.com", qop=auth, opaque="AQAAAPg+o8sLn+lv40sM7jo2S3G3Gztv", username="carl.chip", uri="sip:fyp.com", response="5d86ab97f1bdca955c8c023c4ec1e0f1", algorithm=MD5, nc=00000008, cnonce="17055cd88069b90716283971ed9db2be"
+ Supported: replaces,100rel,timer,gruu
+ Content-Length: 0
+ 
+ |
+
+2012-12-11T03:07:10+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:10,598" Module="network.sip" Level="DEBUG":  Dst-ip="90.214.3.75"  Dst-port="64979" 
+ SIPMSG:
+ |SIP/2.0 200 OK
+ Via: SIP/2.0/TLS 192.168.0.3:64979;branch=z9hG4bK8152e369adf58e9270302a53c566d33f.1;received=90.214.3.75;rport=64979
+ Call-ID: 7a41bc810236197f@192.168.0.3
+ CSeq: 52945 REGISTER
+ Contact: <sip:carl.chip.movi@192.168.0.3:64979;transport=tls>;+sip.instance="<urn:uuid:69cf0869-0b28-582b-88ba-25f0c20665c6>";pub-gruu="sip:carl.chip.movi@fyp.com;gr=urn:uuid:69cf0869-0b28-582b-88ba-25f0c20665c6";expires=60
+ From: <sip:carl.chip.movi@fyp.com>;tag=3e6d223fd6cb79b0
+ To: <sip:carl.chip.movi@fyp.com>;tag=43c5f83b2faebf40
+ Path: <sip:90.214.3.75:64979;transport=tls;apparent;ds;lr>
+ Server: TANDBERG/4120 (X7.2.1)
+ Date: Tue, 11 Dec 2012 03:07:10 GMT
+ Supported: com.tandberg.sdp.extensions.v1,gruu,outbound,path
+ Content-Length: 0
+ 
+ |
+
+2012-12-11T03:07:12+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:12,213" Module="network.sip" Level="DEBUG":  Src-ip="90.214.3.75"  Src-port="65140" 
+ SIPMSG:
+ |REGISTER sip:fyp.com SIP/2.0
+ Via: SIP/2.0/TLS 192.168.0.3:65140;branch=z9hG4bK6d9a17b35aa0f1ad055ddf934f418d46.1;received=90.214.3.75;rport=65140
+ Call-ID: a68771a95e017806@192.168.0.3
+ CSeq: 15662 REGISTER
+ Contact: <sip:test.movi@192.168.0.3:65140;transport=tls>;+sip.instance="<urn:uuid:c4c734c0-cf59-517c-924e-4bf3313278d5>"
+ From: <sip:test.movi@fyp.com>;tag=4bf2966dc52bfbd4
+ To: <sip:test.movi@fyp.com>
+ Max-Forwards: 70
+ Route: <sip:192.133.244.16:5061;lr>
+ Allow: INVITE,ACK,CANCEL,BYE,INFO,OPTIONS,REFER,NOTIFY
+ User-Agent: TANDBERG/772 (MCX 4.3.12.13351) - Mac OS X
+ Expires: 3600
+ Authorization: Digest nonce="b3f68b221ac76fd75e5111f21f11232d252f54c4ae9e7983ea6f5a0eef37", realm="cchipperfyp.fyp.com", qop=auth, opaque="AQAAAPg+o8sLn+lv40sM7jo2S3G3Gztv", username="test", uri="sip:fyp.com", response="335076921a1fede1de5c84eadfa19bdb", algorithm=MD5, nc=00000005, cnonce="90ed50129f3ec5b89ec089bb7a4bd698"
+ Proxy-Authorization: Digest nonce="f851d39cee7e0a42c580424422726154d86380dc70299f249bccb7e18a2a", realm="cchipperfyp.fyp.com", qop=auth, opaque="AQAAAPg+o8sLn+lv40sM7jo2S3G3Gztv", username="test", uri="sip:fyp.com", response="90666f970c0d4cc5880a91752edcd354", algorithm=MD5, nc=0000000d, cnonce="d4db5905da63c7317d4c1253f8549c18"
+ Supported: replaces,100rel,timer,gruu
+ Content-Length: 0
+ 
+ |
+
+2012-12-11T03:07:12+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:12,218" Module="network.sip" Level="DEBUG":  Dst-ip="90.214.3.75"  Dst-port="65140" 
+ SIPMSG:
+ |SIP/2.0 200 OK
+ Via: SIP/2.0/TLS 192.168.0.3:65140;branch=z9hG4bK6d9a17b35aa0f1ad055ddf934f418d46.1;received=90.214.3.75;rport=65140
+ Call-ID: a68771a95e017806@192.168.0.3
+ CSeq: 15662 REGISTER
+ Contact: <sip:test.movi@192.168.0.3:65140;transport=tls>;+sip.instance="<urn:uuid:c4c734c0-cf59-517c-924e-4bf3313278d5>";pub-gruu="sip:test.movi@fyp.com;gr=urn:uuid:c4c734c0-cf59-517c-924e-4bf3313278d5";expires=60
+ From: <sip:test.movi@fyp.com>;tag=4bf2966dc52bfbd4
+ To: <sip:test.movi@fyp.com>;tag=bb69519bf38bcec1
+ Path: <sip:90.214.3.75:65140;transport=tls;apparent;ds;lr>
+ Server: TANDBERG/4120 (X7.2.1)
+ Date: Tue, 11 Dec 2012 03:07:12 GMT
+ Supported: com.tandberg.sdp.extensions.v1,gruu,outbound,path
+ Content-Length: 0
+ 
+ |
+
+2012-12-11T03:07:23+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:23,587" Module="network.sip" Level="DEBUG":  Dst-ip="90.214.3.75"  Dst-port="64981" 
+ SIPMSG:
+ |SIP/2.0 200 OK
+ Via: SIP/2.0/TLS 192.168.0.3:64981;branch=z9hG4bKaeb0056c5bbbe89698289e4cded5e862.1;received=90.214.3.75;rport=64981;ingress-zone=DefaultSubZone
+ Call-ID: 5a8615fc0ccb32eb@192.168.0.3
+ CSeq: 207 PUBLISH
+ From: <sip:laura.michael.movi@fyp.com>;tag=2ec3d9a8c06e5acc
+ To: <sip:laura.michael.movi@fyp.com>;tag=f899b911a87c1104
+ Server: TANDBERG/4120 (X7.2.1)
+ Expires: 1458
+ SIP-ETag: e8b432b8-433c-11e2-83c1-005056ab3dbd
+ Content-Length: 0
+ 
+ |
+
+2012-12-11T03:07:24+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:24,211" Module="network.sip" Level="DEBUG":  Src-ip="90.214.3.75"  Src-port="65147" 
+ SIPMSG:
+ |REGISTER sip:fyp.com SIP/2.0
+ Via: SIP/2.0/TLS 192.168.0.3:65147;branch=z9hG4bKd8a39915dedeaab6c868d04597dde41c.1;received=90.214.3.75;rport=65147
+ Call-ID: 38b1669266989efb@192.168.0.3
+ CSeq: 9186 REGISTER
+ Contact: <sip:cchipper.movi@192.168.0.3:65147;transport=tls>;+sip.instance="<urn:uuid:e48b3348-6c03-501f-aef7-251ab1ff9c72>"
+ From: <sip:cchipper.movi@fyp.com>;tag=7a8af0ec58a48e77
+ To: <sip:cchipper.movi@fyp.com>
+ Max-Forwards: 70
+ Route: <sip:192.133.244.16:5061;lr>
+ Allow: INVITE,ACK,CANCEL,BYE,INFO,OPTIONS,REFER,NOTIFY
+ User-Agent: TANDBERG/772 (MCX 4.3.12.13351) - Mac OS X
+ Expires: 3600
+ Authorization: Digest nonce="b54e0433aeb43968c0659720d848b5b7fb76cd577eaa95567cf3514db72d", realm="cchipperfyp.fyp.com", qop=auth, opaque="AQAAAPg+o8sLn+lv40sM7jo2S3G3Gztv", username="cchipper", uri="sip:fyp.com", response="45175ccc85ebe7345c30aa8d5b634b77", algorithm=MD5, nc=00000005, cnonce="419eec262405f68dd4435e7a23f88d36"
+ Proxy-Authorization: Digest nonce="6f2fed57d4a213d98d30c561b198bfcdf709ffc9a48146d83ba37b3cfe51", realm="cchipperfyp.fyp.com", qop=auth, opaque="AQAAAPg+o8sLn+lv40sM7jo2S3G3Gztv", username="cchipper", uri="sip:fyp.com", response="20f510c3eb0e1fe8920beaa4aa1333da", algorithm=MD5, nc=00000027, cnonce="af0546e0dd5f211e23d9f7e81ba69568"
+ Supported: replaces,100rel,timer,gruu
+ Content-Length: 0
+ 
+ |
+
+2012-12-11T03:07:24+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:24,216" Module="network.sip" Level="DEBUG":  Dst-ip="90.214.3.75"  Dst-port="65147" 
+ SIPMSG:
+ |SIP/2.0 200 OK
+ Via: SIP/2.0/TLS 192.168.0.3:65147;branch=z9hG4bKd8a39915dedeaab6c868d04597dde41c.1;received=90.214.3.75;rport=65147
+ Call-ID: 38b1669266989efb@192.168.0.3
+ CSeq: 9186 REGISTER
+ Contact: <sip:cchipper.movi@192.168.0.3:65147;transport=tls>;+sip.instance="<urn:uuid:e48b3348-6c03-501f-aef7-251ab1ff9c72>";pub-gruu="sip:cchipper.movi@fyp.com;gr=urn:uuid:e48b3348-6c03-501f-aef7-251ab1ff9c72";expires=60
+ From: <sip:cchipper.movi@fyp.com>;tag=7a8af0ec58a48e77
+ To: <sip:cchipper.movi@fyp.com>;tag=7d5270a3a8120034
+ Path: <sip:90.214.3.75:65147;transport=tls;apparent;ds;lr>
+ Server: TANDBERG/4120 (X7.2.1)
+ Date: Tue, 11 Dec 2012 03:07:24 GMT
+ Supported: com.tandberg.sdp.extensions.v1,gruu,outbound,path
+ Content-Length: 0
+ 
+ |
+
+2012-12-11T03:07:24+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:24,937" Module="network.sip" Level="DEBUG":  Src-ip="90.214.3.75"  Src-port="64981" 
+ SIPMSG:
+ |REGISTER sip:fyp.com SIP/2.0
+ Via: SIP/2.0/TLS 192.168.0.3:64981;branch=z9hG4bKcadf4a7669aeaf7723cd0c9f90d3ee18.1;received=90.214.3.75;rport=64981
+ Call-ID: 5d9a027f7f042927@192.168.0.3
+ CSeq: 64177 REGISTER
+ Contact: <sip:laura.michael.movi@192.168.0.3:64981;transport=tls>;+sip.instance="<urn:uuid:fa086037-f36b-57f1-b190-e1ebcddbb2c8>"
+ From: <sip:laura.michael.movi@fyp.com>;tag=7bba3c130f21f04c
+ To: <sip:laura.michael.movi@fyp.com>
+ Max-Forwards: 70
+ Route: <sip:192.133.244.16:5061;lr>
+ Allow: INVITE,ACK,CANCEL,BYE,INFO,OPTIONS,REFER,NOTIFY
+ User-Agent: TANDBERG/772 (MCX 4.3.12.13351) - Mac OS X
+ Expires: 3600
+ Authorization: Digest nonce="331b8d2153299e441345bd802e7209e5656335d24d96a6ad422bfc94a37a", realm="cchipperfyp.fyp.com", qop=auth, opaque="AQAAAPg+o8sLn+lv40sM7jo2S3G3Gztv", username="laura.michael", uri="sip:fyp.com", response="cf9cbaf8ef32d8283187d0a9368a9498", algorithm=MD5, nc=00000009, cnonce="4a1649917d054a03073c166fd5259188"
+ Proxy-Authorization: Digest nonce="ae17894c5a628ec830bf2eb3f69daebe865afc7a1c78bc6873a3d7a7628f", realm="cchipperfyp.fyp.com", qop=auth, opaque="AQAAAPg+o8sLn+lv40sM7jo2S3G3Gztv", username="laura.michael", uri="sip:fyp.com", response="e5a4cac5e22a13d7c5b4604b91dba344", algorithm=MD5, nc=00000012, cnonce="e3c42ea74fa5b4f9f00d4b9bb901c866"
+ Supported: replaces,100rel,timer,gruu
+ Content-Length: 0
+ 
+ |
+
+2012-12-11T03:07:24+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:24,941" Module="network.sip" Level="DEBUG":  Dst-ip="90.214.3.75"  Dst-port="64981" 
+ SIPMSG:
+ |SIP/2.0 401 Unauthorised
+ Via: SIP/2.0/TLS 192.168.0.3:64981;branch=z9hG4bKcadf4a7669aeaf7723cd0c9f90d3ee18.1;received=90.214.3.75;rport=64981
+ Call-ID: 5d9a027f7f042927@192.168.0.3
+ CSeq: 64177 REGISTER
+ From: <sip:laura.michael.movi@fyp.com>;tag=7bba3c130f21f04c
+ To: <sip:laura.michael.movi@fyp.com>;tag=6844e9838d70ed64
+ Server: TANDBERG/4120 (X7.2.1)
+ WWW-Authenticate: Digest realm="cchipperfyp.fyp.com", nonce="dd4f3da6244179e6df6b5770d531894d1c5d6552976b61949727ed6f9a99", opaque="AQAAAPg+o8sLn+lv40sM7jo2S3G3Gztv", stale=TRUE, algorithm=MD5, qop="auth"
+ Content-Length: 0
+ 
+ |
+
+2012-12-11T03:07:24+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:24,983" Module="network.sip" Level="DEBUG":  Src-ip="90.214.3.75"  Src-port="64981" 
+ SIPMSG:
+ |REGISTER sip:fyp.com SIP/2.0
+ Via: SIP/2.0/TLS 192.168.0.3:64981;branch=z9hG4bK414ad6cb4d72013543c0489dc628b031.1;received=90.214.3.75;rport=64981
+ Call-ID: 5d9a027f7f042927@192.168.0.3
+ CSeq: 64178 REGISTER
+ Contact: <sip:laura.michael.movi@192.168.0.3:64981;transport=tls>;+sip.instance="<urn:uuid:fa086037-f36b-57f1-b190-e1ebcddbb2c8>"
+ From: <sip:laura.michael.movi@fyp.com>;tag=7bba3c130f21f04c
+ To: <sip:laura.michael.movi@fyp.com>
+ Max-Forwards: 70
+ Route: <sip:192.133.244.16:5061;lr>
+ Allow: INVITE,ACK,CANCEL,BYE,INFO,OPTIONS,REFER,NOTIFY
+ User-Agent: TANDBERG/772 (MCX 4.3.12.13351) - Mac OS X
+ Expires: 3600
+ Authorization: Digest nonce="dd4f3da6244179e6df6b5770d531894d1c5d6552976b61949727ed6f9a99", realm="cchipperfyp.fyp.com", qop=auth, opaque="AQAAAPg+o8sLn+lv40sM7jo2S3G3Gztv", username="laura.michael", uri="sip:fyp.com", response="d0b1b4019d0b339e678033e587997579", algorithm=MD5, nc=00000001, cnonce="1eb95358a35c0c6adca094e1e58c2673"
+ Proxy-Authorization: Digest nonce="ae17894c5a628ec830bf2eb3f69daebe865afc7a1c78bc6873a3d7a7628f", realm="cchipperfyp.fyp.com", qop=auth, opaque="AQAAAPg+o8sLn+lv40sM7jo2S3G3Gztv", username="laura.michael", uri="sip:fyp.com", response="877b90e38657cfabaeb52e6e4246493d", algorithm=MD5, nc=00000013, cnonce="3500a9dcb238d5785c52fe407d21dea2"
+ Supported: replaces,100rel,timer,gruu
+ Content-Length: 0
+ 
+ |
+
+2012-12-11T03:07:24+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:24,987" Module="network.sip" Level="DEBUG":  Dst-ip="90.214.3.75"  Dst-port="64981" 
+ SIPMSG:
+ |SIP/2.0 200 OK
+ Via: SIP/2.0/TLS 192.168.0.3:64981;branch=z9hG4bK414ad6cb4d72013543c0489dc628b031.1;received=90.214.3.75;rport=64981
+ Call-ID: 5d9a027f7f042927@192.168.0.3
+ CSeq: 64178 REGISTER
+ Contact: <sip:laura.michael.movi@192.168.0.3:64981;transport=tls>;+sip.instance="<urn:uuid:fa086037-f36b-57f1-b190-e1ebcddbb2c8>";pub-gruu="sip:laura.michael.movi@fyp.com;gr=urn:uuid:fa086037-f36b-57f1-b190-e1ebcddbb2c8";expires=60
+ From: <sip:laura.michael.movi@fyp.com>;tag=7bba3c130f21f04c
+ To: <sip:laura.michael.movi@fyp.com>;tag=8eb8877104baae51
+ Path: <sip:90.214.3.75:64981;transport=tls;apparent;ds;lr>
+ Server: TANDBERG/4120 (X7.2.1)
+ Date: Tue, 11 Dec 2012 03:07:24 GMT
+ Supported: com.tandberg.sdp.extensions.v1,gruu,outbound,path
+ Content-Length: 0
+ 
+ |

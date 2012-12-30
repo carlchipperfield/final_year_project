@@ -1,0 +1,38 @@
+2012-12-11T03:07:02+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:02,237" Module="network.sip" Level="INFO":  Src-ip="127.0.0.1"  Src-port="25000"   Detail="Receive Request Method=PUBLISH, Request-URI=sip:laura.michael.movi@fyp.com, Call-ID=5a8615fc0ccb32eb@192.168.0.3"
+2012-12-11T03:07:02+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:02,237" Module="network.sip" Level="DEBUG":  Src-ip="127.0.0.1"  Src-port="25000" 
+ SIPMSG:
+ |PUBLISH sip:laura.michael.movi@fyp.com SIP/2.0
+ Via: SIP/2.0/TCP 127.0.0.1:5060;egress-zone=DefaultZone;branch=z9hG4bKeddc39fddb653eb2e21e8dff57384faa153.8de24b12c2931257c0e410e17bd936b9;proxy-call-id=d5bb0634-433f-11e2-aa82-005056ab3dbd;received=127.0.0.1;rport=25000
+ Via: SIP/2.0/TLS 192.168.0.3:64981;branch=z9hG4bK1362adc2b49b82b052c4931786fefc95.1;received=90.214.3.75;rport=64981;ingress-zone=DefaultSubZone
+ Call-ID: 5a8615fc0ccb32eb@192.168.0.3
+ CSeq: 206 PUBLISH
+ Contact: <sip:laura.michael.movi@fyp.com;gr=urn:uuid:fa086037-f36b-57f1-b190-e1ebcddbb2c8>
+ From: <sip:laura.michael.movi@fyp.com>;tag=2ec3d9a8c06e5acc
+ To: <sip:laura.michael.movi@fyp.com>;tag=f899b911a87c1104
+ Max-Forwards: 69
+ User-Agent: TANDBERG/772 (MCX 4.3.12.13351) - Mac OS X
+ Expires: 1800
+ Event: presence
+ P-Asserted-Identity: <sip:laura.michael.movi@fyp.com>
+ SIP-If-Match: e8b432b8-433c-11e2-83c1-005056ab3dbd
+ X-TAATag: d5bb086e-433f-11e2-b0bb-005056ab3dbd
+ Content-Type: application/pidf+xml
+ Content-Length: 658
+ 
+ <?xml version="1.0" encoding="UTF-8"?>
+ <presence xmlns="urn:ietf:params:xml:ns:pidf"
+     xmlns:dm="urn:ietf:params:xml:ns:pidf:data-model"
+     xmlns:rpid="urn:ietf:params:xml:ns:pidf:rpid"
+     entity="sip:laura.michael.movi@fyp.com">
+   <tuple id="movi">
+     <status><basic>open</basic></status>
+     <rpid:relationship><rpid:self/></rpid:relationship>
+     <rpid:service-class><rpid:electronic/></rpid:service-class>
+     <contact priority="0.8">sip:laura.michael.movi@fyp.com</contact>
+   </tuple>
+   <dm:person id="p1">
+     <rpid:note></rpid:note>
+     <rpid:activities><rpid:on-the-phone/><rpid:busy/></rpid:activities>
+   </dm:person>
+ </presence>|
+ 2012-12-11T03:07:02+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:02,237" Module="network.sip" Level="INFO":  Src-ip="127.0.0.1"  Src-port="25000"   Detail="Receive Request Method=PUBLISH, Request-URI=sip:laura.michael.movi@fyp.com, Call-ID=5a8615fc0ccb32eb@192.168.0.3"

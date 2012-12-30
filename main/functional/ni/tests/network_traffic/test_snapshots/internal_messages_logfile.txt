@@ -1,0 +1,59 @@
+2012-12-11T03:07:01+00:00 cisco tvcs: UTCTime="2012-12-11 03:02:01,760" Module="network.sip" Level="DEBUG":  Src-ip="127.0.0.1"  Src-port="2664" 
+ SIPMSG:
+ |SIP/2.0 200 OK
+ Via: SIP/2.0/TCP 127.0.0.1:5060;egress-zone=DefaultZone;branch=z9hG4bK70e87e9e47d3cb0f56bf4c02db0a299b151.e8a8d83eb44dbea7fa4ca2a39c56f1a3;proxy-call-id=d571ef9e-433f-11e2-b8e1-005056ab3dbd;received=127.0.0.1;rport=25000
+ Via: SIP/2.0/TLS 192.168.0.3:65140;branch=z9hG4bK80517a23fd3b07ee38c195c7987374c8.1;received=90.214.3.75;rport=65140;ingress-zone=DefaultSubZone
+ Call-ID: 93bb7466ff20a18e@192.168.0.3
+ CSeq: 202 PUBLISH
+ From: <sip:test.movi@fyp.com>;tag=6ab260bcc8ece53a
+ To: <sip:test.movi@fyp.com>;tag=510ea9f25a140510
+ Server: TANDBERG/4120 (X7.2.1)
+ Expires: 1116
+ SIP-ETag: 7c739ef6-433f-11e2-857c-005056ab3dbd
+ Content-Length: 0
+ 
+ |
+
+2012-12-11T03:06:31+00:00 cisco tvcs: UTCTime="2012-12-11 03:06:31,587" Module="network.sip" Level="DEBUG":  Dst-ip="127.0.0.1"  Dst-port="10" 
+ SIPMSG:
+ |SIP/2.0 200 OK
+ Via: SIP/2.0/UDP 127.0.0.1:5060;branch=z9hG4bK92adb251cad840d9097ae9aa9e3792d6103.d4ad991b0778ef51b9ae3f8477809a14;received=127.0.0.1;rport=5060;egress-zone=DefaultZone;proxy-call-id=c375989a-433f-11e2-bc39-005056ab3dbd
+ Via: SIP/2.0/TLS 192.168.0.3:65147;branch=z9hG4bK9f49338d4a055aeff24cda1d8dd66ce8.1;received=90.214.3.75;rport=65147;ingress-zone=DefaultSubZone
+ Call-ID: fa2ae285f11b3b55@192.168.0.3
+ CSeq: 100 INFO
+ Contact: "VCS Phonebook Service" <sip:127.0.0.1:22416>
+ From: <sip:cchipper.movi@fyp.com>;tag=a8169a23bf1fa346
+ To: <sip:phonebook@fyp.com>;tag=1fc280f8
+ Content-Type: application/tandberg-phonebook+xml
+ Content-Length: 709
+ 
+ <?xml version='1.0' encoding='UTF-8'?> <SearchResponse offset="0" pageSize="10" totalContactSet="0"><ContactSet><Contacts><Contact id="2a65acce-433c-11e2-9501-005056ab3dbd" type="user"><DisplayName>Carl</DisplayName><ContactMethodGroups><ContactMethodGroup><ContactMethod type=""><Uri>carl.chip@fyp.com</Uri><Protocol /></ContactMethod></ContactMethodGroup></ContactMethodGroups></Contact><Contact id="773d99ea-433b-11e2-94e4-005056ab3dbd" type="user"><DisplayName>Carl Chipperfield</DisplayName><ContactMethodGroups><ContactMethodGroup><ContactMethod type=""><Uri>cchipper@fyp.com</Uri><Protocol /></ContactMethod></ContactMethodGroup></ContactMethodGroups></Contact></Contacts></ContactSet></SearchResponse>|
+ 2012-12-11T03:06:31+00:00 cisco tvcs: UTCTime="2012-12-11 03:06:31,587" Module="network.sip" Level="DEBUG":  Src-ip="127.0.0.1"  Src-port="22416" 
+ SIPMSG:
+ |SIP/2.0 200 OK
+ Via: SIP/2.0/UDP 127.0.0.1:5060;branch=z9hG4bK92adb251cad840d9097ae9aa9e3792d6103.d4ad991b0778ef51b9ae3f8477809a14;received=127.0.0.1;rport=5060;egress-zone=DefaultZone;proxy-call-id=c375989a-433f-11e2-bc39-005056ab3dbd
+ Via: SIP/2.0/TLS 192.168.0.3:65147;branch=z9hG4bK9f49338d4a055aeff24cda1d8dd66ce8.1;received=90.214.3.75;rport=65147;ingress-zone=DefaultSubZone
+ Call-ID: fa2ae285f11b3b55@192.168.0.3
+ CSeq: 100 INFO
+ Contact: "VCS Phonebook Service" <sip:127.0.0.1:22416>
+ From: <sip:cchipper.movi@fyp.com>;tag=a8169a23bf1fa346
+ To: <sip:phonebook@fyp.com>;tag=1fc280f8
+ Content-Type: application/tandberg-phonebook+xml
+ Content-Length: 709
+ 
+ <?xml version='1.0' encoding='UTF-8'?> <SearchResponse offset="0" pageSize="10" totalContactSet="0"><ContactSet><Contacts><Contact id="2a65acce-433c-11e2-9501-005056ab3dbd" type="user"><DisplayName>Carl</DisplayName><ContactMethodGroups><ContactMethodGroup><ContactMethod type=""><Uri>carl.chip@fyp.com</Uri><Protocol /></ContactMethod></ContactMethodGroup></ContactMethodGroups></Contact><Contact id="773d99ea-433b-11e2-94e4-005056ab3dbd" type="user"><DisplayName>Carl Chipperfield</DisplayName><ContactMethodGroups><ContactMethodGroup><ContactMethod type=""><Uri>cchipper@fyp.com</Uri><Protocol /></ContactMethod></ContactMethodGroup></ContactMethodGroups></Contact></Contacts></ContactSet></SearchResponse>|
+ 2012-12-11T03:07:02+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:02,238" Module="network.sip" Level="DEBUG":  Dst-ip="127.0.0.1"  Dst-port="25000" 
+ SIPMSG:
+ |SIP/2.0 200 OK
+ Via: SIP/2.0/TCP 127.0.0.1:5060;egress-zone=DefaultZone;branch=z9hG4bKeddc39fddb653eb2e21e8dff57384faa153.8de24b12c2931257c0e410e17bd936b9;proxy-call-id=d5bb0634-433f-11e2-aa82-005056ab3dbd;received=127.0.0.1;rport=25000
+ Via: SIP/2.0/TLS 192.168.0.3:64981;branch=z9hG4bK1362adc2b49b82b052c4931786fefc95.1;received=90.214.3.75;rport=64981;ingress-zone=DefaultSubZone
+ Call-ID: 5a8615fc0ccb32eb@192.168.0.3
+ CSeq: 206 PUBLISH
+ From: <sip:laura.michael.movi@fyp.com>;tag=2ec3d9a8c06e5acc
+ To: <sip:laura.michael.movi@fyp.com>;tag=f899b911a87c1104
+ Server: TANDBERG/4120 (X7.2.1)
+ Expires: 1314
+ SIP-ETag: e8b432b8-433c-11e2-83c1-005056ab3dbd
+ Content-Length: 0
+ 
+ |
