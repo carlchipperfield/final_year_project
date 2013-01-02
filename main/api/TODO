@@ -1,0 +1,10 @@
+TODO
+
+* Would like to test api with mongodb integration.
+
+* Should provide ability for the programmer to set predefined quiries accessable through API
+    e.g view=query_name
+
+* Should provide ability for user defined queries
+
+* Messages should be a predefined sort.
