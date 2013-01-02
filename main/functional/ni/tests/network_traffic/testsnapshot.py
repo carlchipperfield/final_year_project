@@ -88,7 +88,7 @@ internal_messages_test = {
             'source': 'cisco tvcs',
             'destination': 'cisco tvcs',
             'source_port': '2664',
-            'destination_port': 'Not Found'
+            'destination_port': ''
         }, {
             'index': 1,
             'source': 'cisco tvcs',
@@ -99,7 +99,7 @@ internal_messages_test = {
             'index': 2,
             'source': 'cisco tvcs',
             'destination': 'cisco tvcs',
-            'source_port': 'Not Found',
+            'source_port': '',
             'destination_port': '25000'
         }
     ]

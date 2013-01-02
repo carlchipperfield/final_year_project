@@ -64,7 +64,6 @@ class NetworkTrafficSnapshot:
                     self.data['messages'].append(message.get())
                     index = len(self.data['messages']) - 1
                     message = message.get()
-                    message['source_port'] = 'Not Found'
                     self.internal_messages.append({'index': index, 'message': message})
 
                 # If an received message, try find sent message in list and merge extra info
@@ -77,7 +76,6 @@ class NetworkTrafficSnapshot:
                             self.internal_messages.pop(index)
                             break
                     else:
-                        message.data['destination_port'] = 'Not Found'
                         self.data['messages'].append(message.get())
                         entry = {'index': len(self.data['messages']) - 1, 'message': message.get()}
                         self.internal_messages.append(entry)
