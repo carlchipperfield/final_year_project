@@ -1,9 +1,13 @@
 <section id="networkmessages">
-    <h4>Messages</h4>
+    <h4>Network Messages</h4>
     <div ng-repeat="networkmessage in networkmessages">
-        <h5>Message {{$index+1}} of {{currentsnapshot.total_messages}}</h5>
+        <h5>{{$index+1}} of {{currentsnapshot.total_messages}}</h5>
         <table class="table">
             <tbody>
+                <tr>
+                    <th>Time</th>
+                    <td>{{networkmessage.utc}}</td>
+                </tr>
                 <tr>
                     <th>Protocol</th>
                     <td>{{networkmessage.protocol}}/{{networkmessage.version}}</td>

@@ -14,7 +14,8 @@ angular.module('app', ['ngResource']).
 
         $routeProvider.when('/snapshot/:id', snapshot_data)
                       .when('/snapshot', snapshot_data)
-                      .when('/upload', upload_data);
+                      .when('/upload', upload_data)
+                      .otherwise({redirectTo: '/snapshot'});
     });
 
 
@@ -27,6 +28,9 @@ var actions = {
 
 function SnapshotsCtrl($scope, $resource, $location, $routeParams)
 {
+    $scope.snapshotviews = ['Information', 'Statistics', 'Network Messages'];
+    $scope.currentview = $scope.snapshotviews[0];
+
     $scope.remove = function(index) {
         var snapshot_id = $scope.snapshots[index]._id;
         Snapshot.remove({id: snapshot_id});
@@ -50,12 +54,14 @@ function SnapshotsCtrl($scope, $resource, $location, $routeParams)
         $scope.networkmessages = Messages.list();
     };
 
-    $scope.display_snapshot_detailed = function(snapshot_id) {
-        $scope.retrieve_snapshot(snapshot_id);
-        $scope.retrieve_messages(snapshot_id);
+    $scope.display_snapshot_detailed = function(index) {
+        $scope.currentsnapshot = $scope.snapshots[index];
+        $scope.retrieve_messages($scope.currentsnapshot._id);
     };
 
     $scope.display_snapshot_detailed_onload = function() {
+        $scope.totalsnapshots = $scope.snapshots.length;
+
         // Load the snapshot messages from the server
         if ($routeParams.id) {
             // Load messages for snapshot in url
@@ -64,9 +70,7 @@ function SnapshotsCtrl($scope, $resource, $location, $routeParams)
         }
         else {
             if ( $scope.snapshots.length > 0 ) {
-                var snapshot_id = $scope.snapshots[0]._id;
-                $scope.retrieve_snapshot(snapshot_id);
-                $scope.retrieve_messages(snapshot_id);
+                $scope.display_snapshot_detailed(0);
             }
         }
     };

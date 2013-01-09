@@ -24,7 +24,7 @@ h2, h3 {
 }
 
 h4 {
-    padding: 8px;
+    padding: 8px 20px;
 }
 
 table.table {
@@ -32,6 +32,21 @@ table.table {
     th {width: 25%;}
     td {width: 75%;}
     th, td {word-wrap: break-word;}
+}
+
+div#test {
+
+    background-color: #F5F5F5;
+
+    h3{
+        float:left;
+    }
+
+    select {
+        float:right;
+        margin: 4px 20px;
+        width: auto;
+    }
 }
 
 header {

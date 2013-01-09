@@ -1,8 +1,18 @@
 <div id="panels" ng-include src="'/partials/snapshotlist.html'"></div>
 
 <div id="content">
-    <h3>{{currentsnapshot.title}}</h3>
-    <section id="snapshotinfo" ng-include src="'/partials/snapshotinfo.html'"></section>
-    <section id="snapshotstats" ng-include src="'/partials/snapshotstats.html'"></section>
-    <section id="snapshotmessages" ng-include src="'/partials/messages.html'"></section>
+    <div>
+        <div id="test">
+            <h3>{{currentsnapshot.title}}</h3>
+            <select ng-model="currentview" ng-options="view for view in snapshotviews">
+            </select>
+            <div class="clearfloat"></div>
+        </div>
+
+        <div ng-switch on="currentview">
+            <section ng-switch-when="Information" ng-include src="'/partials/snapshotinfo.html'"></section>
+            <section ng-switch-when="Statistics" ng-include src="'/partials/snapshotstats.html'"></section>
+            <section ng-switch-when="Network Messages" ng-include src="'/partials/messages.html'"></section>
+        </div>
+    </div>
 </div>
