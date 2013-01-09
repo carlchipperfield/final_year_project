@@ -51,8 +51,7 @@ module.exports = function (grunt) {
                     'build/share/api/': 'api/**',
                     'build/share/python/site-packages/ni/': 'functional/ni/**',
                     'build/share/web/': 'web/*',
-                    'build/share/web/partials/': 'web/partials/*',
-                    'build/python/': 'python/**'
+                    'build/share/web/partials/': 'web/partials/*'
                 }
             }
         },
