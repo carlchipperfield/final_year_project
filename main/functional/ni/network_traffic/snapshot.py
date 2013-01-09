@@ -13,32 +13,32 @@ class NetworkTrafficSnapshot:
         connection = MongoClient()
         db = connection.diagnostics
         self.snapshots = db.snapshots
-
-        self.data = {
-            'messages': []
-        }
+        self.data = {}
+        self.messages = []
         self.internal_messages = []
 
     def save(self):
-        self.snapshots.insert(self.data)
+        # Save the snapshot and retrieve its assigned _id
+        snapshot_id = self.snapshots.insert(self.data)
 
-    def get(self):
-        return self.data
+        # Save all of the network messages with ref to snapshot
+        for message in self.messages:
+            message.save(snapshot_id)
 
     def upload(self, title, desc, logfile, content):
+        self.data['title'] = title
+        self.data['desc'] = desc
         self.data['creation_method'] = "upload"
         self.data['creation_logfile'] = logfile
         self.data['creation_time'] = self._get_current_time()
-        self.data['title'] = title
-        self.data['desc'] = desc
         self._process_logfile_messages(content)
-        self.data['total_messages'] = len(self.data['messages'])
+        self.data['total_messages'] = len(self.messages)
         self.data['start'] = self._parse_start()
         self.data['end'] = self._parse_end()
 
     def _get_current_time(self):
         now = datetime.utcnow()
-        return now.strftime('%Y-%m-%d %H:%M:%S,%f')
+        return now.strftime('%Y-%m-%d %H:%M:%S')
 
     def _process_logfile_messages(self, content):
         # Identify each log entry and create a message
@@ -61,36 +61,35 @@ class NetworkTrafficSnapshot:
                 # (internal messages should always be sent then received,
                 # not always case at beginning and end of logfile) TEST THIS CASE
                 if message.is_sent_message():
-                    self.data['messages'].append(message.get())
-                    index = len(self.data['messages']) - 1
-                    message = message.get()
+                    self.messages.append(message)
+                    index = len(self.messages) - 1
                     self.internal_messages.append({'index': index, 'message': message})
 
                 # If an received message, try find sent message in list and merge extra info
                 # If sent message not found update the message to say not found and append to list TEST THIS CASE
                 elif message.is_received_message():
                     for index, sent_message in enumerate(self.internal_messages):
-                        if Message.is_same_message(sent_message['message'], message.get()):
-                            merged_message = Message.merge(sent_message['message'], message.get())
-                            self.data['messages'][sent_message['index']] = merged_message
+                        if Message.is_same_message(sent_message['message'], message):
+                            merged_message = Message.merge(sent_message['message'], message)
+                            self.messages[sent_message['index']] = merged_message
                             self.internal_messages.pop(index)
                             break
                     else:
-                        self.data['messages'].append(message.get())
-                        entry = {'index': len(self.data['messages']) - 1, 'message': message.get()}
+                        self.messages.append(message)
+                        entry = {'index': len(self.messages) - 1, 'message': message}
                         self.internal_messages.append(entry)
             else:
-                self.data['messages'].append(message.get())
+                self.messages.append(message)
 
     def _parse_start(self):
-        if len(self.data['messages']) > 0:
-            first_message = self.data['messages'][0]
-            return first_message['utc']
+        if len(self.messages) > 0:
+            first_message = self.messages[0]
+            return first_message.data['utc']
         return ''
 
     def _parse_end(self):
-        if len(self.data['messages']) > 0:
-            index_of_last = len(self.data['messages']) - 1
-            last_message = self.data['messages'][index_of_last]
-            return last_message['utc']
+        if len(self.messages) > 0:
+            index_of_last = len(self.messages) - 1
+            last_message = self.messages[index_of_last]
+            return last_message.data['utc']
         return ''

@@ -22,31 +22,37 @@ module.exports = function (grunt) {
             js: {
                 files: {
 
-                    'build/web/js/libraries/jquery-1.8.2.min.js'
+                    'build/share/web/js/libraries/jquery-1.8.2.min.js'
                         : SRC_JS_LIB + 'jquery-1.8.2.min.js',
 
-                    'build/web/js/libraries/angular.min.js'
+                    'build/share/web/js/libraries/angular.min.js'
                         : SRC_JS_LIB + 'angular.min.js',
 
-                    'build/web/js/source/core/layout.js'
+                    'build/share/web/js/source/core/layout.js'
                         : SRC_JS + 'core/layout.js',
 
-                    'build/web/js/source/core/snapshot_upload.js'
-                        : SRC_JS + 'core/snapshot_upload.js'
+                    'build/share/web/js/source/core/snapshot_upload.js'
+                        : SRC_JS + 'core/snapshot_upload.js',
+
+                    'build/share/web/js/source/core/snapshots_controller.js'
+                        : SRC_JS + 'core/snapshots_controller.js'
                 }
             },
 
             css: {
                 files: {
-                    'build/web/css/' : 'web/css/normalize.css'
+                    'build/share/web/css/' : 'web/css/normalize.css',
+                    'build/share/web/bootstrap/' : 'web/bootstrap/**'
                 }
             },
 
             core: {
                 files: {
-                    'build/api/': 'api/**',
-                    'build/python/site-packages/ni/': 'functional/ni/**',
-                    'build/web/': 'web/*'
+                    'build/share/api/': 'api/**',
+                    'build/share/python/site-packages/ni/': 'functional/ni/**',
+                    'build/share/web/': 'web/*',
+                    'build/share/web/partials/': 'web/partials/*',
+                    'build/python/': 'python/**'
                 }
             }
         },
@@ -62,14 +68,14 @@ module.exports = function (grunt) {
                 ],
                 dest: 'core.min.js',
                 destMap: 'core.js.map',
-                cwd: 'build/web/js/'
+                cwd: 'build/share/web/js/'
             }
         },
 
         sass: {
             core: {
                 files: {
-                    'build/web/css/core.css':  [
+                    'build/share/web/css/core.css':  [
                         SRC_CSS + 'main_layout.scss'
                     ]
                 }

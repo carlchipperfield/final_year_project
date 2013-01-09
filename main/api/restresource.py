@@ -19,11 +19,11 @@ class RestResource(object):
     default_sort = None
     excluded_fields = None
     displayed_fields = None
+    relations = {}
 
     def __init__(self):
         connection = MongoClient()
         self.db = connection.diagnostics
-        self.collection = self.db[self.collection_name]
 
     @append_headers
     def GET(self, name=None):
@@ -35,42 +35,56 @@ class RestResource(object):
         sort = get_sort(data)
         fields = get_fields(self.displayed_fields, self.excluded_fields)
 
-        try:
-            if name == None:
-                outputdoc = {'snapshots': []}
-                docs = self.collection.find({}, fields=fields, sort=sort, limit=limit, skip=offset)[:]
-                for doc in docs:
-                    format_document_id(doc)
-                    outputdoc['snapshots'].append(doc)
-                return json.dumps(outputdoc, default=json_util.default)
+        if name == None:
+            name = self.collection_name
+            output = self._find(name, {}, fields, sort, limit, offset)
 
-            elif id_pattern.match(name):
-                doc = self.collection.find_one(ObjectId(name), fields=fields)
-                format_document_id(doc)
-                return json.dumps(doc, default=json_util.default)
+        elif id_pattern.match(name):
+            output = self._find_one(self.collection_name, name)
 
+        else:
+            url = name.split('/')
+            id, name = url[0], url[1]
+
+            if name in self.relations:
+                collection_name = self.relations[name]['collection']
+                query = {self.relations[name]['field']: id}
+                output = self._find(collection_name, query, fields, sort, limit, offset)
             else:
-                url = name.split('/')
-                document = self.collection.find_one(ObjectId(url[0]), fields={url[1]: 1})
-                try:
-                    json_doc = {
-                        url[1]: document[url[1]],
-                    }
-                except:
-                    web.notfound()
-                else:
-                    return json.dumps(json_doc, default=json_util.default)
+                output = {}
+                doc = self._find_one(self.collection_name, id)
+                if name in doc:
+                    output[name] = doc[name]
 
-        except InvalidId:
-            web.notfound()
-            web.header('Content-Type', 'application/json')
-            return "{}"
+        return json.dumps(output)
+
+    def _find(self, collection_name, query, fields, sort, limit, skip):
+        collection = self.db[collection_name]
+        output = []
+        docs = collection.find(query, fields=fields, sort=sort, limit=limit, skip=skip)
+        for doc in docs:
+            format_document_id(doc)
+            output.append(doc)
+        return output
+
+    def _find_one(self, collection_name, doc_id):
+        collection = self.db[collection_name]
+        doc = collection.find_one(ObjectId(doc_id))
+        format_document_id(doc)
+        return doc
 
     @append_headers
     def DELETE(self, document_id):
         if "DELETE" in self.supported_methods:
             if id_pattern.match(document_id):
-                result = self.collection.remove({"_id": ObjectId(document_id)})
+
+                collection = self.db[self.collection_name]
+                result = collection.remove({"_id": ObjectId(document_id)})
+
+                for key, value in self.relations.iteritems():
+                    collection = self.db[value['collection']]
+                    collection.remove({value['field']: document_id})
+
                 if result['n'] == 0:
                     web.notfound()
                 else:
@@ -79,25 +93,6 @@ class RestResource(object):
                 web.badrequest()
         else:
             self.handle_unsupported_method()
-
-    @append_headers
-    def POST(self):
-        try:
-            data = json.loads(web.data())
-        except ValueError:
-            web.badrequest()
-        else:
-            # Validate the data
-
-            # Lets insert the data
-            snapshot_id = self.collection.insert(data)
-            data['id'] = str(snapshot_id)
-            del data['_id']
-
-            # Lets send the response
-            web.header('Content-Type', 'application/json')
-            web.created()
-            return data
 
     def handle_unsupported_method(self):
         web.ctx.status = "405 Method Not Allowed"

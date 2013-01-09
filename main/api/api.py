@@ -19,9 +19,13 @@ urls = [
 
 class Snapshot(RestResource):
     collection_name = 'snapshots'
-    supported_methods = ['GET', 'POST', 'DELETE']
-    default_sort = [('utc', 'asc')]
-    excluded_fields = ['messages']
+    supported_methods = ['GET', 'DELETE']
+    relations = {
+        'networkmessages': {
+            'collection': 'networkmessages',
+            'field': 'snapshot_id'
+        }
+    }
 
 
 class SnapshotUpload:

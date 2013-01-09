@@ -1,10 +1,15 @@
 import json
 import re
+from pymongo import MongoClient
 
 
 class Message(object):
 
     def __init__(self):
+        connection = MongoClient()
+        db = connection.diagnostics
+        self.networkmessages = db.networkmessages
+
         self.data = {
             'protocol':         '',
             'version':          '',
@@ -23,6 +28,10 @@ class Message(object):
 
     def get_json(self):
         return json.dumps(self.data)
+
+    def save(self, snapshot_id):
+        self.data['snapshot_id'] = str(snapshot_id)
+        self.networkmessages.insert(self.data)
 
     @staticmethod
     def create_message(log_entry):
@@ -44,24 +53,24 @@ class Message(object):
     def is_same_message(sent_message, received_message):
 
         # Check that the headers have the same fields
-        if (sent_message['headers'].keys() != received_message['headers'].keys()):
+        if (sent_message.data['headers'].keys() != received_message.data['headers'].keys()):
             return False
 
         # Check that the header fields have the same values
-        for key, value in sent_message['headers'].iteritems():
-            if received_message['headers'][key] != value:
+        for key, value in sent_message.data['headers'].iteritems():
+            if received_message.data['headers'][key] != value:
                 return False
 
         # Check other message info
-        matching_content = sent_message['content'] == received_message['content']
-        matching_sender = sent_message['source'] == received_message['source']
-        matching_receiver = sent_message['destination'] == received_message['destination']
+        matching_content = sent_message.data['content'] == received_message.data['content']
+        matching_sender = sent_message.data['source'] == received_message.data['source']
+        matching_receiver = sent_message.data['destination'] == received_message.data['destination']
         return matching_content and matching_sender and matching_receiver
 
     @staticmethod
     def merge(sent_message, received_message):
         message = sent_message
-        message['source_port'] = received_message['source_port']
+        message.data['source_port'] = received_message.data['source_port']
         return message
 
     def parse(self, log_entry):

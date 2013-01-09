@@ -1,0 +1,17 @@
+<section id="snapshots">
+    <div class="snapshot" ng-repeat="snapshot in snapshots">
+
+        <a href="" ng-click="remove($index)"style="padding: 10px;">
+            <i class="icon-remove-sign"></i>
+        </a>
+
+        <div class="snapshot-info">
+            <a href="" title="{{snapshot.desc}}" ng-click="display_snapshot_detailed(snapshot._id)">
+                <dl>
+                   <dt>Name</dt><dd>{{snapshot.title}}</dd>
+                   <dt>Date</dt><dd>{{snapshot.creation_time}}</dd>
+                </dl>
+            </a>
+        </div>
+    </div>
+</section>

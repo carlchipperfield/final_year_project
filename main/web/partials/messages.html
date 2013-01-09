@@ -1,0 +1,26 @@
+<section id="networkmessages">
+    <h4>Messages</h4>
+    <div ng-repeat="networkmessage in networkmessages">
+        <h5>Message {{$index+1}} of {{currentsnapshot.total_messages}}</h5>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Protocol</th>
+                    <td>{{networkmessage.protocol}}/{{networkmessage.version}}</td>
+                </tr>
+                <tr>
+                    <th>Method</th>
+                    <td>{{networkmessage.method}}</td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td>{{networkmessage.status_code}}</td>
+                </tr>
+                <tr>
+                    <th>Content</th>
+                    <td>{{networkmessage.content}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
