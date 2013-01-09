@@ -126,7 +126,7 @@ class TestSipMessage(unittest.TestCase):
         for key, value in messages.items():
             message = SipMessage()
             message.parse(value)
-            cls.parsed_messages[key] = message.get()
+            cls.parsed_messages[key] = message
 
     def test_content(self):
         self._test_message_field('request', 'content', request_content)
@@ -160,14 +160,14 @@ class TestSipMessage(unittest.TestCase):
         self._test_message_field('response', 'version', '2.0')
 
     def test_status_code(self):
-        self._test_message_field('request', 'status_code', '')
+        self._test_message_field('request', 'status_code', 'None')
         self._test_message_field('response', 'status_code', '200 OK')
 
     def test_total_headers(self):
-        num_headers = len(self.parsed_messages['response']['headers'])
+        num_headers = len(self.parsed_messages['response'].data['headers'])
         self.assertEqual(num_headers, 9)
 
-        num_headers = len(self.parsed_messages['request']['headers'])
+        num_headers = len(self.parsed_messages['request'].data['headers'])
         self.assertEqual(num_headers, 13)
 
     def test_header_fields(self):
@@ -191,7 +191,7 @@ class TestSipMessage(unittest.TestCase):
 
     # TEST HELPER FUNCTIONS
     def _test_message_field(self, message_name, field, expected_value):
-        actual_value = self.parsed_messages[message_name][field]
+        actual_value = self.parsed_messages[message_name].data[field]
 
         fail_response = 'SIP ' + message_name + ' ' + field + ' not parsed correctly. '
         fail_response += '\nExpected:\n' + repr(expected_value) + '\nActual:\n' + repr(actual_value)
@@ -199,7 +199,7 @@ class TestSipMessage(unittest.TestCase):
         self.assertEqual(actual_value, expected_value, fail_response)
 
     def _test_header_field(self, message_name, header_field, expected_values):
-        header = self.parsed_messages[message_name]['headers'][header_field]
+        header = self.parsed_messages[message_name].data['headers'][header_field]
 
         # Check the length of the header field
         self._test_header_length(message_name, header, len(expected_values))

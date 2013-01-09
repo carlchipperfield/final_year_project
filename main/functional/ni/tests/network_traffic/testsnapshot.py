@@ -16,7 +16,7 @@ large_snapshot = {
         {
             'index': 11,
             'protocol': 'SIP',
-            'status_code': '',
+            'status_code': 'None',
             "source": "cisco tvcs",
             "destination": "cisco tvcs",
             "destination_port": "22416",
@@ -121,7 +121,7 @@ class TestNetworkTrafficSnapshot(unittest.TestCase):
             s = NetworkTrafficSnapshot()
             content = TestNetworkTrafficSnapshot._get_snapshot_content(snapshot['path'])
             s.upload(snapshot['title'], snapshot['desc'], snapshot['path'], content)
-            cls.snapshots.append(s.get())
+            cls.snapshots.append(s)
 
     @classmethod
     def _get_snapshot_content(cls, path):
@@ -134,13 +134,13 @@ class TestNetworkTrafficSnapshot(unittest.TestCase):
         for data, snapshot in zip(self.snapshot_data, self.snapshots):
             for field in test_data:
                 if field in data:
-                    message = 'Snapshot "' + snapshot['title'] + ' ' + field + ' not parsed correctly. Expected=' + str(data[field]) + ' Actual=' + str(snapshot[field])
-                    self.assertEqual(snapshot[field], data[field], message)
+                    message = 'Snapshot "' + snapshot.data['title'] + ' ' + field + ' not parsed correctly. Expected=' + str(data[field]) + ' Actual=' + str(snapshot.data[field])
+                    self.assertEqual(snapshot.data[field], data[field], message)
 
     def test_total_messages(self):
         for index, snapshot in enumerate(self.snapshots):
             message = 'Snapshot ' + str(index) + ' total messages is incorrect'
-            self.assertEqual(len(snapshot['messages']), snapshot['total_messages'], message)
+            self.assertEqual(len(snapshot.messages), snapshot.data['total_messages'], message)
 
     def test_snapshot_messages(self):
         header_fields = ['protocol', 'status_code', 'content', 'method',
@@ -149,12 +149,12 @@ class TestNetworkTrafficSnapshot(unittest.TestCase):
         for data, snapshot in zip(self.snapshot_data, self.snapshots):
             if 'messages' in data:
                 for message in data['messages']:
-                    actual_message = snapshot['messages'][message['index']]
+                    actual_message = snapshot.messages[message['index']]
 
                     # Test that each of the fields specified match
                     for field in header_fields:
                         if field in message:
-                            self.assertEqual(message[field], actual_message[field])
+                            self.assertEqual(message[field], actual_message.data[field])
 
 if __name__ == '__main__':
     unittest.main()

@@ -205,7 +205,7 @@ class SipMessage(Message):
         if status_code:
             dd = re.search('[0-9]{3} [a-zA-Z]*', status_code.group(0))
             return dd.group(0)
-        return ''
+        return 'None'
 
     def _parse_version(self, log_entry):
         # Find a status line e.g. SIP/2.0 200 OK
