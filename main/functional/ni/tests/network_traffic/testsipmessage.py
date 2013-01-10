@@ -133,8 +133,8 @@ class TestSipMessage(unittest.TestCase):
         self._test_message_field('response', 'content', 'None')
 
     def test_utc(self):
-        self._test_message_field('request', 'utc', '2012-12-11 03:06:53,142')
-        self._test_message_field('response', 'utc', '2012-12-11 03:07:02,238')
+        self._test_message_field('request', 'utc', '2012-12-11 03:06:53')
+        self._test_message_field('response', 'utc', '2012-12-11 03:07:02')
 
     def test_sender_and_receiver(self):
         self._test_message_field('request', 'destination', 'cisco tvcs')

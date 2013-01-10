@@ -101,7 +101,7 @@ class Message(object):
     def _parse_utc(self, log_entry):
         utc_log = re.search('UTCTime="[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2},[0-9]{3}', log_entry)  # 2012-12-11 03:07:18,457
         if utc_log:
-            return utc_log.group(0)[9:]
+            return utc_log.group(0)[9:28]
 
     def _parse_sender_and_receiver(self, log_entry):
         '''

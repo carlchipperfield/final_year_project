@@ -9,7 +9,7 @@
             <a href="" title="{{snapshot.desc}}" ng-click="display_snapshot_detailed($index)">
                 <dl>
                    <dt>Name</dt><dd>{{snapshot.title}}</dd>
-                   <dt>Date</dt><dd>{{snapshot.creation_time}}</dd>
+                   <dt>Date</dt><dd>{{snapshot.creation_time | formatdate}}</dd>
                 </dl>
             </a>
         </div>

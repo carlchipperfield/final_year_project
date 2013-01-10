@@ -1,5 +1,6 @@
-angular.module('app', ['ngResource']).
-    config(function($routeProvider, $locationProvider){
+var test = angular.module('app', ['ngResource']);
+
+test.config(function($routeProvider, $locationProvider){
         //$locationProvider.html5Mode(true);
 
         var snapshot_data = {
@@ -17,6 +18,14 @@ angular.module('app', ['ngResource']).
                       .when('/upload', upload_data)
                       .otherwise({redirectTo: '/snapshot'});
     });
+
+test.filter('formatdate', function() {
+    return function(input) {
+        console.log(input);
+        var date = new Date(input);
+        return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+    };
+});
 
 
 var actions = {
