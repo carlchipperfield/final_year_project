@@ -23,7 +23,8 @@ class Snapshot(RestResource):
     relations = {
         'networkmessages': {
             'collection': 'networkmessages',
-            'field': 'snapshot_id'
+            'field': 'snapshot_id',
+            'sort': 'index'
         }
     }
 

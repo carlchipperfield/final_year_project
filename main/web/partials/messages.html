@@ -1,8 +1,18 @@
-<section id="networkmessages">
-    <h4>Network Messages</h4>
-    <div class="info" ng-repeat="networkmessage in networkmessages">
-        <h5>{{$index+1}} of {{currentsnapshot.total_messages}}</h5>
-        <table class="table">
+<h4>Network Messages</h4>
+<div class="info" ng-repeat="networkmessage in networkmessages">
+
+    <div id="messagebar">
+        <h5>Network message {{$index+1}} of {{currentsnapshot.total_messages}}</h5>
+        <div id="message-view-selector">
+            <select ng-model="currentmessageview" ng-options="view for view in messageviews">
+            </select>
+        </div>
+        <div class="clearfloat"></div>
+    </div>
+
+    <div ng-switch on="currentmessageview">
+    
+        <table class="table" ng-switch-when="Information">
             <tbody>
                 <tr>
                     <th>Time</th>
@@ -18,13 +28,29 @@
                 </tr>
                 <tr>
                     <th>Status</th>
-                    <td>{{networkmessage.status_code}}</td>
+                    <td>{{networkmessage.status}}</td>
                 </tr>
                 <tr>
-                    <th>Content</th>
-                    <td>{{networkmessage.content}}</td>
+                    <th>Source</th>
+                    <td>{{networkmessage.source}}{{networkmessage.source_port | formatport}}</td>
+                </tr>
+                <tr>
+                    <th>Destination</th>
+                    <td>{{networkmessage.destination}}{{networkmessage.destination_port | formatport}}</td>
                 </tr>
             </tbody>
         </table>
+
+        <table class="table" ng-switch-when="Headers">
+            <tbody>
+                <tr ng-repeat="header in networkmessage.headers">
+                    <th>{{header.name}}</th>
+                    <td>{{header.value}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p ng-switch-when="Content">{{networkmessage.content}}</p>
+
     </div>
-</section>
+</div>

@@ -8,9 +8,9 @@ large_snapshot = {
     'title': 'Test snapshot 1',
     'desc': 'This is the first test snapshot',
     'path': 'test_snapshots/diagnostic_test_log_1.txt',
-    'start': '2012-12-11 03:06:30,594',
-    'end': '2012-12-11 03:07:24,987',
-    'total_messages': 260,
+    'start': '2012-12-11 03:06:30',
+    'end': '2012-12-11 03:07:24',
+    'total_messages': 227,
     'creation_method': 'upload',
     'messages': [
         {
@@ -40,9 +40,9 @@ small_snapshot = {
     'title': 'Snapshot 2',
     'desc': '',
     'path': 'test_snapshots/diagnostic_test_log_2.txt',
-    'start': '2012-12-11 03:06:32,284',
-    'end': '2012-12-11 03:07:24,987',
-    'total_messages': 27,
+    'start': '2012-12-11 03:06:32',
+    'end': '2012-12-11 03:07:24',
+    'total_messages': 25,
     'creation_method': 'upload'
 }
 
@@ -50,8 +50,8 @@ single_message_test = {
     'title': 'Single network message snapshot',
     'desc': 'Test a logfile that contains one network message',
     'path': 'test_snapshots/single_network_message_logfile.txt',
-    'start': '2012-12-11 03:07:02,237',
-    'end': '2012-12-11 03:07:02,237',
+    'start': '2012-12-11 03:07:02',
+    'end': '2012-12-11 03:07:02',
     'total_messages': 1
 }
 
@@ -79,8 +79,8 @@ internal_messages_test = {
     'title': 'Internal messages snapshot',
     'desc': 'Test that internal messages are handled correctly',
     'path': 'test_snapshots/internal_messages_logfile.txt',
-    'start': '2012-12-11 03:02:01,760',
-    'end': '2012-12-11 03:07:02,238',
+    'start': '2012-12-11 03:02:01',
+    'end': '2012-12-11 03:07:02',
     'total_messages': 3,
     'messages': [
         {
@@ -143,7 +143,7 @@ class TestNetworkTrafficSnapshot(unittest.TestCase):
             self.assertEqual(len(snapshot.messages), snapshot.data['total_messages'], message)
 
     def test_snapshot_messages(self):
-        header_fields = ['protocol', 'status_code', 'content', 'method',
+        header_fields = ['protocol', 'status', 'content', 'method',
                          'version', 'sender', 'receiver', 'destination_port', 'source_port']
 
         for data, snapshot in zip(self.snapshot_data, self.snapshots):

@@ -18,7 +18,7 @@ class Message(object):
             'destination':         '',
             'source_port':      '',
             'destination_port': '',
-            'status_code':      '',
+            'status':      '',
             'headers':          [],
             'content':          ''
         }
@@ -51,26 +51,28 @@ class Message(object):
 
     @staticmethod
     def is_same_message(sent_message, received_message):
-
-        # Check that the headers have the same fields
-        if (sent_message.data['headers'].keys() != received_message.data['headers'].keys()):
+        if sent_message.data['content'] != received_message.data['content']:
             return False
-
-        # Check that the header fields have the same values
-        for key, value in sent_message.data['headers'].iteritems():
-            if received_message.data['headers'][key] != value:
-                return False
-
-        # Check other message info
-        matching_content = sent_message.data['content'] == received_message.data['content']
-        matching_sender = sent_message.data['source'] == received_message.data['source']
-        matching_receiver = sent_message.data['destination'] == received_message.data['destination']
-        return matching_content and matching_sender and matching_receiver
+        elif sent_message.data['source'] != received_message.data['source']:
+            return False
+        elif sent_message.data['destination'] != received_message.data['destination']:
+            return False
+        elif sent_message.data['status'] != received_message.data['status']:
+            return False
+        elif sent_message.data['method'] != received_message.data['method']:
+            return False
+        return True
 
     @staticmethod
     def merge(sent_message, received_message):
-        message = sent_message
-        message.data['source_port'] = received_message.data['source_port']
+        '''
+            Merge the destination port of the sent message to the received message.
+            We do it this way, rather than merging the received to sent, as the
+            received message may have some more info attached.
+        '''
+        message = received_message
+        message.data['index'] = sent_message.data['index']
+        message.data['destination_port'] = sent_message.data['destination_port']
         return message
 
     def parse(self, log_entry):
@@ -120,16 +122,12 @@ class Message(object):
         dest_ip = re.search('Dst-ip="[^"]*', log_entry)
         if dest_ip:
             destination = dest_ip.group(0).strip('Dst-ip="')
-            if destination == "127.0.0.1":
-                destination = component
-            source = component
+            source = '127.0.0.1'
         else:
             src_ip = re.search('Src-ip="[^"]*', log_entry)
             if src_ip:
                 source = src_ip.group(0).strip('Src-ip="')
-                if source == "127.0.0.1":
-                    source = component
-                destination = component
+                destination = '127.0.0.1'
             else:
                 source = ''
                 destination = ''
@@ -163,24 +161,16 @@ class SipMessage(Message):
         self.data['protocol'] = 'SIP'
         self.data['version'] = self._parse_version(log_entry)
         self.data['method'] = self._parse_method(log_entry)
-        self.data['status_code'] = self._parse_status_code(log_entry)
+        self.data['status'] = self._parse_status(log_entry)
 
     def _parse_headers(self, log_entry):
         headers = re.findall('\n.*: .*', log_entry)
         if headers:
-            formatted_headers = {}
             for header in headers:
-
                 field = header.split(":", 1)
                 name = field[0].strip()
                 value = field[1].strip()
-
-                if name in formatted_headers:
-                    formatted_headers[name].append(value)
-                else:
-                    formatted_headers[name] = [value]
-
-            self.data['headers'] = formatted_headers
+                self.data['headers'].append({'name': name, 'value': value})
 
     def _parse_content(self, log_entry):
         if log_entry.find('Content-Length: 0') != -1:
@@ -199,11 +189,11 @@ class SipMessage(Message):
                 if cseq.group(0).find(method) != -1:
                     return method
 
-    def _parse_status_code(self, log_entry):
+    def _parse_status(self, log_entry):
         # SIP/2.0 200 OK
-        status_code = re.search('SIP.* [0-9]{3} [a-zA-Z]*', log_entry)
-        if status_code:
-            dd = re.search('[0-9]{3} [a-zA-Z]*', status_code.group(0))
+        status = re.search('SIP.* [0-9]{3} [a-zA-Z]*', log_entry)
+        if status:
+            dd = re.search('[0-9]{3} [a-zA-Z]*', status.group(0))
             return dd.group(0)
         return 'None'
 

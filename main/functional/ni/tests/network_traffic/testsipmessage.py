@@ -58,34 +58,6 @@ messages['response'] = '''2012-12-11T03:07:02+00:00 cisco tvcs: UTCTime="2012-12
  Content-Length: 0
 |'''
 
-messages['diff_header_values'] = '''2012-12-11T03:07:02+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:02,238" Module="network.sip" Level="DEBUG":  Dst-ip="127.0.0.1"  Dst-port="25000"
- SIPMSG:
- |SIP/2.0 200 OK
- Via: SIP/2.0/TCP 127.0.0.1:5060;egress-zone=DefaultZone;branch=z9hG4bKeddc39fddb653eb2e21e8dff57384faa153.8de24b12c2931257c0e410e17bd936b9;proxy-call-id=d5bb0634-433f-11e2-aa82-005056ab3dbd;received=127.0.0.1;rport=25000
- Call-ID: 5a8615fc0ccb32eb@192.168.0.3
- CSeq: 206 PUBLISH
- From: <sip:laura.michael.movi@fyp.com>;tag=2ec3d9a8c06e5acc
- To: <sip:laura.michael.movi@fyp.com>;tag=f899b911a87c1104
- Server: TANDBERG/4120 (X7.2.1)
- Expires: 1314
- SIP-ETag: e8b432b8-433c-11e2-83c1-005056ab3dbd
- Content-Length: 0
-|'''
-
-messages['diff_header_keys'] = '''2012-12-11T03:07:02+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:02,238" Module="network.sip" Level="DEBUG":  Dst-ip="127.0.0.1"  Dst-port="25000"
- SIPMSG:
- |SIP/2.0 200 OK
- Via: SIP/2.0/TCP 127.0.0.1:5060;egress-zone=DefaultZone;branch=z9hG4bKeddc39fddb653eb2e21e8dff57384faa153.8de24b12c2931257c0e410e17bd936b9;proxy-call-id=d5bb0634-433f-11e2-aa82-005056ab3dbd;received=127.0.0.1;rport=25000
- Via: SIP/2.0/TLS 192.168.0.3:64981;branch=z9hG4bK1362adc2b49b82b052c4931786fefc95.1;received=90.214.3.75;rport=64981;ingress-zone=DefaultSubZone
- Call-ID: 5a8615fc0ccb32eb@192.168.0.3
- CSeq: 206 PUBLISH
- From: <sip:laura.michael.movi@fyp.com>;tag=2ec3d9a8c06e5acc
- To: <sip:laura.michael.movi@fyp.com>;tag=f899b911a87c1104
- Server: TANDBERG/4120 (X7.2.1)
- SIP-ETag: e8b432b8-433c-11e2-83c1-005056ab3dbd
- Content-Length: 0
-|'''
-
 messages['diff_content'] = '''2012-12-11T03:07:02+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:02,238" Module="network.sip" Level="DEBUG":  Dst-ip="127.0.0.1"  Dst-port="25000"
  SIPMSG:
  |SIP/2.0 200 OK
@@ -137,13 +109,13 @@ class TestSipMessage(unittest.TestCase):
         self._test_message_field('response', 'utc', '2012-12-11 03:07:02')
 
     def test_sender_and_receiver(self):
-        self._test_message_field('request', 'destination', 'cisco tvcs')
+        self._test_message_field('request', 'destination', '127.0.0.1')
         self._test_message_field('request', 'source', '90.214.3.75')
         self._test_message_field('request', 'source_port', '64981')
         self._test_message_field('request', 'destination_port', '')
 
-        self._test_message_field('response', 'destination', 'cisco tvcs')
-        self._test_message_field('response', 'source', 'cisco tvcs')
+        self._test_message_field('response', 'destination', '127.0.0.1')
+        self._test_message_field('response', 'source', '127.0.0.1')
         self._test_message_field('response', 'source_port', '')
         self._test_message_field('response', 'destination_port', '25000')
 
@@ -159,32 +131,18 @@ class TestSipMessage(unittest.TestCase):
         self._test_message_field('request', 'version', '2.0')
         self._test_message_field('response', 'version', '2.0')
 
-    def test_status_code(self):
-        self._test_message_field('request', 'status_code', 'None')
-        self._test_message_field('response', 'status_code', '200 OK')
+    def test_status(self):
+        self._test_message_field('request', 'status', 'None')
+        self._test_message_field('response', 'status', '200 OK')
 
     def test_total_headers(self):
         num_headers = len(self.parsed_messages['response'].data['headers'])
-        self.assertEqual(num_headers, 9)
+        self.assertEqual(num_headers, 10)
 
         num_headers = len(self.parsed_messages['request'].data['headers'])
         self.assertEqual(num_headers, 13)
 
-    def test_header_fields(self):
-        # Test headers with single entry
-        self._test_header_field('request', 'To', ['<sip:phonebook@fyp.com>'])
-        self._test_header_field('response', 'SIP-ETag', ['e8b432b8-433c-11e2-83c1-005056ab3dbd'])
-
-        # Now test a header field with multiple entries
-        values = [
-            'SIP/2.0/TCP 127.0.0.1:5060;egress-zone=DefaultZone;branch=z9hG4bKeddc39fddb653eb2e21e8dff57384faa153.8de24b12c2931257c0e410e17bd936b9;proxy-call-id=d5bb0634-433f-11e2-aa82-005056ab3dbd;received=127.0.0.1;rport=25000',
-            'SIP/2.0/TLS 192.168.0.3:64981;branch=z9hG4bK1362adc2b49b82b052c4931786fefc95.1;received=90.214.3.75;rport=64981;ingress-zone=DefaultSubZone'
-        ]
-        self._test_header_field('response', 'Via', values)
-
     def test_duplicate_message(self):
-        self._test_duplicate_message('diff_header_keys', 'response', False)
-        self._test_duplicate_message('diff_header_values', 'response', False)
         self._test_duplicate_message('diff_content', 'response', False)
         self._test_duplicate_message('diff_dest', 'response', False)
         self._test_duplicate_message('response', 'response')
@@ -197,19 +155,6 @@ class TestSipMessage(unittest.TestCase):
         fail_response += '\nExpected:\n' + repr(expected_value) + '\nActual:\n' + repr(actual_value)
 
         self.assertEqual(actual_value, expected_value, fail_response)
-
-    def _test_header_field(self, message_name, header_field, expected_values):
-        header = self.parsed_messages[message_name].data['headers'][header_field]
-
-        # Check the length of the header field
-        self._test_header_length(message_name, header, len(expected_values))
-
-        # Check that the header values match as expected
-        for index, expected_value in enumerate(expected_values):
-            actual_value = header[index]
-            fail_response = message_name + ' ' + header_field + ' header not parsed as expected. '
-            fail_response += 'Expected: ' + expected_value + ' Actual: ' + actual_value
-            self.assertEqual(actual_value, expected_value, fail_response)
 
     def _test_header_length(self, message_name, header, expected_length):
         actual_length = len(header)

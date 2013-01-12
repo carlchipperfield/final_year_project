@@ -27,8 +27,6 @@ h4 {
     margin: 15px 20px;
 }
 
-h5 {background-color: #F5F5F5; padding: 5px 20px;}
-
 div.info {
     margin: 20px;
     margin-top: 0;
@@ -49,10 +47,32 @@ div#test {
         float:left;
     }
 
-    select {
+    #snapshot-view-selector {
         float:right;
-        margin: 4px 20px;
+        
+        
+        select {
+           width: auto;
+           margin: 4px 20px;
+        }
+    }
+}
+
+p {
+    padding: 8px;
+}
+
+div#messagebar {
+    background-color: #D3D3D3;
+    /*h5 { padding: 8px; margin: 0; }*/
+    h5 {
+        margin: 8px;
+        float: left;
+    }
+    select {
         width: auto;
+        float: right;
+        margin: 4px;
     }
 }
 

@@ -1,6 +1,6 @@
-var test = angular.module('app', ['ngResource']);
+var app = angular.module('app', ['ngResource']);
 
-test.config(function($routeProvider, $locationProvider){
+app.config(function($routeProvider, $locationProvider){
         //$locationProvider.html5Mode(true);
 
         var snapshot_data = {
@@ -19,11 +19,21 @@ test.config(function($routeProvider, $locationProvider){
                       .otherwise({redirectTo: '/snapshot'});
     });
 
-test.filter('formatdate', function() {
+app
+.filter('formatdate', function() {
     return function(input) {
-        console.log(input);
         var date = new Date(input);
         return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+    };
+})
+.filter('formatport', function() {
+    return function(input) {
+        if (input === '') {
+            return '';
+        }
+        else {
+            return ':' + input;
+        }
     };
 });
 
@@ -39,6 +49,9 @@ function SnapshotsCtrl($scope, $resource, $location, $routeParams)
 {
     $scope.snapshotviews = ['Information', 'Statistics', 'Network Messages'];
     $scope.currentview = $scope.snapshotviews[0];
+
+    $scope.messageviews = ['Information', 'Headers', 'Content'];
+    $scope.currentmessageview = $scope.snapshotviews[0];
 
     $scope.remove = function(index) {
         var snapshot_id = $scope.snapshots[index]._id;

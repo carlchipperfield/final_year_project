@@ -4,8 +4,10 @@
     <div>
         <div id="test">
             <h3>{{currentsnapshot.title}}</h3>
-            <select ng-model="currentview" ng-options="view for view in snapshotviews">
-            </select>
+            <div id="snapshot-view-selector">
+                <select ng-model="currentview" ng-options="view for view in snapshotviews">
+                </select>
+            </div>
             <div class="clearfloat"></div>
         </div>
 

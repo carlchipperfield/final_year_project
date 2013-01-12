@@ -59,14 +59,15 @@ class NetworkTrafficSnapshot:
             if message.is_internal_message():
 
                 # (internal messages should always be sent then received,
-                # not always case at beginning and end of logfile) TEST THIS CASE
+                # not always case at beginning and end of logfile)
                 if message.is_sent_message():
+                    message.data['index'] = len(self.messages)
                     self.messages.append(message)
                     index = len(self.messages) - 1
                     self.internal_messages.append({'index': index, 'message': message})
 
                 # If an received message, try find sent message in list and merge extra info
-                # If sent message not found update the message to say not found and append to list TEST THIS CASE
+                # If sent message not found update the message to say not found and append to list
                 elif message.is_received_message():
                     for index, sent_message in enumerate(self.internal_messages):
                         if Message.is_same_message(sent_message['message'], message):
@@ -75,10 +76,12 @@ class NetworkTrafficSnapshot:
                             self.internal_messages.pop(index)
                             break
                     else:
+                        message.data['index'] = len(self.messages)
                         self.messages.append(message)
                         entry = {'index': len(self.messages) - 1, 'message': message}
                         self.internal_messages.append(entry)
             else:
+                message.data['index'] = len(self.messages)
                 self.messages.append(message)
 
     def _parse_start(self):

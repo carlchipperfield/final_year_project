@@ -49,6 +49,7 @@ class RestResource(object):
             if name in self.relations:
                 collection_name = self.relations[name]['collection']
                 query = {self.relations[name]['field']: id}
+                sort = [(self.relations[name]['sort'], 1)]
                 output = self._find(collection_name, query, fields, sort, limit, offset)
             else:
                 output = {}
