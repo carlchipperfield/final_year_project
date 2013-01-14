@@ -1,7 +1,7 @@
 <div id="panels" ng-include src="'/partials/snapshotlist.html'"></div>
 
 <div id="content">
-    <div>
+    <div ng-show="isSnapshots()">
         <div id="test">
             <h3>{{currentsnapshot.title}}</h3>
             <div id="snapshot-view-selector">
@@ -16,5 +16,8 @@
             <section ng-switch-when="Statistics" ng-include src="'/partials/snapshotstats.html'"></section>
             <section ng-switch-when="Network Messages" ng-include src="'/partials/messages.html'"></section>
         </div>
+    </div>
+    <div ng-hide="isSnapshots()">
+        <p>No snapshots. <a href="/#/upload">Upload</a> a snapshot logfile.</p>
     </div>
 </div>

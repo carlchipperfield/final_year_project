@@ -4,8 +4,7 @@ app.config(function($routeProvider, $locationProvider){
         //$locationProvider.html5Mode(true);
 
         var snapshot_data = {
-            templateUrl: '/partials/snapshots.html',
-            controller: 'SnapshotsCtrl'
+            templateUrl: '/partials/snapshots.html'
         };
 
         var upload_data = {
@@ -19,8 +18,7 @@ app.config(function($routeProvider, $locationProvider){
                       .otherwise({redirectTo: '/snapshot'});
     });
 
-app
-.filter('formatdate', function() {
+app.filter('formatdate', function() {
     return function(input) {
         var date = new Date(input);
         return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
@@ -28,12 +26,18 @@ app
 })
 .filter('formatport', function() {
     return function(input) {
-        if (input === '') {
-            return '';
-        }
-        else {
+        if (input !== '') {
             return ':' + input;
         }
+        return input;
+    };
+})
+.filter('capitalize', function() {
+    return function(input) {
+        if (input === undefined || input === '') {
+            return input;
+        }
+        return input.charAt(0).toUpperCase() + input.slice(1);
     };
 });
 
@@ -45,7 +49,7 @@ var actions = {
 };
 
 
-function SnapshotsCtrl($scope, $resource, $location, $routeParams)
+function SnapshotsCtrl($scope, $resource, $location, $routeParams, $log)
 {
     $scope.snapshotviews = ['Information', 'Statistics', 'Network Messages'];
     $scope.currentview = $scope.snapshotviews[0];
@@ -53,12 +57,30 @@ function SnapshotsCtrl($scope, $resource, $location, $routeParams)
     $scope.messageviews = ['Information', 'Headers', 'Content'];
     $scope.currentmessageview = $scope.snapshotviews[0];
 
-    $scope.remove = function(index) {
+    $scope.remove = function() {
+        var index = $scope.currentsnapshotindex;
+        
+        var success = function () {
+            $scope.snapshots.splice(index, 1);
+
+            if ($scope.snapshots.length > 0) {
+                index = (index>0) ? index - 1: index;
+                $scope.display_snapshot_detailed(index);
+            }
+        };
+
+        var fail = function() {
+            $log.error('Delete Failed');
+        };
+
         var snapshot_id = $scope.snapshots[index]._id;
-        Snapshot.remove({id: snapshot_id});
-        $scope.snapshots.splice(index, 1);
+        Snapshot.remove({id: snapshot_id}, success, fail);
     };
 
+    $scope.isSnapshots = function() {
+        return $scope.snapshots.length > 0;
+    };
+    
     $scope.retrieve_snapshot = function(snapshot_id) {
         var url = '/api/snapshot/:id';
         var url_params = {id: snapshot_id};
@@ -77,6 +99,7 @@ function SnapshotsCtrl($scope, $resource, $location, $routeParams)
     };
 
     $scope.display_snapshot_detailed = function(index) {
+        $scope.currentsnapshotindex = index;
         $scope.currentsnapshot = $scope.snapshots[index];
         $scope.retrieve_messages($scope.currentsnapshot._id);
     };
@@ -89,6 +112,7 @@ function SnapshotsCtrl($scope, $resource, $location, $routeParams)
             // Load messages for snapshot in url
             $scope.retrieve_snapshot($routeParams.id);
             $scope.retrieve_messages($routeParams.id);
+            $scope.currentsnapshotindex = 0;
         }
         else {
             if ( $scope.snapshots.length > 0 ) {

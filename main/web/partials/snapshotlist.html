@@ -1,17 +1,19 @@
 <section id="snapshots">
-    <div class="snapshot" ng-repeat="snapshot in snapshots">
 
-        <a href="" ng-click="remove($index)"style="padding: 10px;">
-            <i class="icon-remove-sign"></i>
+    <ul class="nav nav-tabs nav-stacked">
+
+      <li class="snapshot" ng-repeat="snapshot in snapshots" title="{{snapshot.desc}}">
+        <a href="" ng-click="display_snapshot_detailed($index)">
+
+            <i class="icon-chevron-right" style="float:right;"></i>
+            
+            <ul class="unstyled">
+                <li>{{snapshot.title}}</li>
+                <li>{{snapshot.creation_time | formatdate}}</li>
+            </ul>
         </a>
+      </li>
 
-        <div class="snapshot-info">
-            <a href="" title="{{snapshot.desc}}" ng-click="display_snapshot_detailed($index)">
-                <dl>
-                   <dt>Name</dt><dd>{{snapshot.title}}</dd>
-                   <dt>Date</dt><dd>{{snapshot.creation_time | formatdate}}</dd>
-                </dl>
-            </a>
-        </div>
-    </div>
+    </ul>
+
 </section>

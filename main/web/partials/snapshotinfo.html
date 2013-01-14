@@ -12,7 +12,7 @@
             </tr>
             <tr>
                 <th>Creation method</th>
-                <td>{{currentsnapshot.creation_method}}</td>
+                <td>{{currentsnapshot.creation_method | capitalize}}</td>
             </tr>
             <tr>
                 <th>Creation time</th>
@@ -32,4 +32,7 @@
             </tr>
         </tbody>
     </table>
+    <div>
+        <button class="btn btn-large btn-primary" ng-click="remove()">Remove</button>
+    </div>
 </div>
