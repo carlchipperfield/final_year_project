@@ -1,38 +1,37 @@
-<h4>Information</h4>
 <div class="info">
-    <table class="table" ng-switch on="currentview">
+    <table class="table">
         <tbody>
             <tr>
                 <th>Title</th>
-                <td>{{currentsnapshot.title}}</td>
+                <td>{{snapshot.title}}</td>
             </tr>
             <tr>
                 <th>Description</th>
-                <td>{{currentsnapshot.desc}}</td>
+                <td>{{snapshot.desc}}</td>
             </tr>
             <tr>
                 <th>Creation method</th>
-                <td>{{currentsnapshot.creation_method | capitalize}}</td>
+                <td>{{snapshot.creation_method | capitalize}}</td>
             </tr>
             <tr>
                 <th>Creation time</th>
-                <td>{{currentsnapshot.creation_time | formatdate}}</td>
+                <td>{{snapshot.creation_time | formatdate}}</td>
             </tr>
             <tr>
                 <th>Logfile</th>
-                <td>{{currentsnapshot.creation_logfile}}</td>
+                <td>{{snapshot.creation_logfile}}</td>
             </tr>
             <tr>
                 <th>Start</th>
-                <td>{{currentsnapshot.start | formatdate}}</td>
+                <td>{{snapshot.start | formatdate}}</td>
             </tr>
             <tr>
                 <th>End</th>
-                <td>{{currentsnapshot.end | formatdate}}</td>
+                <td>{{snapshot.end | formatdate}}</td>
             </tr>
         </tbody>
     </table>
     <div>
-        <button class="btn btn-large btn-primary" ng-click="remove()">Remove</button>
+        <button class="btn" ng-click="remove()">Remove</button>
     </div>
 </div>

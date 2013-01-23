@@ -1,19 +1,19 @@
-<section id="snapshots">
+<section id="snapshots" ng-controller="SnapshotListCtrl">
 
-    <ul class="nav nav-tabs nav-stacked">
+    <ul id="snapshotlist" class="nav nav-tabs nav-stacked">
 
       <li class="snapshot" ng-repeat="snapshot in snapshots" title="{{snapshot.desc}}">
-        <a href="" ng-click="display_snapshot_detailed($index)">
+        <a href="" ng-click="display_snapshot($index)">
 
             <i class="icon-chevron-right" style="float:right;"></i>
             
             <ul class="unstyled">
                 <li>{{snapshot.title}}</li>
                 <li>{{snapshot.creation_time | formatdate}}</li>
+                <li></li>
             </ul>
         </a>
       </li>
-
     </ul>
 
 </section>

@@ -1,0 +1,25 @@
+<div ng-controller="SnapshotCtrl">
+
+    <div ng-show="isSnapshot()">
+
+        <div id="test">
+            <h3>{{snapshot.title}}</h3>
+            <div id="snapshot-view-selector">
+                <select ng-model="activeSnapshotView" ng-options="view for view in snapshotViews">
+                </select>
+            </div>
+            <div class="clearfloat"></div>
+        </div>
+
+        <div ng-switch on="activeSnapshotView">
+            <section ng-switch-when="Information" ng-include="'/partials/snapshotinfo.html'"></section>
+            <section ng-switch-when="Statistics" ng-include="'/partials/snapshotstats.html'"></section>
+            <section ng-switch-when="Network Messages" ng-include="'/partials/snapshotmessages.html'"></section>
+        </div>
+    </div>
+
+    <div ng-show="isNoSnapshot()">
+        <p>No snapshot to display. <a href="/#/networktraffic/upload">Upload</a> a snapshot logfile.</p>
+    </div>
+
+</div>

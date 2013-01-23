@@ -25,6 +25,9 @@ class NetworkTrafficSnapshot:
         for message in self.messages:
             message.save(snapshot_id)
 
+        # return the saved snapshot id
+        return snapshot_id
+
     def upload(self, title, desc, logfile, content):
         self.data['title'] = title
         self.data['desc'] = desc

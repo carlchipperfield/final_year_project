@@ -45,7 +45,7 @@ class SnapshotUpload:
         else:
             # Process the logfile
             self.snapshot.upload(title, description, filename, content)
-            self.snapshot.save()
+            return self.snapshot.save()
 
 
 application = web.application(urls, globals()).wsgifunc()

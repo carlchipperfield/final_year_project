@@ -1,134 +1,229 @@
+var actions = {
+    get: {method: 'GET'},
+    list: {method: 'GET', isArray: true},
+    remove: {method: 'DELETE'}
+};
+
 var app = angular.module('app', ['ngResource']);
 
 app.config(function($routeProvider, $locationProvider){
-        //$locationProvider.html5Mode(true);
+    //$locationProvider.html5Mode(true);
 
-        var snapshot_data = {
-            templateUrl: '/partials/snapshots.html'
-        };
+    var snapshot_data = {
+        templateUrl: '/partials/networktraffic.html',
+        reloadOnSearch: false
+    };
 
-        var upload_data = {
-            templateUrl: '/partials/upload.html',
-            controller: 'UploadSnapshotCtrl'
-        };
+    var upload_data = {
+        templateUrl: '/partials/snapshotupload.html'
+    };
 
-        $routeProvider.when('/snapshot/:id', snapshot_data)
-                      .when('/snapshot', snapshot_data)
-                      .when('/upload', upload_data)
-                      .otherwise({redirectTo: '/snapshot'});
-    });
+    $routeProvider.when('/networktraffic', snapshot_data)
+                  .when('/networktraffic/upload', upload_data)
+                  .otherwise({redirectTo: '/networktraffic'});
+});
 
 app.filter('formatdate', function() {
     return function(input) {
         var date = new Date(input);
         return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
     };
-})
-.filter('formatport', function() {
+});
+
+app.filter('formatport', function() {
     return function(input) {
         if (input !== '') {
             return ':' + input;
         }
         return input;
     };
-})
-.filter('capitalize', function() {
+});
+
+app.filter('capitalize', function() {
     return function(input) {
-        if (input === undefined || input === '') {
+        if (!input) {
             return input;
         }
         return input.charAt(0).toUpperCase() + input.slice(1);
     };
 });
 
+/* Diective to resize the content wrapper */
+app.directive('resize', function($timeout) {
 
-var actions = {
-        get: {method: 'GET'},
-        list: {method: 'GET', isArray: true},
-        remove: {method: 'DELETE'}
-};
+    var directiveDefinitionObject = {
+        compile: function compile() {
+            return function postLink() {
+                var header = $('header');
+                var container = $('#content-wrapper');
+
+                function resizeWrapper() {
+                    container.height($(window).height() - header.height());
+                }
+                resizeWrapper();
+
+                $(window).resize( function() {
+                    resizeWrapper();
+                });
+            };
+        }
+    };
+    return directiveDefinitionObject;
+});
 
 
-function SnapshotsCtrl($scope, $resource, $location, $routeParams, $log)
-{
-    $scope.snapshotviews = ['Information', 'Statistics', 'Network Messages'];
-    $scope.currentview = $scope.snapshotviews[0];
+app.factory('mySharedService', function($rootScope) {
 
-    $scope.messageviews = ['Information', 'Headers', 'Content'];
-    $scope.currentmessageview = $scope.snapshotviews[0];
+    var sharedService = {};
+    this.snapshot = undefined;
 
-    $scope.remove = function() {
-        var index = $scope.currentsnapshotindex;
+    sharedService.displaySnapshot = function(snapshot) {
+        this.snapshot = snapshot;
+        $rootScope.$broadcast('displaysnapshot');
+    };
+
+    sharedService.removeSnapshot = function() {
+        $rootScope.$broadcast('removesnapshot');
+    };
+
+    return sharedService;
+});
+
+
+function AppCtrl($scope, mySharedService) {
+    $scope.page = {
         
-        var success = function () {
-            $scope.snapshots.splice(index, 1);
-
-            if ($scope.snapshots.length > 0) {
-                index = (index>0) ? index - 1: index;
-                $scope.display_snapshot_detailed(index);
-            }
-        };
-
-        var fail = function() {
-            $log.error('Delete Failed');
-        };
-
-        var snapshot_id = $scope.snapshots[index]._id;
-        Snapshot.remove({id: snapshot_id}, success, fail);
     };
-
-    $scope.isSnapshots = function() {
-        return $scope.snapshots.length > 0;
-    };
-    
-    $scope.retrieve_snapshot = function(snapshot_id) {
-        var url = '/api/snapshot/:id';
-        var url_params = {id: snapshot_id};
-        var Messages = $resource(url, url_params, actions);
-        $scope.currentsnapshot = Messages.get();
-    };
-
-    $scope.retrieve_messages = function(snapshot_id) {
-        var url = '/api/snapshot/:id/networkmessages?limit=:limit';
-        var url_params = {
-            id: snapshot_id,
-            limit: 30
-        };
-        var Messages = $resource(url, url_params, actions);
-        $scope.networkmessages = Messages.list();
-    };
-
-    $scope.display_snapshot_detailed = function(index) {
-        $scope.currentsnapshotindex = index;
-        $scope.currentsnapshot = $scope.snapshots[index];
-        $scope.retrieve_messages($scope.currentsnapshot._id);
-    };
-
-    $scope.display_snapshot_detailed_onload = function() {
-        $scope.totalsnapshots = $scope.snapshots.length;
-
-        // Load the snapshot messages from the server
-        if ($routeParams.id) {
-            // Load messages for snapshot in url
-            $scope.retrieve_snapshot($routeParams.id);
-            $scope.retrieve_messages($routeParams.id);
-            $scope.currentsnapshotindex = 0;
-        }
-        else {
-            if ( $scope.snapshots.length > 0 ) {
-                $scope.display_snapshot_detailed(0);
-            }
-        }
-    };
-
-    // Load snapshots from server
-    var Snapshot = $resource('/api/snapshot/:id', {}, actions);
-    $scope.snapshots = Snapshot.list({}, $scope.display_snapshot_detailed_onload);
 }
 
 
-function UploadSnapshotCtrl($scope)
+function SnapshotListCtrl($scope, $resource, mySharedService, $location, $routeParams, $window)
 {
+    var Snapshot = $resource('/api/snapshot/:id', {}, actions);
+
+    this.process_snapshots = function() {
+        var snapshot = {};
+
+        if ($routeParams.id) {
+            var found_snapshot = false;
+            for (var i = 0; i < $scope.snapshots.length; i++) {
+                if ($scope.snapshots[i]._id === $routeParams.id) {
+                    found_snapshot = true;
+                    snapshot = $scope.snapshots[i];
+                    break;
+                }
+            }
+            if (!found_snapshot) {
+                $location.path('/#/networktraffic').replace();
+            }
+        }
+        else if ($scope.snapshots.length > 0) {
+            snapshot = $scope.snapshots[0];
+        }
+
+        mySharedService.displaySnapshot(snapshot);
+    };
+
+    $scope.display_snapshot = function(index) {
+        var snapshot = $scope.snapshots[index];
+        $location.search({id: snapshot._id});
+        mySharedService.displaySnapshot(snapshot);
+    };
+
+    $scope.upload = function() {
+        $window.location.href = '/#/networktraffic/upload';
+    };
+
+    $scope.$on('removesnapshot', function() {
+        var snapshot_id = mySharedService.snapshot._id;
+
+        for (var i = 0; i < $scope.snapshots.length; i++) {
+            if ($scope.snapshots[i]._id === snapshot_id) {
+                $scope.snapshots.splice(i, 1);
+                break;
+            }
+        }
+
+        if ($scope.snapshots.length === 0) {
+            // Replace with empty object, which represents no snapshots
+            mySharedService.displaySnapshot({});
+        }
+        else {
+            i = (i > 0) ? i-- : i;
+            mySharedService.displaySnapshot($scope.snapshots[i]);
+        }
+
+        
+    });
+
+    $scope.snapshots = Snapshot.list({}, this.process_snapshots);
+}
+
+
+function SnapshotCtrl($rootScope, $scope, $log, $resource, mySharedService)
+{
+    /*
+        Work out how to document javascript!
+        The snapshot should be in one of three states
+            1. Loading (undefined)
+            2. No Snapshot (empty object)
+            3. Snapshot (snapshot object)
+    */
+    $rootScope.page = {
+        title: 'Network Traffic'
+    };
+
+    $scope.snapshotViews = ['Information', 'Statistics', 'Network Messages'];
+    $scope.activeSnapshotView = $scope.snapshotViews[0];
+
+    $scope.messageviews = ['Information', 'Headers', 'Content'];
+    $scope.currentmessageview = $scope.messageviews[0];
+
+    var Snapshot = $resource('/api/snapshot/:id', {}, actions);
+    var Messages = $resource('/api/snapshot/:id/networkmessages?limit=:limit', {}, actions);
+
+    $scope.$on('displaysnapshot', function() {
+        $scope.snapshot = mySharedService.snapshot;
+        if ($scope.isSnapshot()) {
+            $scope.retrieve_messages($scope.snapshot._id);
+        }
+    });
+
+    $scope.remove = function() {
+        var success = function () {
+            mySharedService.removeSnapshot();
+        };
+        var fail = function() {
+            $log.error('Delete Failed');
+        };
+        Snapshot.remove({id: $scope.snapshot._id}, success, fail);
+    };
+
+    $scope.retrieve_messages = function(snapshot_id) {
+        console.log($scope.networkmessages);
+        var url_params = {id: snapshot_id, limit: 30};
+        $scope.networkmessages = Messages.list(url_params);
+    };
+
+    $scope.isSnapshot = function() {
+        var snapshot = mySharedService.snapshot;
+        return snapshot !== undefined && snapshot._id !== undefined;
+    };
+
+    $scope.isNoSnapshot = function() {
+        var snapshot = mySharedService.snapshot;
+        return snapshot !== undefined && snapshot._id === undefined;
+    };
+}
+
+
+
+function UploadSnapshotCtrl($rootScope, $scope, $resource, $window)
+{
+    $rootScope.page = {
+        title: 'Network Traffic Upload'
+    };
+
     $scope.upload = function() {
 
         var formData = new FormData();
@@ -147,6 +242,13 @@ function UploadSnapshotCtrl($scope)
             progressBar.value = (e.loaded / e.total) * 100;
             progressBar.textContent = progressBar.value;
           }
+        };
+
+        xhr.onload = function() {
+            if (this.status === 200) {
+                var url = '/#/networktraffic?id=' + this.responseText;
+                $window.location.href = url;
+            }
         };
 
         xhr.send(formData);

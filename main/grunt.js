@@ -28,8 +28,8 @@ module.exports = function (grunt) {
                     'build/share/web/js/libraries/angular.min.js'
                         : SRC_JS_LIB + 'angular.min.js',
 
-                    'build/share/web/js/source/core/layout.js'
-                        : SRC_JS + 'core/layout.js',
+                    'build/share/web/js/libraries/bootstrap.min.js'
+                        : 'web/bootstrap/js/bootstrap.min.js',
 
                     'build/share/web/js/source/core/snapshot_upload.js'
                         : SRC_JS + 'core/snapshot_upload.js',
@@ -75,7 +75,8 @@ module.exports = function (grunt) {
             core: {
                 files: {
                     'build/share/web/css/core.css':  [
-                        SRC_CSS + 'main_layout.scss'
+                        SRC_CSS + 'main_layout.scss',
+                        SRC_CSS + 'navigation.scss'
                     ]
                 }
             }
