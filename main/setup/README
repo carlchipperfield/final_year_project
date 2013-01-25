@@ -1,0 +1,28 @@
+SETUP DEV SERVER WITH VAGRANT
+    http://docs.vagrantup.com/v1/docs/getting-started/index.html
+
+SETUP PRODUCTION SERVER WITHOUT VAGRANT
+
+# Copy build to server and extract
+    scp build/app.tgz user@server:/tmp/
+    ssh user@server
+    tar xzf /tmp/app.tgz
+
+# Install apache mods
+    sudo apt-get install libapache2-mod-wsgi
+
+# Configure Apache
+    sudo rm /etc/apache2/sites-enabled/000-default
+    sudo cp /app/apache2/default-site /etc/apache2/sites-enabled/
+
+# Install Mongo
+    http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
+
+    create file: vi /etc/apt/sources.list.d/10gen.list
+    add: deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen
+
+    sudo apt-get update
+    sudo apt-get install mongodb-10gen
+
+# Restart Apache
+    sudo apache2ctl restart

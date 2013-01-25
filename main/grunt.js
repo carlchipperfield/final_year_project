@@ -22,36 +22,45 @@ module.exports = function (grunt) {
             js: {
                 files: {
 
-                    'build/share/web/js/libraries/jquery-1.8.2.min.js'
+                    'build/app/share/web/js/libraries/jquery-1.8.2.min.js'
                         : SRC_JS_LIB + 'jquery-1.8.2.min.js',
 
-                    'build/share/web/js/libraries/angular.min.js'
+                    'build/app/share/web/js/libraries/angular.min.js'
                         : SRC_JS_LIB + 'angular.min.js',
 
-                    'build/share/web/js/libraries/bootstrap.min.js'
+                    'build/app/share/web/js/libraries/bootstrap.min.js'
                         : 'web/bootstrap/js/bootstrap.min.js',
 
-                    'build/share/web/js/source/core/snapshot_upload.js'
+                    'build/app/share/web/js/source/core/snapshot_upload.js'
                         : SRC_JS + 'core/snapshot_upload.js',
 
-                    'build/share/web/js/source/core/snapshots_controller.js'
+                    'build/app/share/web/js/source/core/snapshots_controller.js'
                         : SRC_JS + 'core/snapshots_controller.js'
                 }
             },
 
             css: {
                 files: {
-                    'build/share/web/css/' : 'web/css/normalize.css',
-                    'build/share/web/bootstrap/' : 'web/bootstrap/**'
+                    'build/app/share/web/css/' : 'web/css/normalize.css',
+                    'build/app/share/web/bootstrap/' : 'web/bootstrap/**'
                 }
             },
 
             core: {
                 files: {
-                    'build/share/api/': 'api/**',
-                    'build/share/python/site-packages/ni/': 'functional/ni/**',
-                    'build/share/web/': 'web/*',
-                    'build/share/web/partials/': 'web/partials/*'
+                    'build/app/share/api/': 'api/**',
+                    'build/app/share/python/site-packages/ni/': 'functional/ni/**',
+                    'build/app/share/web/': 'web/*',
+                    'build/app/share/web/partials/': 'web/partials/*',
+
+                    // Copy the python virtualenv to the build
+                    'build/app/python/': 'python/**'
+                }
+            },
+
+            platform: {
+                files: {
+                    'build/app/apache2/': 'setup/apache2/**'
                 }
             }
         },
@@ -67,17 +76,27 @@ module.exports = function (grunt) {
                 ],
                 dest: 'core.min.js',
                 destMap: 'core.js.map',
-                cwd: 'build/share/web/js/'
+                cwd: 'build/app/share/web/js/'
             }
         },
 
         sass: {
             core: {
                 files: {
-                    'build/share/web/css/core.css':  [
+                    'build/app/share/web/css/core.css':  [
                         SRC_CSS + 'main_layout.scss',
                         SRC_CSS + 'navigation.scss'
                     ]
+                }
+            }
+        },
+
+        /* The source code should be build,
+        which allows for easy distribution */
+        compress: {
+            main: {
+                files: {
+                    'build/app.tgz': 'build/**'
                 }
             }
         },
@@ -122,9 +141,10 @@ module.exports = function (grunt) {
 
     // Load third party plugins
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-jsmin-sourcemap');
 
     // Specify tasks
-    grunt.registerTask('default', 'lint copy jsmin-sourcemap sass');
+    grunt.registerTask('default', 'lint copy jsmin-sourcemap sass compress');
 };

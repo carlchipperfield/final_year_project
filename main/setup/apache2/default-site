@@ -1,0 +1,31 @@
+<VirtualHost *:80>
+        DocumentRoot /app/share/web/
+
+        WSGIScriptAlias /api /app/share/api/api.py
+
+    <Directory />
+        Order Deny,Allow
+        Deny from All
+    </Directory>
+
+    <Directory /app/share/web/>
+        Order allow,deny
+        Allow from All
+
+        RewriteEngine On
+        RewriteBase /
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteRule ^.+$  /index.html
+    </directory>
+
+    <Directory /app/share/api/>
+        Order allow,deny
+        Allow from All
+    </Directory>
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel info
+
+</VirtualHost>
