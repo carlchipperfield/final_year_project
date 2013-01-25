@@ -1,17 +1,7 @@
 <VirtualHost *:80>
         DocumentRoot /app/share/web/
-        
-        Alias /static/css    /app/share/web/css
-        Alias /static/js     /app/share/web/js
-        Alias /static/images /app/share/web/images
-        Alias /static/bootstrap /app/share/web/bootstrap
-
-        #Alias /testing/static/css    /app/share/web/css
-        #Alias /testing/static/js     /app/share/web/js
-        #Alias /testing/static/images /app/share/web/images
 
         WSGIScriptAlias /api /app/share/api/api.py
-        WSGIScriptAlias /testing /app/share/web/code.py
 
     <Directory />
         Order Deny,Allow
@@ -22,11 +12,11 @@
         Order allow,deny
         Allow from All
 
-        #RewriteEngine On
-        #RewriteBase /
-        #RewriteCond %{REQUEST_FILENAME} !-d
-        #RewriteCond %{REQUEST_FILENAME} !-f
-        #RewriteRule ^.+$  /index.html
+        RewriteEngine On
+        RewriteBase /
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteRule ^.+$  /index.html
     </directory>
 
     <Directory /app/share/api/>
@@ -36,6 +26,6 @@
 
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
-    LogLevel debug
+    LogLevel info
 
 </VirtualHost>

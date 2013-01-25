@@ -7,7 +7,7 @@ var actions = {
 var app = angular.module('app', ['ngResource']);
 
 app.config(function($routeProvider, $locationProvider){
-    //$locationProvider.html5Mode(true);
+    $locationProvider.html5Mode(true);
 
     var snapshot_data = {
         templateUrl: '/partials/networktraffic.html',
@@ -200,7 +200,6 @@ function SnapshotCtrl($rootScope, $scope, $log, $resource, mySharedService)
     };
 
     $scope.retrieve_messages = function(snapshot_id) {
-        console.log($scope.networkmessages);
         var url_params = {id: snapshot_id, limit: 30};
         $scope.networkmessages = Messages.list(url_params);
     };
