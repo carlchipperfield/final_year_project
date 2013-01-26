@@ -1,18 +1,19 @@
 /*global module:false*/
 module.exports = function (grunt) {
 
-    var SRC_CSS    = 'web/css/',
-        SRC_JS     = 'web/js/',
-        SRC_JS_LIB = SRC_JS + 'libraries/';
-
     // Project configuration.
     grunt.initConfig({
+
+        build_dirs: {
+            api: 'build/app/share/api',
+            web: 'build/app/share/web',
+            python: 'build/app/share/python'
+        },
 
         lint: {
             files: [
                 'grunt.js',
-                SRC_JS + '*.js',
-                SRC_JS + 'utils/*.js'
+                'web/js/**'
             ]
         },
 
@@ -21,37 +22,54 @@ module.exports = function (grunt) {
 
             js: {
                 files: {
-
-                    'build/app/share/web/js/libraries/jquery-1.8.2.min.js'
-                        : SRC_JS_LIB + 'jquery-1.8.2.min.js',
-
-                    'build/app/share/web/js/libraries/angular.min.js'
-                        : SRC_JS_LIB + 'angular.min.js',
-
-                    'build/app/share/web/js/libraries/bootstrap.min.js'
-                        : 'web/bootstrap/js/bootstrap.min.js',
-
-                    'build/app/share/web/js/source/core/snapshot_upload.js'
-                        : SRC_JS + 'core/snapshot_upload.js',
-
-                    'build/app/share/web/js/source/core/snapshots_controller.js'
-                        : SRC_JS + 'core/snapshots_controller.js'
+                    '<%=build_dirs.web%>/js/source/': [
+                        'web/js/app.js',
+                        'web/js/filters.js',
+                        'web/js/directives.js',
+                        'web/js/services.js',
+                        'web/js/controllers.js'
+                    ]
                 }
             },
 
             css: {
                 files: {
-                    'build/app/share/web/css/' : 'web/css/normalize.css',
-                    'build/app/share/web/bootstrap/' : 'web/bootstrap/**'
+                    '<%=build_dirs.web%>/css/': [
+                        'web/css/normalize.css'
+                    ]
+                }
+            },
+
+            templates: {
+                files: {
+                    '<%=build_dirs.web%>/': [
+                        'web/index.html',
+                        'web/partials/**'
+                    ]
+                }
+            },
+
+            lib: {
+                files: {
+                    '<%=build_dirs.web%>/lib/': [
+                        'web/lib/angular/angular.min.js',
+                        'web/lib/angular/angular-resource.min.js',
+                        'web/lib/jquery/jquery-1.8.2.min.js',
+                        'web/lib/bootstrap/css/bootstrap.min.css',
+                        'web/lib/bootstrap/js/bootstrap.min.js',
+                        'web/lib/bootstrap/img/**'
+                    ]
                 }
             },
 
             core: {
                 files: {
-                    'build/app/share/api/': 'api/**',
-                    'build/app/share/python/site-packages/ni/': 'functional/ni/**',
-                    'build/app/share/web/': 'web/*',
-                    'build/app/share/web/partials/': 'web/partials/*',
+                    // Copy the API
+                    '<%=build_dirs.api%>/': 'api/**',
+
+                    // Copy the functional python source
+                    '<%=build_dirs.python%>/site-packages/ni/'
+                        : 'functional/ni/**',
 
                     // Copy the python virtualenv to the build
                     'build/app/python/': 'python/**'
@@ -72,7 +90,7 @@ module.exports = function (grunt) {
             core: {
 
                 src: [
-                    'source/core/*.js'
+                    'source/*.js'
                 ],
                 dest: 'core.min.js',
                 destMap: 'core.js.map',
@@ -84,8 +102,8 @@ module.exports = function (grunt) {
             core: {
                 files: {
                     'build/app/share/web/css/core.css':  [
-                        SRC_CSS + 'main_layout.scss',
-                        SRC_CSS + 'navigation.scss'
+                        'web/css/main_layout.scss',
+                        'web/css/navigation.scss'
                     ]
                 }
             }
@@ -126,7 +144,8 @@ module.exports = function (grunt) {
             globals: {
                 jQuery : true,
                 'alert': true,
-                'console': true
+                'console': true,
+                'angular': true
             }
         },
 
