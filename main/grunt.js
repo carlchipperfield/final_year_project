@@ -62,6 +62,14 @@ module.exports = function (grunt) {
                 }
             },
 
+            img: {
+                files: {
+                    '<%=build_dirs.web%>/img/': [
+                        'web/images/cisco.png'
+                    ]
+                }
+            },
+
             core: {
                 files: {
                     // Copy the API
@@ -165,5 +173,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-jsmin-sourcemap');
 
     // Specify tasks
-    grunt.registerTask('default', 'lint copy jsmin-sourcemap sass compress');
+    grunt.registerTask('default', 'lint copy jsmin-sourcemap sass');
+    grunt.registerTask('deploy', 'lint copy jsmin-sourcemap sass compress');
 };
