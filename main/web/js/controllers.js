@@ -88,13 +88,13 @@ angular.module('app.controllers', [])
             3. Snapshot (snapshot object)
     */
     $rootScope.page = {
-        title: 'Network Traffic'
+        title: 'Network Traffic Analytics'
     };
 
-    $scope.snapshotViews = ['Information', 'Statistics', 'Network Messages'];
+    $scope.snapshotViews = ['Details', 'Statistics', 'Network Messages'];
     $scope.activeSnapshotView = $scope.snapshotViews[0];
 
-    $scope.messageviews = ['Information', 'Headers', 'Content'];
+    $scope.messageviews = ['Details', 'Headers', 'Content'];
     $scope.currentmessageview = $scope.messageviews[0];
 
     var Snapshot = $resource('/api/snapshot/:id', {}, actions);

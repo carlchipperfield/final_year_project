@@ -2,17 +2,17 @@
 
     <div ng-show="isSnapshot()">
 
-        <div id="test">
+        <div class="titlebar">
             <h3>{{snapshot.title}}</h3>
+
             <div id="snapshot-view-selector">
                 <select ng-model="activeSnapshotView" ng-options="view for view in snapshotViews">
                 </select>
             </div>
-            <div class="clearfloat"></div>
         </div>
 
         <div ng-switch on="activeSnapshotView">
-            <section ng-switch-when="Information" ng-include="'/partials/networktraffic/snapshotinfo.html'"></section>
+            <section ng-switch-when="Details" ng-include="'/partials/networktraffic/snapshotinfo.html'"></section>
             <section ng-switch-when="Statistics" ng-include="'/partials/networktraffic/snapshotstats.html'"></section>
             <section ng-switch-when="Network Messages" ng-include="'/partials/networktraffic/snapshotmessages.html'"></section>
         </div>

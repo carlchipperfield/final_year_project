@@ -15,8 +15,10 @@
     <div id="container" ng-app="app" ng-controller="AppCtrl">
 
         <header>
-            <div class="navbar" ng-include="'/partials/core/navigation.html'"></div>
-            <div ng-include="'/partials/core/apptoolbar.html'"></div>
+            <div ng-include="'/partials/core/navigation.html'"></div>
+            <div id="toolbar">
+                <h2>{{$root.page.title}}</h2>
+            </div>
         </header>
 
         <div id="content-wrapper" ng-view></div>
@@ -28,4 +30,5 @@
     <script src="/lib/angular/angular-resource.min.js"></script>
     <script src="/js/core.min.js"></script>
 
+</body>
 </html>

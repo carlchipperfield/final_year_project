@@ -1,20 +1,91 @@
-/* Customize the default bootstrap nav bar */
 .navbar {
-    margin: 0;
-    min-height: auto;
 
-    .navbar-inner {
-        border: none;
-        border-radius: 0;
-        min-height: inherit;
-    }
+    margin: 0;
 
     .brand {
-        font-size: 16px;
-        font-weight: 300;
+        padding: 10px 40px;
     }
 
-    .brand, .nav > li > a {
-        padding: 7px 15px;
+    .navbar-inner {
+        float: left;
+        background: none;
+        border: none;
+        border-radius: 0;
+        -web-kit-box-shadow: none;
+        box-shadow: none;
+
+        li a {
+            text-shadow: none;
+        }
+    }
+
+    .nav > li > a {
+        font-weight: 600;
+        padding: 15px 20px;
+        border-bottom: 1px solid transparent;
+        border-right: 1px solid transparent;
+    }
+
+    .nav > li > a,
+    .nav > li.dropdown > .dropdown-toggle,
+    .nav > li.dropdown > .dropdown-toggle:hover {
+        color: #fff;
+
+        .caret {
+            border-top-color: #fff;
+            border-bottom-color: #fff;
+            margin-left: 5px;
+        }
+    }
+
+    .nav > li > a:hover,
+    .nav > li > a:focus,
+    .nav > li.dropdown.open > .dropdown-toggle,
+    .nav > li.dropdown > .dropdown-toggle:hover,
+    .nav > li.dropdown > .dropdown-toggle:focus,
+    .nav > li.dropdown.active > .dropdown-toggle,
+    .nav > li.dropdown.open.active > .dropdown-toggle {
+        background: #F5F5F5;
+        color: #4775A7;
+        box-shadow: none;
+        border-bottom: 1px solid #D3D3D3;
+        border-right: 1px solid #D3D3D3;
+        font-weight: 600;
+
+        .caret {
+            border-top-color: #4775A7;
+            border-bottom-color: #4775A7;
+            margin-left: 5px;
+        }
+    }
+
+    /* Style the dropdowns */
+    .dropdown-menu li > a:hover,
+    .dropdown-menu li > a:focus,
+    .dropdown-menu .active > a,
+    .dropdown-menu .active > a:hover,
+    .dropdown-submenu:hover > a {
+        background: none;
+        background-color: #4775A7;
+    }
+    .dropdown-menu .divider {
+        margin: 6px 1px;
+    }
+}
+
+
+#user {
+    float: right;
+
+    .navbar-inner {
+        padding-right: 20px;
+        .nav { 
+            margin: 0;
+            margin-left: 20px;
+        }
+    }
+
+    .divider-vertical {
+        margin: 0;
     }
 }
