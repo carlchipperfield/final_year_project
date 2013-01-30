@@ -79,6 +79,7 @@ class Message(object):
         self._parse_message_info(log_entry)
         self._parse_headers(log_entry)
         self._parse_content(log_entry)
+        self.extract_useful_header_data()
 
     def _parse_message_info(self, log_entry):
         self.data['utc'] = self._parse_utc(log_entry)
@@ -98,6 +99,9 @@ class Message(object):
         pass  # Implemented by specific messages
 
     def _parse_message_content(self, log_entry):
+        pass  # Implemented by specific messages
+
+    def extract_useful_header_data(self):
         pass  # Implemented by specific messages
 
     def _parse_utc(self, log_entry):
@@ -209,6 +213,12 @@ class SipMessage(Message):
                 version = re.search('SIP/.*', request_line.group(0))
                 return version.group(0).strip('SIP/')
             raise InvalidMessageFormatError('SIP', log_entry, "Unable to determine protocol version")
+
+    def extract_useful_header_data(self):
+        # Going to extract the call_id
+        for header in self.data['headers']:
+            if header['name'].lower() == 'call-id':
+                self.data['call-id'] = header['value']
 
 
 class InvalidMessageFormatError(Exception):

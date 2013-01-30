@@ -1,9 +1,50 @@
 <div class="info">
-    <table class="table">
+
+    <h4>Summary</h4>
+    <table class="table table-striped">
         <tbody>
             <tr>
-                <th>Total Messages</th>
-                <td>{{snapshot.total_messages}}</td>
+                <th>Network Messages</th>
+                <td>{{snapshot.statistics.total_messages}}</td>
+            </tr>
+            <tr>
+                <th>Requests</th>
+                <td>{{snapshot.statistics.total_requests}}</td>
+            </tr>
+            <tr>
+                <th>Responses</th>
+                <td>{{snapshot.statistics.total_responses}}</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <h4>Response breakdown</h4>
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <th>Provisional 1xx</th>
+                <td>{{snapshot.statistics.responses.provisional}}</td>
+            </tr>
+            <tr>
+                <th>Successful 2xx</th>
+                <td>{{snapshot.statistics.responses.successful}}</td>
+            </tr>
+            <tr>
+                <th>Redirection 3xx</th>
+                <td>{{snapshot.statistics.responses.redirection}}</td>
+            </tr>
+            <tr>
+                <th>Request Failure 4xx</th>
+                <td>{{snapshot.statistics.responses.bad_request}}</td>
+            </tr>
+            <tr>
+                <th>Server Failure 5xx</th>
+                <td>{{snapshot.statistics.responses.server_failure}}</td>
+            </tr>
+            <tr>
+                <th>Global Failure 6xx</th>
+                <td>{{snapshot.statistics.responses.global_failure}}</td>
             </tr>
         </tbody>
     </table>

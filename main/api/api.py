@@ -45,7 +45,9 @@ class SnapshotUpload:
         else:
             # Process the logfile
             self.snapshot.upload(title, description, filename, content)
-            return self.snapshot.save()
+            id = self.snapshot.save()
+            self.snapshot.generate_statistics()
+            return id
 
 
 application = web.application(urls, globals()).wsgifunc()
