@@ -1,7 +1,14 @@
+<div class="pagination pagination-centered pagination-small">
+  <ul>
+    <li ng-class="{disabled: isFirstPage()}"><a href="#" ng-click="previous()">Previous</a></li>
+    <li ng-class="{disabled: isLastPage()}"><a href="#" ng-click="next()">Next</a></li>
+  </ul>
+</div>
+
 <div id="networkmessages" class="info networkmessage" ng-repeat="networkmessage in networkmessages">
 
     <div id="messagebar">
-        <h5>Network message {{$index+1}} of {{snapshot.statistics.total_messages}}</h5>
+        <h5>Network message {{networkmessage.index + 1}} of {{snapshot.statistics.total_messages}}</h5>
         <div id="message-view-selector">
             <select ng-model="currentmessageview" ng-options="view for view in messageviews">
             </select>
@@ -51,4 +58,11 @@
         <p ng-switch-when="Content">{{networkmessage.content}}</p>
 
     </div>
+</div>
+
+<div class="pagination pagination-centered pagination-small" ng-show="isMessages()">
+  <ul>
+    <li ng-class="{disabled: isFirstPage()}"><a href="#" ng-click="previous()">Previous</a></li>
+    <li ng-class="{disabled: isLastPage()}"><a href="#" ng-click="next()">Next</a></li>
+  </ul>
 </div>

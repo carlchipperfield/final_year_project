@@ -98,7 +98,12 @@ angular.module('app.controllers', [])
     $scope.currentmessageview = $scope.messageviews[0];
 
     var Snapshot = $resource('/api/snapshot/:id', {}, actions);
-    var Messages = $resource('/api/snapshot/:id/networkmessages?limit=:limit', {}, actions);
+    var Messages = $resource('/api/snapshot/:id/networkmessages?limit=:limit&offset=:offset', {}, actions);
+
+    /* Pagination data */
+    $scope.currentPage = 0;
+    $scope.limit = 40;
+    $scope.offset = 0;
 
     $scope.$on('displaysnapshot', function () {
         $scope.snapshot = mySharedService.snapshot;
@@ -118,7 +123,11 @@ angular.module('app.controllers', [])
     };
 
     $scope.retrieve_messages = function (snapshot_id) {
-        var url_params = {id: snapshot_id, limit: 30};
+        var url_params = {
+            id: snapshot_id,
+            limit: $scope.limit,
+            offset: $scope.offset
+        };
         $scope.networkmessages = Messages.list(url_params);
     };
 
@@ -130,6 +139,37 @@ angular.module('app.controllers', [])
     $scope.isNoSnapshot = function () {
         var snapshot = mySharedService.snapshot;
         return snapshot !== undefined && snapshot._id === undefined;
+    };
+
+    $scope.isMessages = function () {
+        return $scope.networkmessages !== undefined &&
+                $scope.networkmessages.length > 0;
+    };
+
+    $scope.next = function () {
+        var offset = ($scope.currentPage + 1) * $scope.limit;
+
+        if (offset < $scope.snapshot.statistics.total_messages) {
+            $scope.currentPage++;
+            $scope.offset = offset;
+            $scope.retrieve_messages($scope.snapshot._id);
+        }
+    };
+
+    $scope.previous = function () {
+        if ($scope.currentPage > 0) {
+            $scope.currentPage--;
+            $scope.offset = $scope.currentPage * $scope.limit;
+            $scope.retrieve_messages($scope.snapshot._id);
+        }
+    };
+
+    $scope.isFirstPage = function () {
+        return $scope.currentPage === 0;
+    };
+
+    $scope.isLastPage = function () {
+        return (($scope.currentPage + 1) * $scope.limit) > ($scope.snapshot.statistics.total_messages);
     };
 })
 

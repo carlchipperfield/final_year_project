@@ -111,7 +111,7 @@ div#content {
 }
 
 div.titlebar {
-
+    background-color: #F5F5F5;
     padding: 10px 20px;
 
     h3 {
@@ -155,4 +155,8 @@ div.networkmessage {
             }
         }
     }
+}
+
+.pagination {
+    margin: 5px;
 }
