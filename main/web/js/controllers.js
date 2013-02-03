@@ -171,6 +171,10 @@ angular.module('app.controllers', [])
     $scope.isLastPage = function () {
         return (($scope.currentPage + 1) * $scope.limit) > ($scope.snapshot.statistics.total_messages);
     };
+
+    $scope.isResponse = function (name) {
+        return $scope.snapshot.statistics.responses[name] > 0;
+    };
 })
 
 

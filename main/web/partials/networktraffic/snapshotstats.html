@@ -1,48 +1,69 @@
 <div class="info">
 
-    <h4>Summary</h4>
-    <table class="table table-striped">
+    <h4>Network Messages</h4>
+    <table class="table">
         <tbody>
             <tr>
-                <th>Network Messages</th>
+                <th>Total</th>
                 <td>{{snapshot.statistics.total_messages}}</td>
             </tr>
             <tr>
-                <th>Requests</th>
-                <td>{{snapshot.statistics.total_requests}}</td>
+                <th>Incoming</th>
+                <td>{{snapshot.statistics.total_incoming}}</td>
             </tr>
             <tr>
-                <th>Responses</th>
-                <td>{{snapshot.statistics.total_responses}}</td>
+                <th>Outgoing</th>
+                <td>{{snapshot.statistics.total_outgoing}}</td>
             </tr>
-
+            <tr>
+                <th>Internal</th>
+                <td>{{snapshot.statistics.total_internal}}</td>
+            </tr>
         </tbody>
     </table>
 
-    <h4>Response breakdown</h4>
-    <table class="table table-striped">
+    <h4>Requests</h4>
+    <table class="table">
         <tbody>
             <tr>
+                <th>Total</th>
+                <td>{{snapshot.statistics.total_requests}}</td>
+            </tr>
+            <tr ng-repeat="(method, count) in snapshot.statistics.methods">
+                <th>{{method}}</th>
+                <td>{{count}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4>Responses</h4>
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Total</th>
+                <td>{{snapshot.statistics.total_responses}}</td>
+            </tr>
+            <tr ng-show="isResponse('provisional')">
                 <th>Provisional 1xx</th>
                 <td>{{snapshot.statistics.responses.provisional}}</td>
             </tr>
-            <tr>
+            <tr ng-show="isResponse('successful')">
                 <th>Successful 2xx</th>
                 <td>{{snapshot.statistics.responses.successful}}</td>
             </tr>
-            <tr>
+            <tr ng-show="isResponse('redirection')">
                 <th>Redirection 3xx</th>
                 <td>{{snapshot.statistics.responses.redirection}}</td>
             </tr>
-            <tr>
+            <tr ng-show="isResponse('bad_request')">
                 <th>Request Failure 4xx</th>
                 <td>{{snapshot.statistics.responses.bad_request}}</td>
             </tr>
-            <tr>
+            <tr ng-show="isResponse('server_failure')">
                 <th>Server Failure 5xx</th>
                 <td>{{snapshot.statistics.responses.server_failure}}</td>
             </tr>
-            <tr>
+            <tr ng-show="isResponse('global_failure')">
                 <th>Global Failure 6xx</th>
                 <td>{{snapshot.statistics.responses.global_failure}}</td>
             </tr>

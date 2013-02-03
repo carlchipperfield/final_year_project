@@ -95,6 +95,11 @@ class Message(object):
             else:
                 self.data['source_port'] = port
 
+        if self.is_internal_message():
+            self.data['type'] = 'internal'
+        else:
+            self.data['type'] = 'external'
+
     def _parse_message_headers(self, log_entry):
         pass  # Implemented by specific messages
 
@@ -192,6 +197,7 @@ class SipMessage(Message):
             for method in self.methods:
                 if cseq.group(0).find(method) != -1:
                     return method
+        return 'None'
 
     def _parse_status(self, log_entry):
         # SIP/2.0 200 OK

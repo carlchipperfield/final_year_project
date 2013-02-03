@@ -6,6 +6,7 @@ sys.path.append('/app/share/python/site-packages/')
 from pymongo import MongoClient
 from messages import Message
 
+sys.stdout = sys.stderr
 
 class NetworkTrafficSnapshot:
 
@@ -108,6 +109,10 @@ class NetworkTrafficSnapshot:
             "total_calls": self.get_total_calls(),
             "total_requests": self.get_total_requests(),
             "total_responses": self.get_total_responses(),
+            "total_incoming": self.get_total_incoming(),
+            "total_outgoing": self.get_total_outgoing(),
+            "total_internal": self.get_total_internal(),
+            "methods": self.get_methods_used(),
             "responses": self.get_status_distribution()
         }}
         self.snapshots.update(test, {"$set": statistics})
@@ -139,30 +144,51 @@ class NetworkTrafficSnapshot:
         }
         return self.networkmessages.find(query).count()
 
-    def get_status_distribution(self):
-        response_codes = {
-                'provisional': 0,
-                'successful': 0,
-                'redirection': 0,
-                'bad_request': 0,
-                'server_failure': 0,
-                'global_failure': 0
+    def get_total_incoming(self):
+        query = {
+            'snapshot_id': str(self.id),
+            'type': 'external',
+            'destination': '127.0.0.1'
         }
+        return self.networkmessages.find(query).count()
+
+    def get_total_outgoing(self):
+        query = {
+            'snapshot_id': str(self.id),
+            'type': 'external',
+            'source': '127.0.0.1'
+        }
+        return self.networkmessages.find(query).count()
+
+    def get_total_internal(self):
+        query = {
+            'snapshot_id': str(self.id),
+            'type': 'internal'
+        }
+        return self.networkmessages.find(query).count()
+
+    def get_methods_used(self):
+        method_count = {}
+        for message in self.messages:
+            message = message.get()
+            if message['status'] == 'None':
+                if message['method'] in method_count:
+                    method_count[message['method']] += 1
+                else:
+                    method_count[message['method']] = 1
+
+        return method_count
+
+    def get_status_distribution(self):
+        response_categories = ['provisional', 'successful', 'redirection',
+                                'bad_request', 'server_failure', 'global_failure']
+        response_counts = [0, 0, 0, 0, 0, 0]
 
         for message in self.messages:
             msg = message.get()
             if msg['status'] != 'None':
-                status = msg['status'][0]
-                if status == '1':
-                    response_codes['provisional'] = response_codes['provisional'] + 1
-                elif status == '2':
-                    response_codes['successful'] = response_codes['successful'] + 1
-                elif status == '3':
-                    response_codes['redirection'] = response_codes['redirection'] + 1
-                elif status == '4':
-                    response_codes['bad_request'] = response_codes['bad_request'] + 1
-                elif status == '5':
-                    response_codes['server_failure'] = response_codes['server_failure'] + 1
-                elif status == '6':
-                    response_codes['global_failure'] = response_codes['global_failure'] + 1
-        return response_codes
+                status = int(msg['status'][0])
+                response_counts[status - 1] += 1
+
+
+        return dict(zip(response_categories, response_counts))
