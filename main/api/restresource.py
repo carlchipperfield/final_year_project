@@ -4,12 +4,11 @@ import re
 sys.path.append("/app/share/python/site-packages")
 
 from pymongo import MongoClient
-from pymongo.errors import InvalidId
 from bson.objectid import ObjectId
-from bson import json_util
 from apiutils import *
 
 id_pattern = re.compile('[0-91-f]{24}$')
+sys.stdout = sys.stderr
 
 
 class RestResource(object):
@@ -48,8 +47,17 @@ class RestResource(object):
 
             if name in self.relations:
                 collection_name = self.relations[name]['collection']
-                query = {self.relations[name]['field']: id}
+
+                query = {}
+                query[self.relations[name]['field']] = id
+
+                if 'filters' in self.relations[name]:
+                    for filter in self.relations[name]['filters']:
+                        if filter in data:
+                            query[filter] = api_decode(data[filter])
+
                 sort = [(self.relations[name]['sort'], 1)]
+
                 output = self._find(collection_name, query, fields, sort, limit, offset)
             else:
                 output = {}
@@ -61,12 +69,17 @@ class RestResource(object):
 
     def _find(self, collection_name, query, fields, sort, limit, skip):
         collection = self.db[collection_name]
+        docs = collection.find(spec=query, fields=fields, sort=sort, limit=limit, skip=skip)
+
         output = []
-        docs = collection.find(query, fields=fields, sort=sort, limit=limit, skip=skip)
         for doc in docs:
             format_document_id(doc)
             output.append(doc)
-        return output
+
+        return {
+            'total': docs.count(),
+            collection_name: output
+        }
 
     def _find_one(self, collection_name, doc_id):
         collection = self.db[collection_name]

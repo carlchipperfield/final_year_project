@@ -1,6 +1,6 @@
 var actions = {
     get: {method: 'GET'},
-    list: {method: 'GET', isArray: true},
+    list: {method: 'GET'},
     remove: {method: 'DELETE'}
 };
 
@@ -23,10 +23,10 @@ angular.module('app.controllers', [])
 
         if ($routeParams.id) {
             var found_snapshot = false;
-            for (var i = 0; i < $scope.snapshots.length; i++) {
-                if ($scope.snapshots[i]._id === $routeParams.id) {
+            for (var i = 0; i < $scope.snapshots.snapshots.length; i++) {
+                if ($scope.snapshots.snapshots[i]._id === $routeParams.id) {
                     found_snapshot = true;
-                    snapshot = $scope.snapshots[i];
+                    snapshot = $scope.snapshots.snapshots[i];
                     break;
                 }
             }
@@ -34,15 +34,15 @@ angular.module('app.controllers', [])
                 $location.path('/#/networktraffic').replace();
             }
         }
-        else if ($scope.snapshots.length > 0) {
-            snapshot = $scope.snapshots[0];
+        else if ($scope.snapshots.snapshots.length > 0) {
+            snapshot = $scope.snapshots.snapshots[0];
         }
 
         mySharedService.displaySnapshot(snapshot);
     };
 
     $scope.display_snapshot = function (index) {
-        var snapshot = $scope.snapshots[index];
+        var snapshot = $scope.snapshots.snapshots[index];
         $location.search({id: snapshot._id});
         mySharedService.displaySnapshot(snapshot);
     };
@@ -54,28 +54,25 @@ angular.module('app.controllers', [])
     $scope.$on('removesnapshot', function () {
         var snapshot_id = mySharedService.snapshot._id;
 
-        for (var i = 0; i < $scope.snapshots.length; i++) {
-            if ($scope.snapshots[i]._id === snapshot_id) {
-                $scope.snapshots.splice(i, 1);
+        for (var i = 0; i < $scope.snapshots.snapshots.length; i++) {
+            if ($scope.snapshots.snapshots[i]._id === snapshot_id) {
+                $scope.snapshots.snapshots.splice(i, 1);
                 break;
             }
         }
 
-        if ($scope.snapshots.length === 0) {
+        if ($scope.snapshots.snapshots.length === 0) {
             // Replace with empty object, which represents no snapshots
             mySharedService.displaySnapshot({});
         }
         else {
             i = (i > 0) ? i-- : i;
-            mySharedService.displaySnapshot($scope.snapshots[i]);
+            mySharedService.displaySnapshot($scope.snapshots.snapshots[i]);
         }
-
-        
     });
 
     $scope.snapshots = Snapshot.list({}, this.process_snapshots);
 })
-
 
 
 .controller('SnapshotCtrl', function ($rootScope, $scope, $log, $resource, mySharedService)
@@ -98,7 +95,7 @@ angular.module('app.controllers', [])
     $scope.currentmessageview = $scope.messageviews[0];
 
     var Snapshot = $resource('/api/snapshot/:id', {}, actions);
-    var Messages = $resource('/api/snapshot/:id/networkmessages?limit=:limit&offset=:offset', {}, actions);
+    var Messages = $resource('/api/snapshot/:id/networkmessages?limit=:limit&offset=:offset&:filter', {}, actions);
 
     /* Pagination data */
     $scope.currentPage = 0;
@@ -108,6 +105,10 @@ angular.module('app.controllers', [])
     $scope.$on('displaysnapshot', function () {
         $scope.snapshot = mySharedService.snapshot;
         if ($scope.isSnapshot()) {
+
+            // Reset the pagination data
+            $scope.offset = 0;
+            $scope.currentPage = 0;
             $scope.retrieve_messages($scope.snapshot._id);
         }
     });
@@ -126,7 +127,8 @@ angular.module('app.controllers', [])
         var url_params = {
             id: snapshot_id,
             limit: $scope.limit,
-            offset: $scope.offset
+            offset: $scope.offset,
+            filter: ''//method=NOTIFY OR ACK'
         };
         $scope.networkmessages = Messages.list(url_params);
     };
@@ -142,14 +144,14 @@ angular.module('app.controllers', [])
     };
 
     $scope.isMessages = function () {
-        return $scope.networkmessages !== undefined &&
-                $scope.networkmessages.length > 0;
+        return $scope.networkmessages.networkmessages !== undefined &&
+                $scope.networkmessages.networkmessages.length > 0;
     };
 
     $scope.next = function () {
         var offset = ($scope.currentPage + 1) * $scope.limit;
 
-        if (offset < $scope.snapshot.statistics.total_messages) {
+        if (offset < $scope.networkmessages.total) {
             $scope.currentPage++;
             $scope.offset = offset;
             $scope.retrieve_messages($scope.snapshot._id);
@@ -169,7 +171,7 @@ angular.module('app.controllers', [])
     };
 
     $scope.isLastPage = function () {
-        return (($scope.currentPage + 1) * $scope.limit) > ($scope.snapshot.statistics.total_messages);
+        return (($scope.currentPage + 1) * $scope.limit) > ($scope.networkmessages.total);
     };
 
     $scope.isResponse = function (name) {

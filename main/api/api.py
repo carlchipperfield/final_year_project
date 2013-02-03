@@ -24,7 +24,10 @@ class Snapshot(RestResource):
         'networkmessages': {
             'collection': 'networkmessages',
             'field': 'snapshot_id',
-            'sort': 'index'
+            'sort': 'index',
+            'filters': [
+                'method'
+            ]
         }
     }
 

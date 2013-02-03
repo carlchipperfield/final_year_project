@@ -77,3 +77,12 @@ def get_fields(displayed_fields, excluded_fields):
 def format_document_id(document):
     doc_id = str(document['_id'])
     document['_id'] = doc_id
+
+
+def api_decode(query):
+
+    # Does the user want to split on OR
+    values = query.split(' OR ')
+    if len(values) > 1:
+        return {'$in': values}
+    return query
