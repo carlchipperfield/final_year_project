@@ -190,10 +190,18 @@ angular.module('app.controllers', [])
     $scope.upload = function () {
 
         var formData = new FormData();
-        formData.append('title', $scope.title);
-        formData.append('description', $scope.desc);
-        formData.append('logfile_name', $scope.filename);
-        formData.append('logfile_content', $scope.logfile);
+        if ($scope.title) {
+            formData.append('title', $scope.title);
+        }
+        if ($scope.desc) {
+            formData.append('description', $scope.desc);
+        }
+        if ($scope.filename) {
+            formData.append('logfile_name', $scope.filename);
+        }
+        if ($scope.logfile) {
+            formData.append('logfile_content', $scope.logfile);
+        }
 
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/api/snapshotupload', true);
@@ -211,6 +219,9 @@ angular.module('app.controllers', [])
             if (this.status === 200) {
                 var url = '/#/networktraffic?id=' + this.responseText;
                 $window.location.href = url;
+            }
+            else {
+                progressBar.value = 0;
             }
         };
 

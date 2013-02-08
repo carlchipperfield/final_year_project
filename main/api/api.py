@@ -4,6 +4,7 @@ import sys
 sys.path.append("/app/share")
 sys.path.append("/app/share/python/site-packages")
 import web
+sys.stdout = sys.stderr
 
 from api.restresource import RestResource
 from ni.network_traffic.snapshot import NetworkTrafficSnapshot
@@ -34,20 +35,44 @@ class Snapshot(RestResource):
 
 class SnapshotUpload:
 
+    schema = {
+        'title': {
+            'type': 'string',
+            'required': True
+        },
+        'description': {
+            'type': 'string',
+            'default': ''
+        },
+        'logfile_name': {
+            'type': 'string',
+            'required': True
+        },
+        'logfile_content': {
+            'type': 'string',
+            'required': True
+        }
+    }
+
     def __init__(self):
         self.snapshot = NetworkTrafficSnapshot()
 
     def POST(self):
         try:
-            title = web.input().title
-            filename = web.input().logfile_name
-            description = web.input().description
-            content = web.input().logfile_content
+            data = web.input()
+            for field, schema in self.schema.iteritems():
+                if field not in data:
+                    if 'default' in self.schema[field]:
+                        data[field] = self.schema[field]['default']
+                    else:
+                        web.badrequest()
+                        return
+
         except AttributeError:
             pass
         else:
             # Process the logfile
-            self.snapshot.upload(title, description, filename, content)
+            self.snapshot.upload(data['title'], data['description'], data['logfile_name'], data['logfile_content'])
             id = self.snapshot.save()
             self.snapshot.generate_statistics()
             return id
