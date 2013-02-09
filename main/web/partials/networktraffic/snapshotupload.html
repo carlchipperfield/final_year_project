@@ -1,3 +1,6 @@
+<div id="panels" ng-include="'/partials/networktraffic/snapshotlist.html'"></div>
+
+<div id="content">
 <div ng-controller="UploadSnapshotCtrl">
 
     <form class="form-horizontal" ng-submit="upload()">
@@ -27,10 +30,11 @@
         <div class="control-group">
             <div class="controls">
                 <input class="btn btn-primary" type="submit" value="Upload">
-                <button type="button" class="btn">Cancel</button>
+                <button type="button" ng-click="cancelUpload()" class="btn">Cancel</button>
             </div>
         </div>
 
     </form>
 
+</div>
 </div>

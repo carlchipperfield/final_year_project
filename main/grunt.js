@@ -111,6 +111,7 @@ module.exports = function (grunt) {
                 files: {
                     'build/app/share/web/css/core.css':  [
                         'web/css/main_layout.scss',
+                        'web/css/errors.scss',
                         'web/css/navigation.scss'
                     ]
                 }

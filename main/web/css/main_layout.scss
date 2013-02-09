@@ -71,7 +71,6 @@ input {
 }
 
 header {
-    background-color: #4775A7;
 
     #toolbar {
         background-color: #F5F5F5;
@@ -110,6 +109,8 @@ div#content {
     overflow: auto;
 }
 
+
+/* STYLE THE PAGE TITLE TOOLBAR */
 div.titlebar {
     background-color: #F5F5F5;
     padding: 10px 20px;
@@ -125,6 +126,9 @@ div.titlebar {
     }
 }
 
+
+
+
 #snapshots ul li a ul {
 
     li {
@@ -135,6 +139,11 @@ div.titlebar {
         font-weight: 600;
         color: #4775A7;
     }
+}
+
+h5.tbar {
+    background-color: #eeeeee;
+    padding: 8px;
 }
 
 div.networkmessage {

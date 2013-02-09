@@ -7,12 +7,38 @@ var actions = {
 angular.module('app.controllers', [])
 
 
-
 .controller('AppCtrl', function ($scope) {
     $scope.page = {};
 })
 
+.controller('ErrorCtrl', function ($scope, errorService) {
+    $scope.errors = [];
 
+    $scope.$on('founderror', function () {
+
+        if ($scope.errors.length > 0) {
+            for (var i = 0; i < $scope.errors.length; i++) {
+                var error = $scope.errors[i];
+                if (error.title !== errorService.error.title ||
+                    error.type !== errorService.error.type) {
+                    $scope.errors.push(errorService.error);
+                    break;
+                }
+            }
+        }
+        else {
+            $scope.errors.push(errorService.error);
+        }
+    });
+
+    $scope.$on('clearerrors', function () {
+        $scope.errors = [];
+    });
+
+    $scope.removeError = function (index) {
+        $scope.errors.splice(index, 1);
+    };
+})
 
 .controller('SnapshotListCtrl', function ($scope, $resource, mySharedService, $location, $routeParams, $window)
 {
@@ -43,6 +69,7 @@ angular.module('app.controllers', [])
 
     $scope.display_snapshot = function (index) {
         var snapshot = $scope.snapshots.snapshots[index];
+        $location.path('/networktraffic');
         $location.search({id: snapshot._id});
         mySharedService.displaySnapshot(snapshot);
     };
@@ -75,7 +102,7 @@ angular.module('app.controllers', [])
 })
 
 
-.controller('SnapshotCtrl', function ($rootScope, $scope, $log, $resource, mySharedService)
+.controller('SnapshotCtrl', function ($rootScope, $scope, $log, $resource, mySharedService, errorService)
 {
     /*
         Work out how to document javascript!
@@ -116,9 +143,10 @@ angular.module('app.controllers', [])
     $scope.remove = function () {
         var success = function () {
             mySharedService.removeSnapshot();
+            errorService.clearErrors();
         };
         var fail = function () {
-            $log.error('Delete Failed');
+            errorService.reportError('', 'Failed to delete network traffic snapshot');
         };
         Snapshot.remove({id: $scope.snapshot._id}, success, fail);
     };
@@ -128,8 +156,9 @@ angular.module('app.controllers', [])
             id: snapshot_id,
             limit: $scope.limit,
             offset: $scope.offset,
-            filter: ''//method=NOTIFY OR ACK'
+            filter: ''
         };
+
         $scope.networkmessages = Messages.list(url_params);
     };
 
@@ -145,7 +174,8 @@ angular.module('app.controllers', [])
 
     $scope.isMessages = function () {
         return $scope.networkmessages.networkmessages !== undefined &&
-                $scope.networkmessages.networkmessages.length > 0;
+                $scope.networkmessages.networkmessages.length > 0 &&
+                !$scope.inprogress;
     };
 
     $scope.next = function () {
@@ -171,7 +201,8 @@ angular.module('app.controllers', [])
     };
 
     $scope.isLastPage = function () {
-        return (($scope.currentPage + 1) * $scope.limit) > ($scope.networkmessages.total);
+        return (($scope.currentPage + 1) *
+            $scope.limit) > ($scope.networkmessages.total);
     };
 
     $scope.isResponse = function (name) {
@@ -181,13 +212,23 @@ angular.module('app.controllers', [])
 
 
 
-.controller('UploadSnapshotCtrl', function ($rootScope, $scope, $resource, $window)
+.controller('UploadSnapshotCtrl',
+    function ($rootScope, $scope, $resource, $window, errorService, $location)
 {
     $rootScope.page = {
         title: 'Network Traffic Upload'
     };
 
+    $scope.$on('$destroy', function () {
+        errorService.clearErrors();
+    });
+
+    $scope.cancelUpload = function () {
+        $location.path('/networktraffic');
+    };
+
     $scope.upload = function () {
+
 
         var formData = new FormData();
         if ($scope.title) {
@@ -217,11 +258,14 @@ angular.module('app.controllers', [])
 
         xhr.onload = function () {
             if (this.status === 200) {
-                var url = '/#/networktraffic?id=' + this.responseText;
-                $window.location.href = url;
+                $location.path('/networktraffic');
+                $location.search('id', this.responseText);
+                $scope.$apply();
             }
             else {
                 progressBar.value = 0;
+                errorService.reportError('Failed to upload diagnostics logfile.', '');
+                $scope.$apply();
             }
         };
 

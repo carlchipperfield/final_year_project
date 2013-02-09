@@ -1,4 +1,3 @@
-
 angular.module('app.services', [])
 
 .factory('mySharedService', function ($rootScope) {
@@ -16,4 +15,41 @@ angular.module('app.services', [])
     };
 
     return sharedService;
+})
+
+
+/*
+    The following service allows controllers to report errors to be displayed
+    as a error message banner.
+*/
+.factory('errorService', function ($rootScope) {
+
+    var errorService = {};
+
+    errorService.reportError = function (title, message) {
+        this.report('error', title, message);
+    };
+
+    errorService.reportSuccess = function (title, message) {
+        this.report('success', title, message);
+    };
+
+    errorService.reportInfo = function (title, message) {
+        this.report('info', title, message);
+    };
+
+    errorService.clearErrors = function () {
+        $rootScope.$broadcast('clearerrors');
+    };
+
+    errorService.report = function (type, title, message) {
+        errorService.error = {
+            type:    type,
+            title:   title,
+            message: message
+        };
+        $rootScope.$broadcast('founderror');
+    };
+
+    return errorService;
 });

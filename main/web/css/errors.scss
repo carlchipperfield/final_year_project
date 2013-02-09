@@ -1,0 +1,31 @@
+/* STYLE ERROR MESSAGE BANNER */
+div.alert {
+    margin: 0;
+    font-size: 14px;
+    border: none;
+    border-radius: 0;
+    color: #fff;
+
+    span.error-type {
+        margin-right: 5px;
+    }
+
+    p.error-message {
+        margin: 0;
+        padding: 0;
+    }
+
+    .close {
+        color: #fff;
+        opacity: 1;
+    }
+}
+div.alert-error {
+    background-color: #dd514c;
+}
+div.alert-success {
+    background-color: #468847;
+}
+div.alert-info {
+    background-color: #3a87ad;
+}

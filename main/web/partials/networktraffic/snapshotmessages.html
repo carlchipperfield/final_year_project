@@ -1,4 +1,4 @@
-<div class="pagination pagination-centered pagination-small">
+<div class="pagination pagination-centered pagination-small" ng-show="isMessages()">
   <ul>
     <li ng-class="{disabled: isFirstPage()}"><a href="#" ng-click="previous()">Previous</a></li>
     <li ng-class="{disabled: isLastPage()}"><a href="#" ng-click="next()">Next</a></li>
