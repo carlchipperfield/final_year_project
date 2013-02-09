@@ -93,11 +93,11 @@ angular.module('app.controllers', [])
             mySharedService.displaySnapshot({});
         }
         else {
-            i = (i > 0) ? i-- : i;
-            mySharedService.displaySnapshot($scope.snapshots.snapshots[i]);
+            var new_index = (i > 0) ? i - 1: i;
+            $location.search('id', $scope.snapshots.snapshots[new_index]._id);
+            mySharedService.displaySnapshot($scope.snapshots.snapshots[new_index]);
         }
     });
-
     $scope.snapshots = Snapshot.list({}, this.process_snapshots);
 })
 
