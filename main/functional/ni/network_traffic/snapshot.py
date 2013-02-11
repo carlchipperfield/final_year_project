@@ -42,8 +42,7 @@ class NetworkTrafficSnapshot:
         self.data['end'] = self._parse_end()
 
     def _get_current_time(self):
-        now = datetime.utcnow()
-        return now.strftime('%Y-%m-%d %H:%M:%S')
+        return datetime.now().isoformat()
 
     def _process_logfile_messages(self, content):
         # Identify each log entry and create a message

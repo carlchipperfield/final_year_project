@@ -1,6 +1,7 @@
 import json
 import re
 from pymongo import MongoClient
+from datetime import datetime
 
 
 class Message(object):
@@ -112,7 +113,15 @@ class Message(object):
     def _parse_utc(self, log_entry):
         utc_log = re.search('UTCTime="[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2},[0-9]{3}', log_entry)  # 2012-12-11 03:07:18,457
         if utc_log:
-            return utc_log.group(0)[9:28]
+            date = utc_log.group(0)
+            year = int(date[9:13])
+            month = int(date[14:16])
+            day = int(date[17:19])
+            hour = int(date[20:22])
+            min = int(date[23:25])
+            sec = int(date[26:28])
+            msec = int(date[29:32]) * 1000
+            return datetime(year, month, day, hour, min, sec, msec).isoformat()
 
     def _parse_sender_and_receiver(self, log_entry):
         '''

@@ -55,6 +55,7 @@ module.exports = function (grunt) {
                         'web/lib/angular/angular.min.js',
                         'web/lib/angular/angular-resource.min.js',
                         'web/lib/jquery/jquery-1.8.2.min.js',
+                        'web/lib/moment.min.js',
                         'web/lib/bootstrap/css/bootstrap.min.css',
                         'web/lib/bootstrap/js/bootstrap.min.js',
                         'web/lib/bootstrap/img/**'
@@ -154,7 +155,8 @@ module.exports = function (grunt) {
                 jQuery : true,
                 'alert': true,
                 'console': true,
-                'angular': true
+                'angular': true,
+                'moment': true
             }
         },
 

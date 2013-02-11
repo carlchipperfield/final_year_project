@@ -3,8 +3,16 @@ angular.module('app.filters', [])
 .filter('formatdate', function () {
     return function (input) {
         if (input !== '') {
-            var date = new Date(input);
-            return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+            return moment(input).format('DD MMM YYYY HH:mm:ss');
+        }
+        return '-';
+    };
+})
+
+.filter('precisedate', function () {
+    return function (input) {
+        if (input !== '') {
+            return moment(input).format('DD MMM YYYY HH:mm:ss.SSS');
         }
         return '-';
     };
