@@ -140,6 +140,10 @@ angular.module('app.controllers', [])
             // Reset the pagination data
             $scope.offset = 0;
             $scope.currentPage = 0;
+
+            // Reset the query
+            $scope.query = '';
+
             $scope.retrieve_messages($scope.snapshot._id);
         }
     });
