@@ -121,8 +121,12 @@ angular.module('app.controllers', [])
     $scope.messageviews = ['Details', 'Headers', 'Content'];
     $scope.currentmessageview = $scope.messageviews[0];
 
+    $scope.filterDisplayed = false;
+
+    $scope.query = '';
+
     var Snapshot = $resource('/api/snapshot/:id', {}, actions);
-    var Messages = $resource('/api/snapshot/:id/networkmessages?limit=:limit&offset=:offset&:filter', {}, actions);
+    var Messages = $resource('/api/snapshot/:id/networkmessages?limit=:limit&offset=:offset:query', {}, actions);
 
     /* Pagination data */
     $scope.currentPage = 0;
@@ -138,6 +142,18 @@ angular.module('app.controllers', [])
             $scope.currentPage = 0;
             $scope.retrieve_messages($scope.snapshot._id);
         }
+    });
+
+    $scope.toggleFilter = function () {
+        $scope.filterDisplayed = !$scope.filterDisplayed;
+    };
+
+    $scope.$on('querysnapshot', function () {
+        // Reset the pagination data
+        $scope.offset = 0;
+        $scope.currentPage = 0;
+        $scope.query = mySharedService.query;
+        $scope.retrieve_messages($scope.snapshot._id);
     });
 
     $scope.remove = function () {
@@ -156,9 +172,8 @@ angular.module('app.controllers', [])
             id: snapshot_id,
             limit: $scope.limit,
             offset: $scope.offset,
-            filter: ''
+            query: $scope.query
         };
-
         $scope.networkmessages = Messages.list(url_params);
     };
 
@@ -211,6 +226,76 @@ angular.module('app.controllers', [])
 })
 
 
+.controller('SnapshotFilter', function ($scope, mySharedService) {
+
+    $scope.filterFields = [
+        {'field': 'call-id', 'list': 'call-ids'},
+        {'field': 'method', 'list': 'methods'}
+    ];
+
+    $scope.filter = {}; // Need to get data from server when persistent
+    $scope.snapshot = mySharedService.snapshot;
+
+    $scope.$on('displaysnapshot', function () {
+        $scope.filter = {}; // Need to get data from server when persistent
+        $scope.snapshot = mySharedService.snapshot;
+    });
+
+    $scope.getFieldValues = function (field) {
+        return $scope.snapshot.summary[field];
+    };
+
+    $scope.setFilter = function (field, value) {
+        if ($scope.filter[field] === undefined) {
+            $scope.filter[field] = [value];
+        }
+        else {
+            var index = $scope.filter[field].indexOf(value);
+            if (index === -1) {
+                $scope.filter[field].push(value);
+            }
+            else {
+                $scope.filter[field].splice(index, 1);
+            }
+        }
+    };
+
+    $scope.isChecked = function (field, value) {
+        return $scope.filter[field] !== undefined &&
+            $scope.filter[field].indexOf(value) !== -1;
+    };
+
+    $scope.save = function () {
+        // Will save the data at this point
+        mySharedService.querySnapshot($scope.composeQuery());
+    };
+
+    $scope.clear = function () {
+        // Will remove any filters and save
+        $scope.filter = {};
+        mySharedService.querySnapshot('');
+    };
+
+    $scope.composeQuery = function () {
+        // Concat all the options
+        var query = '';
+        var field;
+        for (field in $scope.filter) {
+
+            if (typeof $scope.filter[field] !== 'function') {
+                if ($scope.filter[field].length > 0) {
+
+                    query += '&' + field + '=';
+                    for (var i = 0; i < $scope.filter[field].length; i++) {
+                        query += (i === 0) ? $scope.filter[field][i] : ' OR ' + $scope.filter[field][i];
+                    }
+                }
+            }
+        }
+
+        return query;
+    };
+})
 
 .controller('UploadSnapshotCtrl',
     function ($rootScope, $scope, $resource, $window, errorService, $location)

@@ -9,6 +9,13 @@
                 <select ng-model="activeSnapshotView" ng-options="view for view in snapshotViews">
                 </select>
             </div>
+
+            <div ng-switch on="activeSnapshotView">
+                <button ng-switch-when="Network Messages" class="btn btn-mini" ng-click="toggleFilter()">
+                <i class="icon-filter"></i></button>
+            </div>
+
+            <div class="clearfloat"></div>
         </div>
 
         <div ng-switch on="activeSnapshotView">

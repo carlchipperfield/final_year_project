@@ -1,3 +1,5 @@
+<section ng-include="'/partials/networktraffic/snapshotfilter.html'" ng-show="filterDisplayed"></section>
+
 <div class="pagination pagination-centered pagination-small" ng-show="isMessages()">
   <ul>
     <li ng-class="{disabled: isFirstPage()}"><a href="#" ng-click="previous()">Previous</a></li>

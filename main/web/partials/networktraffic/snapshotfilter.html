@@ -1,0 +1,22 @@
+<section class="filter-form" ng-controller="SnapshotFilter">
+    <h2>Filter</h2>
+    <form class="form-horizontal" ng-submit="save()">
+
+        <div ng-repeat="field in filterFields" class="category">
+            <h3>{{field.field | capitalize}}</h3>
+
+            <label class="checkbox" ng-repeat="value in getFieldValues(field.list)">
+              <input type="checkbox" value="{{value}}" ng-click="setFilter(field.field, value)"
+              ng-checked="isChecked(field.field, value)">{{value}}
+            </label>
+        </div>
+
+        <div class="control-group">
+            <div class="controls">
+                <input class="btn btn-primary" type="submit" value="Save">
+                <button type="button" ng-click="clear()" class="btn">Clear</button>
+            </div>
+        </div>
+
+    </form>
+</section>

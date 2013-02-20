@@ -103,25 +103,25 @@ class NetworkTrafficSnapshot:
 
     def generate_statistics(self):
         test = {"_id": self.id}
-        statistics = {"statistics": {
-            "total_messages": self.get_total_messages(),
-            "total_calls": self.get_total_calls(),
-            "total_requests": self.get_total_requests(),
-            "total_responses": self.get_total_responses(),
-            "total_incoming": self.get_total_incoming(),
-            "total_outgoing": self.get_total_outgoing(),
-            "total_internal": self.get_total_internal(),
-            "methods": self.get_methods_used(),
-            "responses": self.get_status_distribution()
-        }}
-        self.snapshots.update(test, {"$set": statistics})
-
-    def get_total_calls(self):
-        query = {
-            'snapshot_id': str(self.id)
+        statistics = {
+            "statistics": {
+                "total_messages": self.get_total_messages(),
+                "total_calls": self.get_total_calls(),
+                "total_requests": self.get_total_requests(),
+                "total_responses": self.get_total_responses(),
+                "total_incoming": self.get_total_incoming(),
+                "total_outgoing": self.get_total_outgoing(),
+                "total_internal": self.get_total_internal(),
+                "methods": self.get_methods_used(),
+                "responses": self.get_status_distribution()
+            },
+            "summary": {
+                "methods": self.get_distinct_methods(),
+                "call-ids": self.get_distinct_call_ids()
+            }
         }
-        test = self.networkmessages.find(query).distinct('call-id')
-        return len(test)
+
+        self.snapshots.update(test, {"$set": statistics})
 
     def get_total_messages(self):
         query = {
@@ -189,5 +189,23 @@ class NetworkTrafficSnapshot:
                 status = int(msg['status'][0])
                 response_counts[status - 1] += 1
 
-
         return dict(zip(response_categories, response_counts))
+
+    def get_total_calls(self):
+        query = {
+            'snapshot_id': str(self.id)
+        }
+        test = self.networkmessages.find(query).distinct('call-id')
+        return len(test)
+
+    def get_distinct_call_ids(self):
+        query = {
+            'snapshot_id': str(self.id)
+        }
+        return self.networkmessages.find(query).distinct('call-id')
+
+    def get_distinct_methods(self):
+        query = {
+            'snapshot_id': str(self.id)
+        }
+        return self.networkmessages.find(query).distinct('method')

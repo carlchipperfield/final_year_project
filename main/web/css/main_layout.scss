@@ -34,7 +34,7 @@ select {
     width: auto;
     font-size: 12px;
     padding: 0;
-    height: auto;
+    height: 22px;
 }
 select:focus {
     outline: none;
@@ -130,6 +130,10 @@ div.titlebar {
     select {
         margin: 0 10px;
     }
+
+    div#snapshot-view-selector {
+        float: left;
+    }
 }
 
 
@@ -160,6 +164,7 @@ div.networkmessage {
         float: left;
         width: 100%;
         background-color: #eeeeee;
+        border-radius: 4px;
 
         h5 {
             padding: 8px;
@@ -179,4 +184,39 @@ div.networkmessage {
 
 .pagination {
     margin: 5px;
+}
+
+
+
+
+/* Filter form filtering */
+section.filter-form {
+    background-color: #F5F5F5;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+
+    form {
+        margin: 0;
+
+        div.category {
+            margin: 20px;
+            float: left;
+        }
+
+        div.control-group {
+            clear: left;
+            margin: 0 20px;
+            div.controls {margin: 0}
+        }
+    }
+
+    h2 {font-size: 18px;
+        padding: 0 20px 10px 20px;
+        border-bottom: 1px solid #eee;
+    }
+    h3 {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
 }

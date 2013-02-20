@@ -14,6 +14,11 @@ angular.module('app.services', [])
         $rootScope.$broadcast('removesnapshot');
     };
 
+    sharedService.querySnapshot = function (query) {
+        this.query = query;
+        $rootScope.$broadcast('querysnapshot');
+    };
+
     return sharedService;
 })
 

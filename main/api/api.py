@@ -27,7 +27,12 @@ class Snapshot(RestResource):
             'field': 'snapshot_id',
             'sort': 'index',
             'filters': [
-                'method'
+                'method',
+                'status',
+                'call-id',
+                'type',
+                'destination',
+                'source'
             ]
         }
     }
