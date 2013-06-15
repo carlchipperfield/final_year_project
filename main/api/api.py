@@ -67,7 +67,6 @@ class Snapshot(RestResource):
         }
     }
 
-
 class SnapshotUpload:
 
     schema = {
