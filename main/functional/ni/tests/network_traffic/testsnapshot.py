@@ -46,6 +46,9 @@ small_snapshot = {
     'creation_method': 'upload'
 }
 
+'''
+    Mainly interested in the start/end dates and total_messages
+'''
 single_message_test = {
     'title': 'Single network message snapshot',
     'desc': 'Test a logfile that contains one network message',
@@ -55,6 +58,9 @@ single_message_test = {
     'total_messages': 1
 }
 
+'''
+    Test that the correct data is extracted when no messages are within the log file
+'''
 no_messages_test = {
     'title': 'No network messages snapshot',
     'desc': 'Test a logfile that contains no network messages',
@@ -107,43 +113,58 @@ internal_messages_test = {
 
 
 class TestNetworkTrafficSnapshot(unittest.TestCase):
-
+    '''
+        Test the Network traffic snapshot class using test diagnostics log files
+        that are located in ./testsnapshots/
+    '''
     snapshots = []
     snapshot_data = []
 
     # Setup functions
     @classmethod
     def setUpClass(cls):
+        '''
+            Initiate the test data to use throughout all Tests
+        '''
         cls.snapshot_data = [large_snapshot, small_snapshot, single_message_test,
                              no_messages_test, internal_messages_test]
 
+        # Create a new snaphot object for all test data
         for snapshot in cls.snapshot_data:
             s = NetworkTrafficSnapshot()
+
+            # Use upload method to extract data from the test log files
             content = TestNetworkTrafficSnapshot._get_snapshot_content(snapshot['path'])
             s.upload(snapshot['title'], snapshot['desc'], snapshot['path'], content)
+
+            # Store the snapshot for use within the tests
             cls.snapshots.append(s)
 
     @classmethod
     def _get_snapshot_content(cls, path):
+        # Read the log file and return the contents
         with open(path) as f:
             return f.read()
 
     def test_snapshot_data(self):
         test_data = ['title', 'desc', 'start', 'end', 'method_created']
 
+        # If these fields are provided in the test data
+        # assert that the same value is extracted from logfile
         for data, snapshot in zip(self.snapshot_data, self.snapshots):
             for field in test_data:
                 if field in data:
                     message = 'Snapshot "' + snapshot.data['title'] + ' ' + field + ' not parsed correctly. Expected=' + str(data[field]) + ' Actual=' + str(snapshot.data[field])
                     self.assertEqual(snapshot.data[field], data[field], message)
 
-    def test_total_messages(self):
-        '''for index, snapshot in enumerate(self.snapshots):
+    '''def test_total_messages(self):
+        for index, snapshot in enumerate(self.snapshots):
             message = 'Snapshot ' + str(index) + ' total messages is incorrect'
-            self.assertEqual(len(snapshot.messages), snapshot.data['total_messages'], message)'''
-        pass
+            self.assertEqual(len(snapshot.messages), snapshot.data['statistics']['total_messages'], message)'''
 
     def test_snapshot_messages(self):
+        # A form of integration test. Ensure that the correct message info is extracted if defined
+        # in the test data
         header_fields = ['protocol', 'status', 'content', 'method',
                          'version', 'sender', 'receiver', 'destination_port', 'source_port']
 

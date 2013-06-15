@@ -1,0 +1,24 @@
+<section class="bold-panel" ng-controller="SnapshotComments">
+    
+    <form>
+        <div id="newnote" class="input-append">
+            <input ng-model="newnote.note" placeholder="New note.." type="text" size="200">
+            <button class="btn" type="button" ng-click="add(newnote)"><i class="icon-plus"></i></button>
+        </div>
+    </form>
+
+    <div ng-show="isComments()">
+
+        <div class="note" ng-repeat="note in notes.notes" ng-hide="note.removed">
+            <p ng-click="toggleNoteActions($index)">{{note.note}}</p>
+
+            <div ng-show="note.controls">
+                <i class="icon-remove icon-white" ng-click="remove(note._id)"></i>
+            </div>
+        </div>
+
+    </div>
+
+    <p ng-hide="isComments()">No notes</p>
+
+</section>

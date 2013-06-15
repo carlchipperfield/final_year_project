@@ -1,9 +1,9 @@
-<section class="filter-form" ng-controller="SnapshotFilter">
+<section class="bold-panel">
     <h2>Filter</h2>
     <form class="form-horizontal" ng-submit="save()">
 
         <div ng-repeat="field in filterFields" class="category">
-            <h3>{{field.field | capitalize}}</h3>
+            <h3>{{field.display | capitalize}}</h3>
 
             <label class="checkbox" ng-repeat="value in getFieldValues(field.list)">
               <input type="checkbox" value="{{value}}" ng-click="setFilter(field.field, value)"
@@ -13,8 +13,8 @@
 
         <div class="control-group">
             <div class="controls">
-                <input class="btn btn-primary" type="submit" value="Save">
-                <button type="button" ng-click="clear()" class="btn">Clear</button>
+                <input class="btn" type="submit" value="Filter">
+                <button type="button" ng-click="clear()" class="btn">Reset</button>
             </div>
         </div>
 

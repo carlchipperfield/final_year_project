@@ -1,22 +1,12 @@
-<section ng-include="'/partials/networktraffic/snapshotfilter.html'" ng-show="filterDisplayed" ng-controller="SnapshotFilter"></section>
-
-<div class="pagination pagination-centered pagination-small" ng-show="isMessages()">
-  <ul>
-    <li ng-class="{disabled: isFirstPage()}"><a href="#" ng-click="previous()">Previous</a></li>
-    <li ng-class="{disabled: isLastPage()}"><a href="#" ng-click="next()">Next</a></li>
-  </ul>
-</div>
-
 <div id="networkmessages" class="info networkmessage" ng-repeat="networkmessage in networkmessages.networkmessages">
 
     <div id="messagebar">
-        <h5>Network message {{offset + $index + 1}} of {{networkmessages.total}}</h5>
+        <h5>Network message {{$index + 1}} of {{networkmessages.networkmessages.length}}</h5>
         <div id="message-view-selector">
             <select ng-model="currentmessageview" ng-options="view for view in messageviews">
             </select>
         </div>
-        <a ng-hide="networkmessage.tagged" ng-click="toggleTag(networkmessage._id, 'true')">Tag</a>
-        <a ng-show="networkmessage.tagged" ng-click="toggleTag(networkmessage._id, 'false')">Untag</a>
+        <a ng-click="Untag(networkmessage._id)">Untag</a>
     </div>
 
     <div ng-switch on="currentmessageview">
@@ -64,9 +54,6 @@
     </div>
 </div>
 
-<div class="pagination pagination-centered pagination-small" ng-show="isMessages()">
-  <ul>
-    <li ng-class="{disabled: isFirstPage()}"><a href="#" ng-click="previous()">Previous</a></li>
-    <li ng-class="{disabled: isLastPage()}"><a href="#" ng-click="next()">Next</a></li>
-  </ul>
+<div ng-hide="isMessages()">
+    <p>Currently no tagged network messages.</p>
 </div>

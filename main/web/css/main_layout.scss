@@ -172,12 +172,18 @@ div.networkmessage {
         }
 
         div#message-view-selector {
+            float:right;
             text-align: right;
 
             select {
                 width: auto;
                 margin: 4px;
             }
+        }
+
+        a {
+            float:right;
+            padding: 5px;
         }
     }
 }
@@ -187,14 +193,56 @@ div.networkmessage {
 }
 
 
+div.dialog {
+    padding: 10px;
+    margin: 10px;
+    background-color: #F5F5F5;
+    border-radius: 6px;
 
+    table {
+        float: none;
+        margin: 0px;
+    }
+
+    div.networkmessage {
+        background-color: #fff;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 6px;
+    }
+}
+
+div#newnote input {
+    width: 550px;
+}
+
+div.note {
+    border-bottom: solid 1px #fff;
+
+    p {
+        cursor: pointer;
+    }
+
+    div {
+        margin: 0 5px 5px 5px;
+
+        i {
+           cursor: pointer; 
+        }
+    }
+}
+
+div.note:last-of-type {
+    border-bottom: none;
+}
 
 /* Filter form filtering */
-section.filter-form {
-    background-color: #F5F5F5;
+section.bold-panel {
+    background-color: #4775A7;
     padding: 20px;
     margin: 10px;
-    border-radius: 10px;
+    /*border-radius: 10px;*/
+    color: #fff;
 
     form {
         margin: 0;
@@ -212,11 +260,17 @@ section.filter-form {
     }
 
     h2 {font-size: 18px;
+        color: #fff;
         padding: 0 20px 10px 20px;
         border-bottom: 1px solid #eee;
+        font-weight: 400;
     }
     h3 {
+        color: #fff;
         font-size: 16px;
         margin-bottom: 10px;
+        font-weight: 400;
     }
+
+    p { margin: 0;}
 }

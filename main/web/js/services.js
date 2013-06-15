@@ -1,5 +1,8 @@
 angular.module('app.services', [])
 
+/*
+    The following service allows controllers to share snapshot events
+*/
 .factory('mySharedService', function ($rootScope) {
 
     var sharedService = {};
@@ -17,6 +20,11 @@ angular.module('app.services', [])
     sharedService.querySnapshot = function (query) {
         this.query = query;
         $rootScope.$broadcast('querysnapshot');
+    };
+
+    sharedService.queryDialog = function (query) {
+        this.querydialog = query;
+        $rootScope.$broadcast('querydialog');
     };
 
     return sharedService;
