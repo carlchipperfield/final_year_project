@@ -8,7 +8,43 @@ var actions = {
 angular.module('app.controllers', [])
 
 .controller('AppCtrl', function ($scope) {
-    $scope.page = {};
+    $scope.page = {'title': ''};
+})
+
+.controller('NavigationCtrl', function ($scope, $location) {
+
+    $scope.navigation = {
+
+        'active': '/networktraffic',
+        
+        'primary': [
+            {
+                'title': 'Network Traffic',
+                'submenu':  [
+                    {'title': 'Analytics', 'link': '/networktraffic'},
+                    {'title': 'Upload', 'link': '/networktraffic/upload'}
+                ]
+            }
+        ],
+
+        'secondary': [
+            {
+                'title': 'Carl Chipperfield',
+                'submenu':  [
+                    {'title': 'Profile', 'link': '#'},
+                    {'title': 'Settings', 'link': '#'},
+                    {'divider': true},
+                    {'title': 'Help', 'link': '#'},
+                    {'divider': true},
+                    {'title': 'Sign out', 'link': '#'}
+                ]
+            }
+        ]
+    };
+
+    $scope.$on('$routeChangeSuccess', function () {
+        $scope.navigation.active = $location.path();
+    });
 })
 
 .controller('ErrorCtrl', function ($scope, errorService) {
@@ -455,9 +491,7 @@ angular.module('app.controllers', [])
             2. No Snapshot (empty object)
             3. Snapshot (snapshot object)
     */
-    $rootScope.page = {
-        title: 'Network Traffic Analytics'
-    };
+    $scope.page.title = 'Network Traffic Analytics';
 
     // Set state that tracks the current snapshot view
     $scope.snapshotViews = ['Details', 'Statistics', 'SIP Dialogs', 'Network Messages', 'Tagged'];
@@ -685,9 +719,7 @@ angular.module('app.controllers', [])
 .controller('UploadSnapshotCtrl',
     function ($rootScope, $scope, $resource, $window, errorService, $location)
 {
-    $rootScope.page = {
-        title: 'Network Traffic Upload'
-    };
+    $scope.page.title = 'Network Traffic Upload';
 
     $scope.$on('$destroy', function () {
         errorService.clearErrors();

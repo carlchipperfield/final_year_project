@@ -1,7 +1,7 @@
 angular.module('app.directives', [])
 
 .directive('resize', function () {
-    var directiveDefinitionObject = {
+    return {
         compile: function compile() {
             return function postLink() {
                 var header = $('header');
@@ -18,5 +18,17 @@ angular.module('app.directives', [])
             };
         }
     };
-    return directiveDefinitionObject;
+})
+
+.directive('navbar', function () {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            navdata: '=',
+            direction: '@direction',
+            active: '='
+        },
+        templateUrl: '/partials/core/navbar.html'
+    };
 });

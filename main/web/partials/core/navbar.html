@@ -1,0 +1,24 @@
+<div class="navbar-inner" ng-class="{right:direction=='right'}">
+    <ul class="nav">
+        <!-- Note: Still want to implement active class tag on this li -->
+        <li class="dropdown" ng-class="{active:isactive}" ng-repeat="menuitem in navdata">
+
+            <!-- Render a primary menu link WITH NO sub menu items -->
+            <a ng-hide="menuitem.submenu" href="{{menuitem.link}}" class="dropdown-toggle"
+                data-toggle="dropdown">{{menuitem.title}}</a>
+
+            <!-- Render a primary menu link WITH sub menu items -->
+            <a ng-show="menuitem.submenu" href="#" class="dropdown-toggle" data-toggle="dropdown">
+              {{menuitem.title}}<b class="caret"></b>
+            </a>
+
+            <!-- Render the sub menu items -->
+            <ul ng-show="menuitem.submenu" class="dropdown-menu" ng-class="{'pull-right':direction=='right'}">
+                <li ng-repeat="subitem in menuitem.submenu"
+                            ng-class="{divider:subitem.divider, active:subitem.link==active}">
+                    <a href="{{subitem.link}}" ng-hide="subitem.divider">{{subitem.title}}</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
