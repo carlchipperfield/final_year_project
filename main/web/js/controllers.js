@@ -15,8 +15,6 @@ angular.module('app.controllers', [])
 
     $scope.navigation = {
 
-        'active': '/networktraffic',
-        
         'primary': [
             {
                 'title': 'Network Traffic',
@@ -41,6 +39,8 @@ angular.module('app.controllers', [])
             }
         ]
     };
+
+    $scope.navigation.active = $location.path();
 
     $scope.$on('$routeChangeSuccess', function () {
         $scope.navigation.active = $location.path();
