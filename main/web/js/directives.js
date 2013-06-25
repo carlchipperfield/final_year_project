@@ -29,6 +29,34 @@ angular.module('app.directives', [])
             direction: '@direction',
             active: '='
         },
-        templateUrl: '/partials/core/navbar.html'
+        templateUrl: '/partials/core/directives/navbar.html'
+    };
+})
+
+.directive('pagination', function () {
+    return {
+        transclude: true,
+        restrict: 'E',
+        replace: true,
+        scope: {
+            pagination: '='
+        },
+        controller: 'PaginationCtrl',
+        templateUrl: '/partials/core/directives/pagination.html'
+    };
+})
+
+.directive('networkmessage', function () {
+    return {
+        restrict: 'E',
+        replace: true,
+        controller: 'NetworkMessageCtrl',
+        scope: {
+            data: '=',
+            index: '=',
+            total: '=',
+            offset: '='
+        },
+        templateUrl: '/partials/networktraffic/directives/networkmessage.html'
     };
 });

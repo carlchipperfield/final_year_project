@@ -1,4 +1,4 @@
-<section class="bold-panel" ng-controller="SnapshotComments">
+<section class="bold-panel" ng-controller="SnapshotNotes">
     
     <form>
         <div id="newnote" class="input-append">
@@ -7,7 +7,7 @@
         </div>
     </form>
 
-    <div ng-show="isComments()">
+    <div ng-show="isNotes()">
 
         <div class="note" ng-repeat="note in notes.notes" ng-hide="note.removed">
             <p ng-click="toggleNoteActions($index)">{{note.note}}</p>
@@ -19,6 +19,6 @@
 
     </div>
 
-    <p ng-hide="isComments()">No notes</p>
+    <p ng-hide="isNotes()">No notes</p>
 
 </section>

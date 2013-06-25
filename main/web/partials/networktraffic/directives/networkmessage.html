@@ -1,0 +1,62 @@
+<div>
+
+<div id="messagebar">
+    
+    <h5>
+        Network message {{offset + index + 1}} of {{total}}
+    </h5>
+
+    <div id="message-view-selector">
+        <select ng-model="networkmessage.active" ng-options="view for view in networkmessage.views">
+        </select>
+    </div>
+    <a ng-hide="data.tagged" ng-click="toggleTag(data._id, 'true')">Tag</a>
+    <a ng-show="data.tagged" ng-click="toggleTag(data._id, 'false')">Untag</a>
+
+</div>
+
+<div ng-switch on="networkmessage.active">
+
+    <table class="table" ng-switch-when="Details">
+        <tbody>
+            <tr>
+                <th>Time</th>
+                <td>{{data.utc | precisedate}}</td>
+            </tr>
+            <tr>
+                <th>Protocol</th>
+                <td>{{data.protocol}}/{{data.version}}</td>
+            </tr>
+            <tr>
+                <th>Method</th>
+                <td>{{data.method}}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{data.status}}</td>
+            </tr>
+            <tr>
+                <th>Source</th>
+                <td>{{data.source}}{{data.source_port | formatport}}</td>
+            </tr>
+            <tr>
+                <th>Destination</th>
+                <td>{{data.destination}}{{data.destination_port | formatport}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table" ng-switch-when="Headers">
+        <tbody>
+            <tr ng-repeat="header in data.headers">
+                <th>{{header.name}}</th>
+                <td>{{header.value}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p ng-switch-when="Content">{{data.content}}</p>
+
+</div>
+
+</div>

@@ -36,60 +36,15 @@
 
             <div ng-show="messages.displayed">
         
-                <div class="info networkmessage" ng-repeat="networkmessage in messages.messages | orderBy:messages.sortby">
+                <div class="info networkmessage"
+                    ng-repeat="networkmessage in messages.messages | orderBy:messages.sortby">
 
-                    <div id="message-view-selector">
-            
-                        <select ng-model="networkmessage.view" ng-options="view for view in messages.views">
-                        </select>
-
-                        <a ng-hide="isTagged($index)" ng-click="toggleTag($index)">Tag</a>
-                        <a ng-show="isTagged($index)" ng-click="toggleTag($index)">Untag</a>
-
-                    </div>
-
-                    <div ng-switch on="networkmessage.view">
-
-                        <table class="table" ng-switch-when="Details">
-                            <tbody>
-                                <tr>
-                                    <th>Time</th>
-                                    <td>{{networkmessage.utc | precisedate}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Protocol</th>
-                                    <td>{{networkmessage.protocol}}/{{networkmessage.version}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Method</th>
-                                    <td>{{networkmessage.method}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Status</th>
-                                    <td>{{networkmessage.status}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Source</th>
-                                    <td>{{networkmessage.source}}{{networkmessage.source_port | formatport}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Destination</th>
-                                    <td>{{networkmessage.destination}}{{networkmessage.destination_port | formatport}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <table class="table" ng-switch-when="Headers">
-                            <tbody>
-                                <tr ng-repeat="header in networkmessage.headers">
-                                    <th>{{header.name}}</th>
-                                    <td>{{header.value}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <p ng-switch-when="Content">{{networkmessage.content}}</p>
-                    </div>
+                    <networkmessage
+                        data="networkmessage"
+                        total="messages.messages.length"
+                        index="$index"
+                        offset="offset">
+                    </networkmessage>
                 </div>
             </div>
         </div>

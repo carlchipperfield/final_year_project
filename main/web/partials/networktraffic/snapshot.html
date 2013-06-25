@@ -17,7 +17,7 @@
                 <button title="Filter SIP dialogs" ng-switch-when="SIP Dialogs" class="btn btn-mini" ng-click="toggleFilter()">
                 <i class="icon-filter"></i></button>
 
-                <button title="Snapshot notes" class="btn btn-mini" ng-click="toggleComments()">
+                <button title="Snapshot notes" class="btn btn-mini" ng-click="toggleNotes()">
                 <i class="icon-comment"></i></button>
             </div>
 
@@ -26,20 +26,33 @@
 
         <div ng-switch on="activeSnapshotView">
 
-            <section ng-include="'/partials/networktraffic/snapshotcomments.html'" ng-show="commentsDisplayed"></section>
+            <section ng-show="notesDisplayed"
+                ng-include="'/partials/networktraffic/snapshotnotes.html'">
+            </section>
 
-            <section ng-switch-when="Details" ng-include="'/partials/networktraffic/snapshotinfo.html'">
+            <section ng-switch-when="Details"
+                ng-include="'/partials/networktraffic/snapshotinfo.html'">
             </section>
-            <section ng-switch-when="Statistics" ng-include="'/partials/networktraffic/snapshotstats.html'">
+
+            <section ng-switch-when="Statistics"
+                ng-include="'/partials/networktraffic/snapshotstats.html'">
             </section>
-            <section ng-switch-when="SIP Dialogs" ng-include="'/partials/networktraffic/sipdialogs.html'">
+
+            <section ng-switch-when="SIP Dialogs"
+                ng-include="'/partials/networktraffic/sipdialogs.html'">
             </section>
-            <section ng-switch-when="Network Messages" ng-include="'/partials/networktraffic/snapshotmessages.html'"></section>
-            <section ng-switch-when="Tagged" ng-include="'/partials/networktraffic/tagged.html'" ng-controller="TaggedMessages"></section>
+
+            <section ng-switch-when="Network Messages"
+                ng-include="'/partials/networktraffic/snapshotmessages.html'">
+            </section>
+
+            <section ng-switch-when="Tagged"
+                ng-include="'/partials/networktraffic/tagged.html'">
+            </section>
         </div>
     </div>
 
-    <div ng-show="isNoSnapshot()">
+    <div ng-hide="isSnapshot()">
         <p>No snapshot to display. <a href="/networktraffic/upload">Upload</a> a snapshot logfile.</p>
     </div>
 
