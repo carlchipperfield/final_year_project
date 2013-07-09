@@ -3,20 +3,28 @@ ng-controller="SnapshotFilter"></section>
 
 <section ng-controller="NetworkMessagesCtrl">
 
-    <pagination pagination="pagination"></pagination>
+    <pagination
+        num-pages="pagination.totalPages"
+        current-page="pagination.currentPage"
+        boundary-links="true">
+    </pagination>
 
     <div id="networkmessages" class="info networkmessage"
             ng-repeat="networkmessage in networkmessages.networkmessages">
 
         <networkmessage
             data="networkmessage"
-            total="pagination.total"
+            total="networkmessages.total"
             index="$index"
             offset="pagination.offset">
         </networkmessage>
 
     </div>
 
-    <pagination pagination="pagination"></pagination>
+    <pagination
+        num-pages="pagination.totalPages"
+        current-page="pagination.currentPage"
+        boundary-links="true">
+    </pagination>
 
 </section>

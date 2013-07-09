@@ -3,6 +3,7 @@ var modules = [
     'app.directives',
     'app.services',
     'app.controllers',
+    'ui.bootstrap.pagination',
     'ngResource'
 ];
 

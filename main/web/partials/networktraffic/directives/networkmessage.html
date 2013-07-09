@@ -55,7 +55,10 @@
         </tbody>
     </table>
 
-    <p ng-switch-when="Content">{{data.content}}</p>
+    <div ng-switch-when="Content" ng-switch on="networkmessage.contenttype">
+        <sdp ng-switch-when="sdp"></sdp>
+        <p ng-switch-default>{{data.content}}</p>
+    </div>
 
 </div>
 

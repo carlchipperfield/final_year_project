@@ -27,7 +27,9 @@ module.exports = function (grunt) {
                         'web/js/filters.js',
                         'web/js/directives.js',
                         'web/js/services.js',
-                        'web/js/controllers.js'
+                        'web/js/controllers.js',
+                        'web/js/common/*.js',
+                        'web/js/directives/*.js'
                     ]
                 }
             },
@@ -57,7 +59,7 @@ module.exports = function (grunt) {
                         'web/lib/jquery/jquery-1.8.2.min.js',
                         'web/lib/moment.min.js',
                         'web/lib/bootstrap/css/bootstrap.min.css',
-                        'web/lib/bootstrap/js/bootstrap.min.js',
+                        'web/lib/bootstrap/js/**',
                         'web/lib/bootstrap/img/**'
                     ]
                 }
@@ -99,7 +101,9 @@ module.exports = function (grunt) {
             core: {
 
                 src: [
-                    'source/*.js'
+                    'source/*.js',
+                    'source/common/*.js',
+                    'source/directives/*.js',
                 ],
                 dest: 'core.min.js',
                 destMap: 'core.js.map',
@@ -143,7 +147,7 @@ module.exports = function (grunt) {
                 noempty: true,
                 quotmark: 'single',
                 undef: true,
-                unused: true,
+                unused: false,
                 trailing: true,
                 sub: true,
                 eqnull: true,
@@ -176,6 +180,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-jsmin-sourcemap');
 
     // Specify tasks
-    grunt.registerTask('default', 'lint copy jsmin-sourcemap sass');
-    grunt.registerTask('deploy', 'lint copy jsmin-sourcemap sass compress');
+    grunt.registerTask('default', 'copy jsmin-sourcemap sass');
+    grunt.registerTask('deploy', 'copy jsmin-sourcemap sass compress');
 };

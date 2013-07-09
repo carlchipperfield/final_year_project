@@ -82,35 +82,7 @@ angular.module('app.controllers', [])
     };
 })
 
-.controller('PaginationCtrl', function ($scope) {
-
-    $scope.next = function () {
-        if (!$scope.isLastPage()) {
-            $scope.pagination.offset = $scope.pagination.offset + $scope.pagination.limit;
-        }
-    };
-
-    $scope.previous = function () {
-        if (!$scope.isFirstPage()) {
-            $scope.pagination.offset = $scope.pagination.offset - $scope.pagination.limit;
-        }
-    };
-
-    $scope.isFirstPage = function () {
-        return $scope.pagination.offset === 0;
-    };
-
-    $scope.isLastPage = function () {
-        return ($scope.pagination.offset + $scope.pagination.limit + 1) > $scope.pagination.total;
-    };
-
-    $scope.isPaginated = function () {
-        return $scope.pagination.total !== undefined &&
-            $scope.pagination.total > $scope.pagination.limit;
-    };
-})
-
-.controller('SnapshotListCtrl', function ($scope, $resource, mySharedService, $location, $routeParams, $window)
+.controller('SnapshotListCtrl', function ($scope, $resource, mySharedService, $location, $routeParams)
 {
     // Initialise the snapshot REST API to return all snapshots
     var Snapshot = $resource('/api/snapshot/:id', {}, actions);
@@ -146,10 +118,6 @@ angular.module('app.controllers', [])
         $location.path('/networktraffic');
         $location.search({id: snapshot._id});
         mySharedService.displaySnapshot(snapshot);
-    };
-
-    $scope.upload = function () {
-        $window.location.href = '/#/networktraffic/upload';
     };
 
     $scope.$on('removesnapshot', function () {
@@ -278,52 +246,65 @@ angular.module('app.controllers', [])
     $scope.getDialogs(); // Init manually
 })
 
-
-.controller('TaggedMessages', function ($scope, mySharedService, $resource) {
+.controller('TaggedMessagesCtrl', function ($rootScope, $scope, $resource, mySharedService, errorService) {
 
     var Messages = $resource(
-        '/api/snapshot/:id/networkmessages?limit=:limit&offset=:offset&:query',
+        '/api/snapshot/:id/networkmessages?limit=:limit&offset=:offset:query',
         {}, actions);
 
     /* Pagination data */
     $scope.pagination = {
-        total:  undefined,
-        limit:  2,
-        offset: 0
+        currentPage: 1,
+        offset: 0,
+        totalPages:  0,
+        limit:  30,
+        query: '&tagged=true'
     };
 
-    var query = 'tagged=true';
+    $scope.retrieve_messages = function (snapshot_id) {
 
-    $scope.$on('displaysnapshot', function () {
-        $scope.pagination.offset = 0;
-        $scope.pagination.total = 0;
-        $scope.retrieve_messages();
-    });
+        $scope.pagination.offset = ($scope.pagination.currentPage - 1) * $scope.pagination.limit;
 
-    $scope.isMessages = function () {
-        return $scope.taggedmessages.networkmessages && $scope.taggedmessages.networkmessages.length > 0;
-    };
-
-    $scope.retrieve_messages = function () {
+        // Send request to server for current list of network messages
         var url_params = {
-            id: mySharedService.snapshot._id,
-            'query': query,
+            id: snapshot_id,
             limit: $scope.pagination.limit,
-            offset: $scope.pagination.offset
+            offset: ($scope.pagination.currentPage - 1) * $scope.pagination.limit,
+            query: $scope.pagination.query
         };
+
         var success = function (value) {
-            $scope.pagination.total = value.total;
+            $scope.pagination.totalPages = Math.ceil(value.total / $scope.pagination.limit);
         };
-        $scope.taggedmessages = Messages.list(url_params, success);
+
+        errorService = undefined; // Need to create an error
+
+        $scope.networkmessages = Messages.list(url_params, success);
     };
 
-    $scope.$watch('pagination', function () {
-        if ($scope.isSnapshot()) {
-            $scope.retrieve_messages(mySharedService.snapshot._id);
-        }
+    $scope.$watch('pagination.currentPage', function () {
+        $scope.retrieve_messages(mySharedService.snapshot._id);
     }, true);
 
-    $scope.retrieve_messages();
+    $scope.$on('displaysnapshot', function () {
+        $scope.pagination.query = '';
+        $scope.resetMessages();
+    });
+
+    $scope.resetMessages = function () {
+        if ( $scope.pagination.currentPage === 1) {
+            $scope.retrieve_messages(mySharedService.snapshot._id);
+        }
+        else {
+            $scope.pagination.currentPage = 1;
+        }
+    };
+
+    $scope.isMessages = function () {
+        return $scope.networkmessages.networkmessages !== undefined &&
+                $scope.networkmessages.networkmessages.length > 0 &&
+                !$scope.inprogress;
+    };
 })
 
 .controller('DialogFilter', function ($scope, mySharedService) {
@@ -445,7 +426,7 @@ angular.module('app.controllers', [])
     };
 })
 
-.controller('SnapshotNotes', function ($scope, $resource, mySharedService, errorService)
+.controller('SnapshotNotesCtrl', function ($scope, $resource, mySharedService, errorService)
 {
     var Notes = $resource('/api/snapshot/:id/notes', {}, actions);
     var Note = $resource('/api/snapshot/:id/notes/:note_id', {}, actions);
@@ -603,48 +584,56 @@ angular.module('app.controllers', [])
 
     /* Pagination data */
     $scope.pagination = {
-        total:  undefined,
+        currentPage: 1,
+        offset: 0,
+        totalPages:  0,
         limit:  30,
-        offset: 0
+        query: ''
     };
 
-    $scope.query = ''; // No query by default
-
     $scope.retrieve_messages = function (snapshot_id) {
+
+        $scope.pagination.offset = ($scope.pagination.currentPage - 1) * $scope.pagination.limit;
+
         // Send request to server for current list of network messages
         var url_params = {
             id: snapshot_id,
             limit: $scope.pagination.limit,
-            offset: $scope.pagination.offset,
-            query: $scope.query
+            offset: ($scope.pagination.currentPage - 1) * $scope.pagination.limit,
+            query: $scope.pagination.query
         };
+
         var success = function (value) {
-            $scope.pagination.total = value.total;
+            $scope.pagination.totalPages = Math.ceil(value.total / $scope.pagination.limit);
         };
+
         errorService = undefined; // Need to create an error
 
         $scope.networkmessages = Messages.list(url_params, success);
     };
 
-    $scope.$watch('pagination', function () {
-        if ($scope.isSnapshot()) {
-            $scope.retrieve_messages(mySharedService.snapshot._id);
-        }
+    $scope.$watch('pagination.currentPage', function () {
+        $scope.retrieve_messages(mySharedService.snapshot._id);
     }, true);
 
     $scope.$on('querysnapshot', function () {
-                                                    // Reset the pagination data here !!
-        $scope.query = mySharedService.query;
-        $scope.retrieve_messages($scope.snapshot._id);
+        $scope.pagination.query = mySharedService.query;
+        $scope.resetMessages();
     });
 
     $scope.$on('displaysnapshot', function () {
-        $scope.pagination.offset = 0;
-        $scope.pagination.total = 0;
-        $scope.filter = '';
-        $scope.snapshot = mySharedService.snapshot;
-        $scope.retrieve_messages($scope.snapshot._id);
+        $scope.pagination.query = '';
+        $scope.resetMessages();
     });
+
+    $scope.resetMessages = function () {
+        if ( $scope.pagination.currentPage === 1) {
+            $scope.retrieve_messages(mySharedService.snapshot._id);
+        }
+        else {
+            $scope.pagination.currentPage = 1;
+        }
+    };
 
     $scope.isMessages = function () {
         return $scope.networkmessages.networkmessages !== undefined &&

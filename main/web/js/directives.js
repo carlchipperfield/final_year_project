@@ -33,19 +33,6 @@ angular.module('app.directives', [])
     };
 })
 
-.directive('pagination', function () {
-    return {
-        transclude: true,
-        restrict: 'E',
-        replace: true,
-        scope: {
-            pagination: '='
-        },
-        controller: 'PaginationCtrl',
-        templateUrl: '/partials/core/directives/pagination.html'
-    };
-})
-
 .directive('networkmessage', function () {
     return {
         restrict: 'E',

@@ -1,18 +1,27 @@
-<div id="networkmessages" ng-controller="TaggedMessages">
+<div id="networkmessages" ng-controller="TaggedMessagesCtrl">
 
     <div ng-show="isMessages()">
-        <pagination pagination="pagination"></pagination>
 
-        <div class="info networkmessage" ng-repeat="networkmessage in taggedmessages.networkmessages">
+        <pagination
+            num-pages="pagination.totalPages"
+            current-page="pagination.currentPage"
+            boundary-links="true">
+        </pagination>
+
+        <div class="info networkmessage" ng-repeat="networkmessage in networkmessages.networkmessages">
             <networkmessage
                 data="networkmessage"
-                total="pagination.total"
+                total="networkmessages.total"
                 index="$index"
                 offset="pagination.offset">
             </networkmessage>
         </div>
 
-        <pagination pagination="pagination"></pagination>
+        <pagination
+            num-pages="pagination.totalPages"
+            current-page="pagination.currentPage"
+            boundary-links="true">
+        </pagination>
     </div>
 
     <div ng-hide="isMessages()">
