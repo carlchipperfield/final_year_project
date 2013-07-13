@@ -34,13 +34,4 @@ angular.module('app.filters', [])
         }
         return input.charAt(0).toUpperCase() + input.slice(1);
     };
-})
-
-.filter('formatxml', function () {
-    return function (input) {
-        if (input !== '') {
-            return ':' + input;
-        }
-        return input;
-    };
 });

@@ -287,7 +287,7 @@ angular.module('app.controllers', [])
     }, true);
 
     $scope.$on('displaysnapshot', function () {
-        $scope.pagination.query = '';
+        $scope.pagination.query = '&tagged=true';
         $scope.resetMessages();
     });
 
@@ -559,6 +559,10 @@ angular.module('app.controllers', [])
 
     $scope.notesDisplayed = false;
     $scope.filterDisplayed = false;
+
+    $scope.$on('displaysnapshot', function () {
+        $scope.snapshot = mySharedService.snapshot;
+    });
 
     $scope.toggleFilter = function () {
         // opens and closes the filter form

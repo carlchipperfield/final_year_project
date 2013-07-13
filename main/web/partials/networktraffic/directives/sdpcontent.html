@@ -1,0 +1,46 @@
+<div class="sdpcontent">
+
+    <!-- The SDP Session description -->
+    <div ng-show="sdp.session_description">
+        <a ng-click="media_desc.displayed = !media_desc.displayed">
+            <h2>Session Description
+                <i class="icon-plus-sign" ng-hide="media_desc.displayed"></i>
+                <i class="icon-minus-sign" ng-show="media_desc.displayed"></i>
+            </h2>
+        </a>
+        <div collapse="!media_desc.displayed">
+            
+            <table class="table">
+                <tbody>
+                    <tr ng-repeat="description in sdp.session_description">
+                        <th>{{description.type}}</th>
+                        <td>{{description.value}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- The SDP Media descriptions -->
+    <div ng-repeat="media_desc in sdp.media_descriptions">
+        <a ng-click="media_desc.displayed = !media_desc.displayed">
+            <h2>Media Description {{$index + 1}}
+                <i class="icon-plus-sign" ng-hide="media_desc.displayed"></i>
+                <i class="icon-minus-sign" ng-show="media_desc.displayed"></i>
+            </h2>
+        </a>
+        <div collapse="!media_desc.displayed">
+        <table class="table">
+            <tbody>
+                <tr ng-repeat="description in media_desc">
+                    <th>{{description.type}}</th>
+                    <td>{{description.value}}</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+    <p ng-hide="sdp.session_description">{{sdp.raw_content}}</p>
+
+</div>

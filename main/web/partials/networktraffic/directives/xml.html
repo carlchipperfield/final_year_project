@@ -1,0 +1,11 @@
+<div class="xml">
+    <div ng-show="xml.content">
+        &lt;?xml version="{{xml.version}}" encoding="{{xml.encoding}}"?&gt;
+        <div class="xmlroot">
+            <xmlnode node="xml.content"></xmlnode>
+        </div>
+    </div>
+    <div ng-show="xml.raw_content">
+        {{xml.raw_content}}
+    </div>
+</div>

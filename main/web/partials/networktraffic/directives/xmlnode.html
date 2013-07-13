@@ -1,0 +1,17 @@
+<div class="xmlnode">
+
+    <div ng-hide="node.childNodes">
+        <p ng-show="node.text">&lt;{{node.tag}}{{node.attributes}}&gt;<b>{{node.text}}</b>&lt;/{{node.tag}}&gt;</p>
+
+        <p ng-hide="node.text">&lt;{{node.tag}}{{node.attributes}}/&gt;</p>
+    </div>
+
+    <div ng-show="node.childNodes">
+        <p>&lt;{{node.tag}}{{node.attributes}}&gt;</p>
+        <div class="group">
+            <xmlnode ng-repeat="child in node.childNodes" node="child"></xmlnode>
+        </div>
+        <p>&lt;/{{node.tag}}&gt;</p>
+    </div>
+
+</div>

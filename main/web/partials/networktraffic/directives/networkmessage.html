@@ -15,7 +15,7 @@
 
 </div>
 
-<div ng-switch on="networkmessage.active">
+<div id="messagecontent" ng-switch on="networkmessage.active">
 
     <table class="table" ng-switch-when="Details">
         <tbody>
@@ -55,9 +55,12 @@
         </tbody>
     </table>
 
-    <div ng-switch-when="Content" ng-switch on="networkmessage.contenttype">
-        <sdp ng-switch-when="sdp"></sdp>
-        <p ng-switch-default>{{data.content}}</p>
+    <div ng-switch-when="Content">
+        <div ng-switch on="data.contenttype">
+            <sdp ng-switch-when="sdp" content="data.content"></sdp>
+            <xmldoc ng-switch-when="xml" doc="data.content"></xmldoc>
+            <p ng-switch-default>{{data.content}}</p>
+        </div>
     </div>
 
 </div>
