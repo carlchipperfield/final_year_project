@@ -146,79 +146,34 @@ angular.module('app.controllers', [])
     $scope.snapshots = Snapshot.list({}, this.process_snapshots);
 })
 
-.controller('DialogMessages', function ($scope, $resource, mySharedService)
-{
-    var Message = $resource('/api/snapshot/:id/networkmessages/:message_id', {}, actions);
-    var message_ids = $scope.$parent.dialog.messages;
-
-    $scope.messages = {
-        messages: [],
-        displayed: false,
-        views: ['Details', 'Headers', 'Content'],
-        sortby: 'utc'
-    };
-
-    $scope.toggleTag = function (message_index) {
-        var message = $scope.messages.messages[message_index];
-        var tagged = (message.tagged && message.tagged === 'true') ? 'false' : 'true';
-
-        var success = function () {
-            message.tagged = tagged;
-        };
-
-        var url_params = {
-            id: mySharedService.snapshot._id,
-            message_id: message._id
-        };
-
-        var msg = new Message();
-        msg.tagged = tagged;
-        msg.$update(url_params, success);
-    };
-
-    $scope.isTagged = function (message_index) {
-        var message = $scope.messages.messages[message_index];
-        return message.tagged && message.tagged === 'true';
-    };
-
-    $scope.toggleDisplayed = function () {
-
-        if (!$scope.messages.displayed && $scope.messages.messages.length === 0) {
-
-            var success = function (message) {
-                message.view = $scope.messages.views[0];
-                $scope.messages.messages.push(message);
-            };
-
-            for (var i = 0; i < message_ids.length; i++) {
-
-                var url_params = {
-                    id: mySharedService.snapshot._id,
-                    message_id: message_ids[i]
-                };
-
-                Message.get(url_params, success);
-            }
-        }
-        $scope.messages.displayed = !$scope.messages.displayed;
-    };
-})
-
 .controller('SIPDialogs', function ($rootScope, $scope, $resource, mySharedService)
 {
     // Set the two REST api resource requests
     var SIPDialogs = $resource('/api/snapshot/:id/sipdialogs?:query', {}, actions);
+    var Message = $resource('/api/snapshot/:id/networkmessages/:message_id', {}, actions);
 
     $scope.query = '';
-    $scope.networkmessages = [];
+    $scope.messages = {
+        sortby: 'utc'
+    };
 
     $scope.retrieveDialogs = function (snapshot_id) {
-
         var url_params = {
             id: snapshot_id,
             query: $scope.query
         };
         $scope.dialogs = SIPDialogs.list(url_params);
+    };
+
+    $scope.sameParticipant = function (sender, receiver) {
+        return sender === receiver;
+    };
+
+    $scope.getStatusClass = function (status) {
+        if (status.startsWith('4') || status.startsWith('5')) {
+            return 'label-important';
+        }
+        return 'label-success';
     };
 
     $scope.$on('displaysnapshot', function () {
@@ -241,6 +196,38 @@ angular.module('app.controllers', [])
         if ($scope.isSnapshot()) {
             $scope.retrieveDialogs($scope.snapshot._id);
         }
+    };
+
+    $scope.toggleTransaction = function (dialog, transaction) {
+
+        dialog.messages = [];
+
+        if (dialog.active_transaction === transaction._id) {
+            dialog.active_transaction = false;
+        }
+        else {
+            var success = function (message) {
+                dialog.messages.push(message);
+            };
+
+            var message_ids = transaction.message_ids;
+
+            for (var i = 0; i < message_ids.length; i++) {
+
+                var url_params = {
+                    id: mySharedService.snapshot._id,
+                    message_id: message_ids[i]
+                };
+
+                Message.get(url_params, success);
+            }
+
+            dialog.active_transaction = transaction._id;
+        }
+    };
+
+    $scope.isActiveTransaction = function (dialog, transaction_id) {
+        return dialog.active_transaction === transaction_id;
     };
 
     $scope.getDialogs(); // Init manually
@@ -554,7 +541,7 @@ angular.module('app.controllers', [])
     $scope.page.title = 'Network Traffic Analytics';
 
     // Set state that tracks the current snapshot view
-    $scope.snapshotViews = ['Details', 'Statistics', 'SIP Dialogs', 'Network Messages', 'Tagged'];
+    $scope.snapshotViews = ['Details', 'Statistics', 'SIP Dialogs', 'SIP Messages', 'Tagged SIP Messages'];
     $scope.activeSnapshotView = $scope.snapshotViews[0];
 
     $scope.notesDisplayed = false;

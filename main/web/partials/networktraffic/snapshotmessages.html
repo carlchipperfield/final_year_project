@@ -9,16 +9,13 @@ ng-controller="SnapshotFilter"></section>
         boundary-links="true">
     </pagination>
 
-    <div id="networkmessages" class="info networkmessage"
-            ng-repeat="networkmessage in networkmessages.networkmessages">
-
+    <div id="networkmessages" ng-repeat="networkmessage in networkmessages.networkmessages">
         <networkmessage
             data="networkmessage"
             total="networkmessages.total"
             index="$index"
             offset="pagination.offset">
         </networkmessage>
-
     </div>
 
     <pagination

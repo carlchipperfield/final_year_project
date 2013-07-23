@@ -268,50 +268,40 @@ class SIPDialogs:
 
     def extract(self, snapshot_id):
 
-        transactions = self.siptransactions.find({"snapshot_id": str(snapshot_id)})  # extract sip messages
+        transactions = self.siptransactions.find({"snapshot_id": str(snapshot_id)})
 
         for transaction in transactions:
             key = transaction['call_id'] + transaction['local_tag'] + transaction['remote_tag']
 
-            message = self.networkmessages.find({"_id": ObjectId(transaction['message_ids'][0])})
-            sipmessage = SipMessage()
-            sipmessage.load(message[0])
+            if key in self.dialogs.keys():
+                # The dialog already exists, just add the message ids
+                transaction['_id'] = str(transaction['_id'])
+                self.dialogs[key]['transactions'].append(transaction)
+            else:
 
-            '''for message in messages:
-                if message['protocol'] == 'SIP':
+                message = self.networkmessages.find({"_id": ObjectId(transaction['message_ids'][0])})
                 sipmessage = SipMessage()
-                sipmessage.load(message)
+                sipmessage.load(message[0])
 
-                call_id = sipmessage.get_call_id()
-                local_tag = sipmessage.get_local_tag()
-                remote_tag = sipmessage.get_remote_tag()
+                # Parse the sender and receiver
+                sender = sipmessage.get_sender()
+                receiver = sipmessage.get_receiver()
 
-                key = call_id + local_tag + remote_tag'''
+                transaction['_id'] = str(transaction['_id'])
 
-            '''if key in self.dialogs:
-
-                # The dialog already exists, just add the message id
-                self.dialogs[key]['messages'].append(sipmessage.get_id())
-            else:'''
-
-            # Parse the sender and receiver
-            sender = sipmessage.get_sender()
-            receiver = sipmessage.get_receiver()
-
-            # Need to create a new dialog
-            self.dialogs[key] = {
-                'snapshot_id': str(snapshot_id),
-                'call_id':     transaction['call_id'],  # call_id,
-                'local_tag':   transaction['local_tag'],  # local_tag,
-                'remote_tag':  transaction['remote_tag'],  # remote_tag,
-                'messages':    transaction['message_ids'],  # [sipmessage.get_id()],
-                'sender':      sender,
-                'receiver':    receiver
-            }
+                # Need to create a new dialog
+                self.dialogs[key] = {
+                    'snapshot_id': str(snapshot_id),
+                    'transactions': [transaction],
+                    'sender':      sender,
+                    'receiver':    receiver
+                }
 
     def save(self):
         for sipdialog in self.dialogs.itervalues():
             self.sipdialogs.insert(sipdialog)
+
+from operator import itemgetter
 
 
 class SipTransactions:
@@ -340,7 +330,7 @@ class SipTransactions:
     def _group_transaction_messages(self, messages):
         ''' Group together the SIP transactions. '''
         transactions = {}
-        for message in messages:
+        for message in sorted(messages, key=itemgetter('utc')):
             if message['protocol'] == 'SIP':
                 sipmessage = SipMessage()
                 sipmessage.load(message)
@@ -358,6 +348,7 @@ class SipTransactions:
                 'snapshot_id':    str(snapshot_id),
                 'transaction_id': group[0].get_transaction_id(),
                 'request':        group[0].get()['method'],
+                'status':         group[-1].get()['status'],
                 'utc':            group[0].get()['utc'],
                 'message_ids':    Message.get_message_ids(group),
                 'call_id':        self._get_group_call_id(group),

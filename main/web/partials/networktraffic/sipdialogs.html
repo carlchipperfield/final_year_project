@@ -8,45 +8,48 @@
             <tbody>
                 <tr>
                     <th>Call-id</th>
-                    <td>{{dialog.call_id}}</td>
+                    <td>{{dialog.transactions[0].call_id}}</td>
                 </tr>
                 <tr>
                     <th>Local Tag</th>
-                    <td>{{dialog.local_tag}}</td>
+                    <td>{{dialog.transactions[0].local_tag}}</td>
                 </tr>
                 <tr>
                     <th>Remote Tag</th>
-                    <td>{{dialog.remote_tag}}</td>
+                    <td>{{dialog.transactions[0].remote_tag}}</td>
                 </tr>
                 <tr>
                     <th>Participants</th>
-                    <td>{{dialog.sender}}<br>{{dialog.receiver}}</td>
+                    <td>
+                        <div>{{dialog.sender}}</div>
+                        <div ng-show="!sameParticipant(dialog.sender, dialog.receiver)">{{dialog.receiver}}</div>
+                    </td>
                 </tr>
                 <tr>
-                    <th>SIP Messages</th>
-                    <td>{{dialog.messages.length}}</td>
+                    <th>Transactions</th>
+                    <td>
+                        <div ng-repeat="transaction in dialog.transactions | orderBy:'utc':false">{{transaction.utc | precisedate}} | <b>{{transaction.request}}</b> | <span class="label" ng-class="getStatusClass(transaction.status)">{{transaction.status}}</span> | 
+                            <a ng-click="toggleTransaction(dialog, transaction)">
+                                <span ng-hide="isActiveTransaction(dialog, transaction._id)">Show messages</span>
+                                <span ng-show="isActiveTransaction(dialog, transaction._id)">Hide messages</span>
+                                ({{transaction.message_ids.length}})
+                            </a>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         </table>
 
-        <div ng-controller="DialogMessages">
-
-            <a ng-click="toggleDisplayed()" ng-hide="messages.displayed">Show network messages</a>
-            <a ng-click="toggleDisplayed()" ng-show="messages.displayed">Hide network messages</a>
-
-            <div ng-show="messages.displayed">
-        
-                <div class="info networkmessage"
-                    ng-repeat="networkmessage in messages.messages | orderBy:messages.sortby">
-
-                    <networkmessage
-                        data="networkmessage"
-                        total="messages.messages.length"
-                        index="$index"
-                        offset="offset">
-                    </networkmessage>
-                </div>
+        <div class="dialogmessages">
+            <div ng-repeat="networkmessage in dialog.messages | orderBy:messages.sortby">
+                <networkmessage
+                    data="networkmessage"
+                    total="dialog.messages.length"
+                    index="$index"
+                    offset="offset">
+                </networkmessage>
             </div>
         </div>
+
     </div>
 </div>

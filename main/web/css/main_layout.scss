@@ -160,6 +160,7 @@ h5.tbar {
 
 div.networkmessage {
 
+    padding: 10px;
     clear: both;
 
     div#messagebar {
@@ -232,11 +233,13 @@ div.dialog {
         margin: 0px;
     }
 
-    div.networkmessage {
+    div.dialogmessages {
         background-color: #fff;
-        padding: 15px;
-        margin-bottom: 10px;
         border-radius: 6px;
+        a {
+            padding: 5px;
+            padding-bottom: 10px;
+        }
     }
 }
 
