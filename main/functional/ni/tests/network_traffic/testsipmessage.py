@@ -58,6 +58,36 @@ messages['response'] = '''2012-12-11T03:07:02+00:00 cisco tvcs: UTCTime="2012-12
  Content-Length: 0
 |'''
 
+messages['status multiple words'] = '''2012-12-11T03:07:02+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:02,238" Module="network.sip" Level="DEBUG":  Dst-ip="127.0.0.1"  Dst-port="25000"
+ SIPMSG:
+ |SIP/2.0 400 Bad Request
+ Via: SIP/2.0/TCP 127.0.0.1:5060;egress-zone=DefaultZone;branch=z9hG4bKeddc39fddb653eb2e21e8dff57384faa153.8de24b12c2931257c0e410e17bd936b9;proxy-call-id=d5bb0634-433f-11e2-aa82-005056ab3dbd;received=127.0.0.1;rport=25000
+ Via: SIP/2.0/TLS 192.168.0.3:64981;branch=z9hG4bK1362adc2b49b82b052c4931786fefc95.1;received=90.214.3.75;rport=64981;ingress-zone=DefaultSubZone
+ Call-ID: 5a8615fc0ccb32eb@192.168.0.3
+ CSeq: 206 PUBLISH
+ From: <sip:laura.michael.movi@fyp.com>;tag=2ec3d9a8c06e5acc
+ To: <sip:laura.michael.movi@fyp.com>;tag=f899b911a87c1104
+ Server: TANDBERG/4120 (X7.2.1)
+ Expires: 1314
+ SIP-ETag: e8b432b8-433c-11e2-83c1-005056ab3dbd
+ Content-Length: 0
+|'''
+
+messages['status special chars'] = '''2012-12-11T03:07:02+00:00 cisco tvcs: UTCTime="2012-12-11 03:07:02,238" Module="network.sip" Level="DEBUG":  Dst-ip="127.0.0.1"  Dst-port="25000"
+ SIPMSG:
+ |SIP/2.0 417 Unknown Resource-Priority
+ Via: SIP/2.0/TCP 127.0.0.1:5060;egress-zone=DefaultZone;branch=z9hG4bKeddc39fddb653eb2e21e8dff57384faa153.8de24b12c2931257c0e410e17bd936b9;proxy-call-id=d5bb0634-433f-11e2-aa82-005056ab3dbd;received=127.0.0.1;rport=25000
+ Via: SIP/2.0/TLS 192.168.0.3:64981;branch=z9hG4bK1362adc2b49b82b052c4931786fefc95.1;received=90.214.3.75;rport=64981;ingress-zone=DefaultSubZone
+ Call-ID: 5a8615fc0ccb32eb@192.168.0.3
+ CSeq: 206 PUBLISH
+ From: <sip:laura.michael.movi@fyp.com>;tag=2ec3d9a8c06e5acc
+ To: <sip:laura.michael.movi@fyp.com>;tag=f899b911a87c1104
+ Server: TANDBERG/4120 (X7.2.1)
+ Expires: 1314
+ SIP-ETag: e8b432b8-433c-11e2-83c1-005056ab3dbd
+ Content-Length: 0
+|'''
+
 messages['outgoing'] = '''2013-03-26T15:36:53+00:00 rusc01-et-vcs200 tvcs: UTCTime="2013-03-26 15:36:53,887" Module="network.sip" Level="DEBUG":  Dst-ip="10.50.152.101"  Dst-port="7001" 
  SIPMSG:
  |OPTIONS sip:10.50.152.101:7001;transport=tls SIP/2.0
@@ -110,6 +140,8 @@ not_message_log = '''2013-03-26T15:36:52+00:00 rusc01-et-vcs200 tvcs: UTCTime="2
 Module="developer.iwf" Level="DEBUG" CodeLocation="ppcmains/oak/calls/iwf/IIWFTarget.cpp(470)" Method="IIWFTarget::runTargetLeg"
 Thread="0x7fcb6ab53700":  State="IWFAwaitingConnectSipOutLegState" Global-CallId="fb5b6b02-962a-11e2-be85-000c298fb0c1" Local-CallId="fb5b6922-962a-11e2-896d-000c298fb0c1"
 '''
+
+# Fixes issue #22 when a SIP status code with multiple words ()
 
 
 class TestCreateMessage(unittest.TestCase):
@@ -204,6 +236,11 @@ class TestSipMessage(unittest.TestCase):
     def test_status(self):
         test_message_field(self, 'request', 'status', 'None')
         test_message_field(self, 'response', 'status', '200 OK')
+
+        ''' Fix issue #22 that failed to correctly parse status codes that
+            comprise multiple words and special chars in the status description '''
+        test_message_field(self, 'status multiple words', 'status', '400 Bad Request')
+        test_message_field(self, 'status special chars', 'status', '417 Unknown Resource-Priority')
 
     def test_content(self):
         test_message_field(self, 'request', 'content', request_content)

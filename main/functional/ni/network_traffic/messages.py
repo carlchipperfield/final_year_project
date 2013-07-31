@@ -229,9 +229,9 @@ class SipMessage(Message):
 
     def _parse_status(self, log_entry):
         # SIP/2.0 200 OK
-        status = re.search('SIP.* [0-9]{3} [a-zA-Z]*', log_entry)
+        status = re.search('SIP.* [0-9]{3} .*', log_entry)
         if status:
-            dd = re.search('[0-9]{3} [a-zA-Z]*', status.group(0))
+            dd = re.search('[0-9]{3} .*', status.group(0))
             return dd.group(0)
         return 'None'
 
